@@ -1,0 +1,7 @@
+---
+ina:
+  database:
+    username: postgres
+    password: admin
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/inapayments?currentSchema=ina_pay_tms

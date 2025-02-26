@@ -24,7 +24,7 @@ public class DeviceSetUpService extends CommonValidator<DeviceTMSInitRequest> {
         this.initService = initService;
     }
 
-    public DeviceTMSInitResponse deviceTXNInit(DeviceTMSInitRequest request) {
+    public DeviceTMSInitResponse deviceTMSInit(DeviceTMSInitRequest request) {
         log.info("Inside getTransportKeys method");
 
         evaluate(request);

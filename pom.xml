@@ -10,14 +10,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.ina</groupId>
-	<artifactId>ina-pay-txn</artifactId>
+	<artifactId>ina-pay-tms</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ina-pay-txn</name>
-	<description>Transaction Service which will issue the certificates or keys
-		for integrity and authenticity
-		to
-		the POS devices and connects to acquirer to process the payment
-		transactions.</description>
+	<name>ina-pay-tms</name>
+	<description>TMS Service.</description>
 	<url />
 	<licenses>
 		<license />

@@ -31,18 +31,7 @@ public class DeviceSetUpController {
 	private final DeviceSetUpService deviceSetUpService;
 	
 	@PostMapping(SETUP_TMS_INIT)
-	@Operation(summary = "Setup Device Txn Service Init")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Device setup Initialization is successfull",
-                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = DeviceTMSInitResponse.class))}),
-            @ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Invalid request", content = @Content)})
-	public DeviceTMSInitResponse deviceTXNInit(@io.swagger.v3.oas.annotations.parameters.RequestBody(
-	        description = "Device setup Initialization - Device Certificates will be signed and return along with server certificates.", required = true,
-	        content = @Content(mediaType = "application/json",
-	            schema = @Schema(implementation = DeviceTMSInitRequest.class),
-	            examples = @ExampleObject(value = "{ \"certCSRMetadata\":{} }")))
-	     @RequestBody @Validated DeviceTMSInitRequest request) throws Exception {
-		return deviceSetUpService.deviceTXNInit(request);
+	public DeviceTMSInitResponse deviceTMSInit(@RequestBody @Validated DeviceTMSInitRequest request) {
+		return deviceSetUpService.deviceTMSInit(request);
 	}
 }

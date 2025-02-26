@@ -15,8 +15,8 @@ public class InaPaySwaggerConfiguration {
     public OpenAPI openAPI() {
         return new OpenAPI().addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
                 .components(new Components().addSecuritySchemes("Bearer Authentication", createAPIKeyScheme()))
-                .info(new Info().title("InaPay TXN REST API")
-                        .description("InaPay TXN REST APIs.")
+                .info(new Info().title("InaPay TMS REST API")
+                        .description("InaPay TMS REST APIs.")
                         .version("1.0"));
     }
 

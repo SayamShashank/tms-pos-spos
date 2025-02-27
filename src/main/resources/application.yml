@@ -1,17 +1,16 @@
 spring:
+  application:
+    name: ina-pay-tms
   jpa:
     generate-ddl: true
     ddl-auto: create
     show-sql: true
     hibernate:
       ddl-auto: update
-  application:
-    name: ina-pay-tms
-
-  properties:
-    hibernate:
-      dialect: org.hibernate.dialect.PostgreSQLDialect
-      default_schema: ina_pay_tms
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: ina_pay_tms
 
 server:
   port: 8082

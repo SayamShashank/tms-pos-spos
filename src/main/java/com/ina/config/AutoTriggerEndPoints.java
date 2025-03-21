@@ -34,7 +34,7 @@ public class AutoTriggerEndPoints {
             ApiOutContext apiOutContext = new ApiOutContext();
             GenerateAEKAndDEKResponse generateAEKAndDEKResponse = new GenerateAEKAndDEKResponse();
             try {
-                generateAEKAndDEKResponse = aekAndDEKService.generateAEKAndDEK("TXN", UUID.randomUUID().toString());
+                generateAEKAndDEKResponse = aekAndDEKService.generateAEKAndDEK("TMS", UUID.randomUUID().toString());
                 apiOutContext.setCode(AppErrorConstants.SUCCESS_CODE);
                 apiOutContext.setMessage(inaPayMessages.get(AppErrorConstants.SUCCESS_CODE));
                 apiOutContext.setStatus(inaPayMessages.get(AppErrorConstants.SUCCESS_CODE));

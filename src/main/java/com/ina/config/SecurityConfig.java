@@ -31,9 +31,12 @@ public class SecurityConfig {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    public SecurityConfig(EndPointRolesProperties endPointRolesConfig, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
+    private final CommonRoleUtils commonRoleUtils;
+
+    public SecurityConfig(EndPointRolesProperties endPointRolesConfig, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, CommonRoleUtils commonRoleUtils) {
         this.endPointRolesConfig = endPointRolesConfig;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.commonRoleUtils = commonRoleUtils;
     }
 
     @Bean
@@ -71,12 +74,12 @@ public class SecurityConfig {
 
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
-        return CommonRoleUtils.getJwtAuthenticationConverterHandler(keycloakAuthIssuer, keycloakCertsUrl, clientReference);
+        return commonRoleUtils.getJwtAuthenticationConverterHandler(keycloakAuthIssuer, keycloakCertsUrl, clientReference);
     }
 
     @Bean
     public AccessDeniedHandler jwtAccessDeniedHandler() {
-        return CommonRoleUtils.jwtAccessDeniedException();
+        return commonRoleUtils.jwtAccessDeniedException();
     }
 
 }

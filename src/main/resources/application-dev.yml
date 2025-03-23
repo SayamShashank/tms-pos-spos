@@ -4,4 +4,4 @@ ina:
     username: postgres
     password: postgres12
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://am-developement.cxkmqmqgup84.ap-south-1.rds.amazonaws.com/postgres
+    url: jdbc:postgresql://am-developement.cxkmqmqgup84.ap-south-1.rds.amazonaws.com/postgres?currentSchema=ina_pay_tms

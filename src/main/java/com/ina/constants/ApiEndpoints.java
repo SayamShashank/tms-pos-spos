@@ -27,4 +27,6 @@ public class ApiEndpoints {
 
     public static final String GENERATE_SPOS_AUTH_KEY = "/generateSPOSAuthKey";
     public static final String GET_ALL_SPOS_AUTH_KEYS = "/getAllSPOSKeys";
+    public static final String DEVICE_PROFILE="/device";
+
 }

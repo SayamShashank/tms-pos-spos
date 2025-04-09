@@ -104,22 +104,18 @@ public class InitialiseCertificateService extends CommonValidator<ApiInContext> 
         try {
             ServerCertsInfoResponse serverCertsInfoResponse = serverEncryptionAndSignatureCertificateService
                     .generateServerL4Certificates(initialiseCertRequest.getCertificateType(), initialiseCertRequest.getApiInContext());
-            Set<String> serverCertsStatusInfo = serverCertsInfoResponse.getServerCertsInfoList()
-                    .stream()
-                    .map(ServerCertsGenerationResponse::getStatusCode)
-                    .collect(Collectors.toSet());
 
-            if (!serverCertsStatusInfo.contains("500")) {
-                apiOutContext = getApiOutContext(initialiseCertRequest.getApiInContext().getInputRefId(),CERTIFICATES_GENERATED_SUCCESSFULLY, messages);
-                apiOutContext.setStatus(messages.get(AppErrorConstants.SUCCESS_CODE));
+            if (serverCertsInfoResponse.getApiOutContext().getStatus().equalsIgnoreCase(messages.get(SUCCESS_CODE))) {
+                apiOutContext = serverCertsInfoResponse.getApiOutContext();
             } else{
                 apiOutContext = getApiOutContext(initialiseCertRequest.getApiInContext().getInputRefId(),CERTIFICATES_GENERATION_FAILED, messages);
                 apiOutContext.setStatus(messages.get(AppErrorConstants.FAILED_CODE));
             }
         } catch (CommonValidationException exception) {
-            apiOutContext = getApiOutContext(initialiseCertRequest.getApiInContext().getInputRefId(),exception.getCode(), messages.get(exception.getCode()));
+            apiOutContext = getApiOutContext(initialiseCertRequest.getApiInContext().getInputRefId(),exception.getCode(),exception.getMessage());
             apiOutContext.setStatus(messages.get(AppErrorConstants.FAILED_CODE));
         }
+
         response.setApiOutContext(apiOutContext);
         return response;
     }

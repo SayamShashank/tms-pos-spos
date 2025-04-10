@@ -2,6 +2,14 @@
 ina:
   database:
     username: postgres
-    password: postgres12
+#    password: postgres12
+    password: admin
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://am-developement.cxkmqmqgup84.ap-south-1.rds.amazonaws.com/postgres?currentSchema=ina_pay_tms
+#    url: jdbc:postgresql://am-developement.cxkmqmqgup84.ap-south-1.rds.amazonaws.com/postgres?currentSchema=ina_pay_tms
+    url: jdbc:postgresql://localhost:5432/geidea?currentSchema=geidea_tms_db
+
+  property-config:
+    pkiConfig:
+      baseUrl: "http://localhost:8000"
+    cryptoConfig:
+      baseUrl: "http://localhost:8001"

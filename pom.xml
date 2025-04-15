@@ -60,29 +60,21 @@
 			<artifactId>spring-security-core</artifactId>
 			<version>6.4.4</version>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-crypto -->
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-crypto</artifactId>
-			<version>6.4.4</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-core -->
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-core</artifactId>
 			<version>11.0.5</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-websocket -->
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>5.0.0-alpha.14</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-websocket</artifactId>
 			<version>11.0.5</version>
 		</dependency>
-
-
-		<!-- Spring Boot Test Starter (includes JUnit 5 & Mockito) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -94,7 +86,6 @@
 			<version>2.4.11</version>
 		</dependency>
 
-		<!-- JUnit Jupiter API & Engine -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
@@ -105,8 +96,6 @@
 			<artifactId>junit-jupiter-engine</artifactId>
 			<scope>test</scope>
 		</dependency>
-
-		<!-- Mockito -->
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
@@ -117,8 +106,31 @@
 			<artifactId>mockito-junit-jupiter</artifactId>
 			<scope>test</scope>
 		</dependency>
-
-
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.18.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.12.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20250107</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.15</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
+			<version>6.4.4</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -195,6 +207,225 @@
 							</formats>
 						</configuration>
 					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxb2-maven-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>xjc-schema1</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/resources/v6/catm.002.001.06.xsd</source>
+							</sources>
+							<outputDirectory>src/main/java</outputDirectory>
+							<clearOutputDir>false</clearOutputDir>
+							<packageName>com.ina.nexotms.packages.xml.v6.catm216</packageName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>xjc-schema2</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/resources/v6/catm.001.001.06.xsd</source>
+							</sources>
+							<outputDirectory>src/main/java</outputDirectory>
+							<clearOutputDir>false</clearOutputDir>
+							<packageName>com.ina.nexotms.packages.xml.v6.catm116</packageName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>xjc-schema3</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/resources/v6/catm.003.001.06.xsd</source>
+							</sources>
+							<outputDirectory>src/main/java</outputDirectory>
+							<clearOutputDir>false</clearOutputDir>
+							<packageName>com.ina.nexotms.packages.xml.v6.catm316</packageName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>xjc-schema4</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/resources/v6/catm.005.001.03.xsd</source>
+							</sources>
+							<outputDirectory>src/main/java</outputDirectory>
+							<clearOutputDir>false</clearOutputDir>
+							<packageName>com.ina.nexotms.packages.xml.v6.catm513</packageName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>xjc-schema5</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/resources/v6/catm.006.001.02.xsd</source>
+							</sources>
+							<outputDirectory>src/main/java</outputDirectory>
+							<clearOutputDir>false</clearOutputDir>
+							<packageName>com.ina.nexotms.packages.xml.v6.catm612</packageName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>xjc-schema6</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/resources/v6/catm.007.001.01.xsd</source>
+							</sources>
+							<outputDirectory>src/main/java</outputDirectory>
+							<clearOutputDir>false</clearOutputDir>
+							<packageName>com.ina.nexotms.packages.xml.v6.catm711</packageName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>xjc-schema7</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/resources/v6/catm.008.001.01.xsd</source>
+							</sources>
+							<outputDirectory>src/main/java</outputDirectory>
+							<clearOutputDir>false</clearOutputDir>
+							<packageName>com.ina.nexotms.packages.xml.v6.catm811</packageName>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>xjc-schema8</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/resources/v8/catm.002.001.07.xsd</source>
+							</sources>
+							<outputDirectory>src/main/java</outputDirectory>
+							<clearOutputDir>false</clearOutputDir>
+							<packageName>com.ina.nexotms.packages.xml.v8.catm217</packageName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>xjc-schema9</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/resources/v8/catm.001.001.08.xsd</source>
+							</sources>
+							<outputDirectory>src/main/java</outputDirectory>
+							<clearOutputDir>false</clearOutputDir>
+							<packageName>com.ina.nexotms.packages.xml.v8.catm118</packageName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>xjc-schema10</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/resources/v8/catm.003.001.08.xsd</source>
+							</sources>
+							<outputDirectory>src/main/java</outputDirectory>
+							<clearOutputDir>false</clearOutputDir>
+							<packageName>com.ina.nexotms.packages.xml.v8.catm318</packageName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>xjc-schema11</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/resources/v8/catm.005.001.05.xsd</source>
+							</sources>
+							<outputDirectory>src/main/java</outputDirectory>
+							<clearOutputDir>false</clearOutputDir>
+							<packageName>com.ina.nexotms.packages.xml.v8.catm515</packageName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>xjc-schema12</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/resources/v8/catm.006.001.03.xsd</source>
+							</sources>
+							<outputDirectory>src/main/java</outputDirectory>
+							<clearOutputDir>false</clearOutputDir>
+							<packageName>com.ina.nexotms.packages.xml.v8.catm613</packageName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>xjc-schema13</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/resources/v8/catm.007.001.02.xsd</source>
+							</sources>
+							<outputDirectory>src/main/java</outputDirectory>
+							<clearOutputDir>false</clearOutputDir>
+							<packageName>com.ina.nexotms.packages.xml.v8.catm712</packageName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>xjc-schema14</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/resources/v8/catm.008.001.02.xsd</source>
+							</sources>
+							<outputDirectory>src/main/java</outputDirectory>
+							<clearOutputDir>false</clearOutputDir>
+							<packageName>com.ina.nexotms.packages.xml.v8.catm812</packageName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>xjc-schema15</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/resources/v8/catm.004.001.04.xsd</source>
+							</sources>
+							<outputDirectory>src/main/java</outputDirectory>
+							<clearOutputDir>false</clearOutputDir>
+							<packageName>com.ina.nexotms.packages.xml.v8.catm414</packageName>
+						</configuration>
+					</execution>
+
 				</executions>
 			</plugin>
 		</plugins>

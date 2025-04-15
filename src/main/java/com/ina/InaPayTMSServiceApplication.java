@@ -14,8 +14,8 @@ import javax.net.ssl.X509TrustManager;
 import java.security.cert.X509Certificate;
 
 @ComponentScan({"com.ina"})
-@EntityScan({"com.ina.common.dao.entity", "com.ina.transaction.entity","com.ina.common.crypto.entity"})
-@EnableJpaRepositories({"com.ina.common.dao", "com.ina.transaction.repository","com.ina.common.crypto.repository"})
+@EntityScan({"com.ina.common.dao.entity", "com.ina.transaction.entity","com.ina.common.crypto.entity","com.ina.dao.entity"})
+@EnableJpaRepositories({"com.ina.common.dao", "com.ina.transaction.repository","com.ina.common.crypto.repository","com.ina.dao"})
 @SpringBootApplication(exclude =  {DataSourceAutoConfiguration.class })
 public class InaPayTMSServiceApplication {
     public static void main(String[] args) throws Exception {

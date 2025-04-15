@@ -10,89 +10,89 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-#        default_schema: ina_pay_tms
+        default_schema: ina_pay_tms
 
 server:
   port: 8082
   error:
     path: /error
-  
+
 
 ina:
-    database:
-      url: jdbc:postgresql://localhost:5432/ina_pay_tms
-      username: postgres
-      password: postgres
-      driverClassName: org.postgresql.Driver
-      poolName: INAMHHikariCP
-      maxPoolSize: 100
-      minimumIdle: 10
-      idleTimeout: 600000
-      maxLifetime: 1800000
-      connectionTimeout: 60000
-      leakDetectionThreshold: 10000
-      autoCommit: false
-      cachePrepStmts: true
-      prepStmtCacheSize: 1024
-      prepStmtCacheSqlLimit: 4096
-      useServerPrepStmts: true
-      housekeepingPeriodMs: 60000
+  database:
+    url: jdbc:postgresql://localhost:5432/ina_pay_tms
+    username: postgres
+    password: admin
+    driverClassName: org.postgresql.Driver
+    poolName: INAMHHikariCP
+    maxPoolSize: 100
+    minimumIdle: 10
+    idleTimeout: 600000
+    maxLifetime: 1800000
+    connectionTimeout: 60000
+    leakDetectionThreshold: 10000
+    autoCommit: false
+    cachePrepStmts: true
+    prepStmtCacheSize: 1024
+    prepStmtCacheSqlLimit: 4096
+    useServerPrepStmts: true
+    housekeepingPeriodMs: 60000
 
-    property-config:
-      issuerDetails:
-        "RBL": "123456789012345"
-        "MADA": "678901234567890"
-        "ANM": "234567890123456"
-        "TXN": "789012345678901"
-        "TMS": "890123456789012"
-      keyType:
-        "ECC" : "ECDH,ECMQV,ECDSA,EdDSA,ECIES,Curve25519,Curve448,secp256k1,SM2"
-        "RSA" : "RSASSA-PKCS1-v1_5,RSASSA-PSS,RSAES-PKCS1-v1_5,RSAES-OAEP,RSA-SHA256, RSA-SHA512,TLS/SSL, IPsec, SSH,PKI, S/MIME, CMS"
-      certificateSubRequest:
-        "org": "INA_PAYMENTS"
-        "locale": "BANGALORE"
-        "state": "KA"
-        "country": "IN"
-      algoToBeUsed:
-        "CA" : "ECP521"
-        "LEAF": "ECP256"
-      certTypeAndAssociatedParent:
-        "TXN_SUB_CA" : "TXN_SUB_CA,ROOT_CA"
-        "TXN_SERVER_SUB_CA" : "TXN_SERVER_SUB_CA,TXN_SUB_CA,ROOT_CA"
-        "TXN_SPOS_SUB_CA" : "TXN_SPOS_SUB_CA,TXN_SUB_CA,ROOT_CA"
-        "TXN_SERVER_ENCRYPTION_KP": "TXN_SERVER_ENCRYPTION_KP,TXN_SERVER_SUB_CA,TXN_SUB_CA,ROOT_CA"
-        "TXN_SERVER_SIGNATURE_KP": "TXN_SERVER_SIGNATURE_KP,TXN_SERVER_SUB_CA,TXN_SUB_CA,ROOT_CA"
-        "TXN_SPOS_ENCRYPTION_KP": "TXN_SPOS_ENCRYPTION_KP,TXN_SPOS_SUB_CA,TXN_SUB_CA,ROOT_CA"
-        "TXN_SPOS_SIGNATURE_KP": "TXN_SPOS_SIGNATURE_KP,TXN_SPOS_SUB_CA,TXN_SUB_CA,ROOT_CA"
-      dekKeyConfiguration:
-        "KEY_TYPE" : "DEK"
-        "USE_MODE" : "BOTH"
-        "ALGO" : "A128"
-        "AEK_KEY_SIZE": "16"
-      ivForAEKEncryptionAndDecryption: "98790829879082765109538765109538"
-      keyExpiryInMilliSeconds: "31536000000"
-      tr31KeyBlockHeader:
-        "keyBlockType": "D"
-        "keyUsage": "S2"
-        "export": "E"
-        "algorithm": "E"
-        "keyUseFor": "B"
-        "version": "00"
-      pkiConfig:
-#        baseUrl: "http://localhost:8000"
-        baseUrl: "http://ec2-65-0-85-78.ap-south-1.compute.amazonaws.com:8000"
-        pathToGenerateCert: "/v1/serv/init"
-        pathToSignCert: "/v1/serv/cert"
-      cryptoConfig:
-#        baseUrl: "http://localhost:8001"
-        baseUrl: "http://ec2-65-0-85-78.ap-south-1.compute.amazonaws.com:8001"
-        hsmName: "PS"
-        pathToGenerateDEK: "/v1/crypto/key_gen"
-        pathToGenerateRandomNumber: "/v1/crypto/rand_gen"
-        pathToGenerateEncryptedAEK: "/v1/crypto/data_encr"
-        pathToDecryptAEK: "/v1/crypto/data_decr"
-        pathToGenerateKeyPair: "/v1/crypto/kp_gen"
-        pathToGenSign: "/v1/crypto/gen_sign"
+  property-config:
+    issuerDetails:
+      "RBL": "123456789012345"
+      "MADA": "678901234567890"
+      "ANM": "234567890123456"
+      "TXN": "789012345678901"
+      "TMS": "890123456789012"
+    keyType:
+      "ECC" : "ECDH,ECMQV,ECDSA,EdDSA,ECIES,Curve25519,Curve448,secp256k1,SM2"
+      "RSA" : "RSASSA-PKCS1-v1_5,RSASSA-PSS,RSAES-PKCS1-v1_5,RSAES-OAEP,RSA-SHA256, RSA-SHA512,TLS/SSL, IPsec, SSH,PKI, S/MIME, CMS"
+    certificateSubRequest:
+      "org": "INA_PAYMENTS"
+      "locale": "BANGALORE"
+      "state": "KA"
+      "country": "IN"
+    algoToBeUsed:
+      "CA" : "ECP521"
+      "LEAF": "ECP256"
+    certTypeAndAssociatedParent:
+      "TXN_SUB_CA" : "TXN_SUB_CA,ROOT_CA"
+      "TXN_SERVER_SUB_CA" : "TXN_SERVER_SUB_CA,TXN_SUB_CA,ROOT_CA"
+      "TXN_SPOS_SUB_CA" : "TXN_SPOS_SUB_CA,TXN_SUB_CA,ROOT_CA"
+      "TXN_SERVER_ENCRYPTION_KP": "TXN_SERVER_ENCRYPTION_KP,TXN_SERVER_SUB_CA,TXN_SUB_CA,ROOT_CA"
+      "TXN_SERVER_SIGNATURE_KP": "TXN_SERVER_SIGNATURE_KP,TXN_SERVER_SUB_CA,TXN_SUB_CA,ROOT_CA"
+      "TXN_SPOS_ENCRYPTION_KP": "TXN_SPOS_ENCRYPTION_KP,TXN_SPOS_SUB_CA,TXN_SUB_CA,ROOT_CA"
+      "TXN_SPOS_SIGNATURE_KP": "TXN_SPOS_SIGNATURE_KP,TXN_SPOS_SUB_CA,TXN_SUB_CA,ROOT_CA"
+    dekKeyConfiguration:
+      "KEY_TYPE" : "DEK"
+      "USE_MODE" : "BOTH"
+      "ALGO" : "A128"
+      "AEK_KEY_SIZE": "16"
+    ivForAEKEncryptionAndDecryption: "98790829879082765109538765109538"
+    keyExpiryInMilliSeconds: "31536000000"
+    tr31KeyBlockHeader:
+      "keyBlockType": "D"
+      "keyUsage": "S2"
+      "export": "E"
+      "algorithm": "E"
+      "keyUseFor": "B"
+      "version": "00"
+    pkiConfig:
+      #        baseUrl: "http://localhost:8000"
+      baseUrl: "http://ec2-65-0-85-78.ap-south-1.compute.amazonaws.com:8000"
+      pathToGenerateCert: "/v1/serv/init"
+      pathToSignCert: "/v1/serv/cert"
+    cryptoConfig:
+      #        baseUrl: "http://localhost:8001"
+      baseUrl: "http://ec2-65-0-85-78.ap-south-1.compute.amazonaws.com:8001"
+      hsmName: "PS"
+      pathToGenerateDEK: "/v1/crypto/key_gen"
+      pathToGenerateRandomNumber: "/v1/crypto/rand_gen"
+      pathToGenerateEncryptedAEK: "/v1/crypto/data_encr"
+      pathToDecryptAEK: "/v1/crypto/data_decr"
+      pathToGenerateKeyPair: "/v1/crypto/kp_gen"
+      pathToGenSign: "/v1/crypto/gen_sign"
 
 timestamp:
   validity:
@@ -114,3 +114,13 @@ keycloak:
 
 application:
   roles: '[{"role": "TMS_ADMIN", "endpoints": ["/tms/api/v1/*"]}]'
+
+
+tms:
+  request:
+    krdSign2: "test.model"
+    model: "P01"
+    make: "Geidea"
+    shortName: "GeideaUAT01"
+    trsMIdCounter: "000001"
+    appVersion: "V10.0"

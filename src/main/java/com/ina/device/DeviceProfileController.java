@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.ina.common.constants.ApiEndpoints.BLOCK;
 import static com.ina.common.constants.ApiEndpoints.UNBLOCK;
 import static com.ina.constants.ApiEndpoints.*;
-import static com.ina.constants.ApiEndpoints.UPDATE_DEVICE_REVOKE_STATUS;
 
 @RestController
 @RequestMapping(value = SERVER_CONTEXT_FOR_TMS + API + VERSION+DEVICE_PROFILE,

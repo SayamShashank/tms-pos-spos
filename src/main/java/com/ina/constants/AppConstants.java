@@ -11,6 +11,7 @@ public class AppConstants {
     public static final String MDC_API = "api";
 
     public static final String UN_AUTHORIZED = "Unauthorized";
+    public static final String TMS = "TMS";
 
 
 }

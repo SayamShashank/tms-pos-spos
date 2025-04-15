@@ -1,20 +1,19 @@
 package com.ina.util;
 
+import com.ina.common.exception.CommonValidationException;
 import com.ina.common.model.ApiOutContext;
 import com.ina.common.response.message.InaPayMessages;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Date;
 
 @Component
 public class TMSUtil {
 
-    private final InaPayMessages messages;
 
-    public TMSUtil(InaPayMessages messages) {
-        this.messages = messages;
-    }
 
     public static ApiOutContext getApiOutContext(String inputRefId, String code, String inaPayMessages) {
         ApiOutContext apiOutContext = new ApiOutContext();
@@ -33,6 +32,19 @@ public class TMSUtil {
         apiOutContext.setMessage(msg);
         apiOutContext.setTimeStamp(String.valueOf(LocalDateTime.now(ZoneId.systemDefault())));
         return apiOutContext;
+    }
+    public static CommonValidationException throwValidationException(String inputRefId, String code, InaPayMessages inaPayMessages) {
+        String message=inaPayMessages.get(code,"");
+        return new CommonValidationException(
+                inputRefId,
+                code,
+                message,
+                null
+        );
+    }
+    public static String generateUniqueId() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyMMddHHmmss");
+        return formatter.format(new Date());
     }
 
 }

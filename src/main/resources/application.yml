@@ -10,7 +10,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        default_schema: ina_pay_tms
+        default_schema: geidea_tms_db
 
 server:
   port: 8082
@@ -20,8 +20,8 @@ server:
 
 ina:
   database:
-    url: jdbc:postgresql://localhost:5432/ina_pay_tms
-    username: postgres
+    url: jdbc:postgresql://10.69.24.176:5438/geidea_tms_db
+    username: admin
     password: admin
     driverClassName: org.postgresql.Driver
     poolName: INAMHHikariCP
@@ -80,12 +80,12 @@ ina:
       "version": "00"
     pkiConfig:
       #        baseUrl: "http://localhost:8000"
-      baseUrl: "http://ec2-65-0-85-78.ap-south-1.compute.amazonaws.com:8000"
+      baseUrl: "http://10.69.0.36:8000"
       pathToGenerateCert: "/v1/serv/init"
       pathToSignCert: "/v1/serv/cert"
     cryptoConfig:
       #        baseUrl: "http://localhost:8001"
-      baseUrl: "http://ec2-65-0-85-78.ap-south-1.compute.amazonaws.com:8001"
+      baseUrl: "http://10.69.0.36:8001"
       hsmName: "PS"
       pathToGenerateDEK: "/v1/crypto/key_gen"
       pathToGenerateRandomNumber: "/v1/crypto/rand_gen"
@@ -93,27 +93,27 @@ ina:
       pathToDecryptAEK: "/v1/crypto/data_decr"
       pathToGenerateKeyPair: "/v1/crypto/kp_gen"
       pathToGenSign: "/v1/crypto/gen_sign"
-
+  http:
+    max-total: 1000
+    max-route: 1000
+    conn-timeout: 300000
+    read-timeout: 100000
 timestamp:
   validity:
     ms: 2800000
 
-http:
-  max-total: 1000
-  max-route: 1000
-  conn-timeout: 100000
-  read-timeout: 100000
+
 
 client:
-  reference: tms-client
+  reference: anm-client
 keycloak:
   auth:
-    issuer: https://keyauth.inapayments.com:8443/realms/InaPayments
+    issuer: http://10.69.0.36:8080/realms/GeIdea
   certs:
-    url: https://keyauth.inapayments.com:8443/realms/InaPayments/protocol/openid-connect/certs
+    url: http://10.69.0.36:8080/realms/GeIdea/protocol/openid-connect/certs
 
 application:
-  roles: '[{"role": "TMS_ADMIN", "endpoints": ["/tms/api/v1/*"]}]'
+  roles: '[{"role": "ANM_ADMIN", "endpoints": ["/tms/api/v1/*"]}]'
 
 
 tms:

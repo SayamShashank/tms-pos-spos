@@ -28,15 +28,16 @@ public class JsonMapperUtil {
     private static AidList mapAidList(JSONObject cardScheme) {
         AidList aidList = new AidList();
         String emvTerminalType = cardScheme.optString("emvTerminalType",null);
+        String applicationName= cardScheme.optString("cardSchemeNameEng",null);
         Optional.ofNullable(cardScheme.optJSONObject("aidList"))
                 .map(aidListJson -> aidListJson.optJSONObject("aidForm"))
                 .ifPresent(aidFormObject ->
-                        aidList.setAidDataList(Collections.singletonList(mapAIDData(aidFormObject,emvTerminalType))));
+                        aidList.setAidDataList(Collections.singletonList(mapAIDData(aidFormObject,emvTerminalType,applicationName))));
 
         return aidList;
     }
 
-    private static AidData mapAIDData(JSONObject aidJson, String emvTerminalType) {
+    private static AidData mapAIDData(JSONObject aidJson, String emvTerminalType,String appName) {
         AidData aidData = new AidData();
         if (aidJson != null) {
             JSONObject iccReaderForm = Optional.ofNullable(aidJson.optJSONObject("iccReaderList"))
@@ -51,6 +52,7 @@ public class JsonMapperUtil {
             }
             aidData.setAid(aidJson.optString("aid",null));
             aidData.setEmvTerminalType(emvTerminalType);
+            aidData.setApplicationName(appName);
             aidData.setTacDenial(aidJson.optString("denialActionCode", null));
             aidData.setTacOnline(aidJson.optString("onlineActionCode", null));
             aidData.setTacDefault(aidJson.optString("defaultActionCode", null));

@@ -49,9 +49,9 @@ public class SPOSAuthKeyService extends CommonValidator<SPOSAuthKeyRequest> {
     public CommonResponse generateSPOSAuthKey(SPOSAuthKeyRequest sposAuthKeyRequest){
         CommonResponse response = new CommonResponse();
 
-        CertChain certChain = CertChain.builder().cert_level(sposAuthKeyRequest.getAuthKeyType())
+        CertChain certChain = CertChain.builder().certLevel(sposAuthKeyRequest.getAuthKeyType())
                 .cert(sposAuthKeyRequest.getPubKey())
-                .sk_lmk(sposAuthKeyRequest.getExportedPvtKey()).build();
+                .skLmk(sposAuthKeyRequest.getExportedPvtKey()).build();
         ApiOutContext apiOutContext = new ApiOutContext();
         apiOutContext.setOutputRefId(sposAuthKeyRequest.getApiInContext().getInputRefId());
 

@@ -75,8 +75,8 @@ public class InitialiseCertificateService extends CommonValidator<ApiInContext> 
         CertificateGenerationResponse certificateGenerationResponse = new CertificateGenerationResponse();
         CertChain certChain = CertChain.builder()
                 .cert(request.getRootCertificateResponse().getCert())
-                .sk_lmk(request.getRootCertificateResponse().getSkLmk())
-                .cert_level("ROOT_CA")
+                .skLmk(request.getRootCertificateResponse().getSkLmk())
+                .certLevel("ROOT_CA")
                 .build();
         ApiOutContext apiOutContext = new ApiOutContext();
         try{

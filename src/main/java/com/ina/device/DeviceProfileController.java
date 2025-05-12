@@ -1,6 +1,7 @@
 package com.ina.device;
 
 import com.ina.common.device.model.DeviceProfileBlockRequest;
+import com.ina.common.device.model.DeviceUnblockRequest;
 import com.ina.common.device.service.DeviceProfileUpdateStatusService;
 import com.ina.common.model.CommonRequest;
 import com.ina.common.model.CommonResponse;
@@ -35,7 +36,7 @@ public class DeviceProfileController {
     }
 
     @PostMapping(UNBLOCK)
-    public CommonResponse executeTransaction(@RequestBody @Validated CommonRequest request) {
+    public CommonResponse executeTransaction(@RequestBody @Validated DeviceUnblockRequest request) {
         return deviceProfileUpdateStatusService.deviceUnblock(request);
     }
 

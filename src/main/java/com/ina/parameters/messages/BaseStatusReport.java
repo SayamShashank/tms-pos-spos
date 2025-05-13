@@ -1,8 +1,8 @@
 package com.ina.parameters.messages;
 
 import com.ina.config.RequestPropertyConfig;
+import com.ina.nexotms.packages.xml.v8.catm118.*;
 import com.ina.parameters.model.ParameterRequestData;
-import com.ina.parameters.packages.xml.v8.catm118.*;
 import com.ina.parameters.utils.Marshal;
 import com.ina.parameters.utils.NexoUtils;
 import com.ina.parameters.utils.SecUtils;
@@ -198,7 +198,6 @@ public class BaseStatusReport implements NexoDataProviderInterface {
     }
 
     byte[] createSignature(byte[] msg) {
-        // RkiKeys rkiKeys = new RkiKeys();
         return SecUtils.getInstance().sign(msg, SecUtils.getInstance().getSk("/keys/"+propertyConfig.getKrdSign2()));
     }
 

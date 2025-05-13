@@ -16,5 +16,6 @@ public class ParameterResponse extends CommonResponse {
      */
     @Serial
     private static final long serialVersionUID = 7845632921082753589L;
-    private TmsParams emvParameters;
+    private transient TmsParams emvParameters;
+
 }

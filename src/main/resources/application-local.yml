@@ -10,7 +10,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        default_schema: geidea_tms_db
+        default_schema: ina_pay_tms
 
 server:
   port: 8082
@@ -20,8 +20,8 @@ server:
 
 ina:
   database:
-    url: jdbc:postgresql://10.69.24.176:5438/geidea_tms_db
-    username: admin
+    url: jdbc:postgresql://localhost:5432/inapayments?currentSchema=ina_pay_tms
+    username: postgres
     password: admin
     driverClassName: org.postgresql.Driver
     poolName: INAMHHikariCP
@@ -69,7 +69,7 @@ ina:
       "USE_MODE" : "BOTH"
       "ALGO" : "A128"
       "AEK_KEY_SIZE": "16"
-    ivForAEKEncryptionAndDecryption: "98790829879082765109538765109538"
+    ivForAEKEncryptionAndDecryption: "9879082765109538"
     keyExpiryInMilliSeconds: "31536000000"
     tr31KeyBlockHeader:
       "keyBlockType": "D"
@@ -80,40 +80,39 @@ ina:
       "version": "00"
     pkiConfig:
       #        baseUrl: "http://localhost:8000"
-      baseUrl: "http://10.69.0.36:8000"
+      baseUrl: "http://ec2-65-0-85-78.ap-south-1.compute.amazonaws.com:8000"
       pathToGenerateCert: "/v1/serv/init"
       pathToSignCert: "/v1/serv/cert"
     cryptoConfig:
       #        baseUrl: "http://localhost:8001"
-      baseUrl: "http://10.69.0.36:8001"
-      hsmName: "PS"
+      baseUrl: "http://ec2-65-0-85-78.ap-south-1.compute.amazonaws.com:8001"
       pathToGenerateDEK: "/v1/crypto/key_gen"
       pathToGenerateRandomNumber: "/v1/crypto/rand_gen"
       pathToGenerateEncryptedAEK: "/v1/crypto/data_encr"
       pathToDecryptAEK: "/v1/crypto/data_decr"
       pathToGenerateKeyPair: "/v1/crypto/kp_gen"
       pathToGenSign: "/v1/crypto/gen_sign"
-  http:
-    max-total: 1000
-    max-route: 1000
-    conn-timeout: 300000
-    read-timeout: 100000
+
 timestamp:
   validity:
     ms: 2800000
 
-
+http:
+  max-total: 1000
+  max-route: 1000
+  conn-timeout: 100000
+  read-timeout: 100000
 
 client:
-  reference: anm-client
+  reference: tms-client
 keycloak:
   auth:
-    issuer: http://10.69.0.36:8080/realms/GeIdea
+    issuer: https://keyauth.inapayments.com:8443/realms/InaPayments
   certs:
-    url: http://10.69.0.36:8080/realms/GeIdea/protocol/openid-connect/certs
+    url: https://keyauth.inapayments.com:8443/realms/InaPayments/protocol/openid-connect/certs
 
 application:
-  roles: '[{"role": "ANM_ADMIN", "endpoints": ["/tms/api/v1/*"]}]'
+  roles: '[{"role": "TMS_ADMIN", "endpoints": ["/tms/api/v1/*"]}]'
 
 
 tms:
@@ -124,8 +123,3 @@ tms:
     shortName: "GeideaUAT01"
     trsMIdCounter: "000001"
     appVersion: "V10.0"
-
-
-
-
-

@@ -25,12 +25,12 @@ ina:
     password: admin
     driverClassName: org.postgresql.Driver
     poolName: INAMHHikariCP
-    maxPoolSize: 100
+    maxPoolSize: 300
     minimumIdle: 10
     idleTimeout: 600000
     maxLifetime: 1800000
     connectionTimeout: 60000
-    leakDetectionThreshold: 10000
+    leakDetectionThreshold: 100000
     autoCommit: false
     cachePrepStmts: true
     prepStmtCacheSize: 1024

@@ -1,8 +1,6 @@
 package com.ina.parameters.utils;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -22,7 +20,6 @@ public class NexoUtils {
     private final Properties prop = new Properties();
     private String propFilePath;
     private String propFileName;
-    private static final Logger logger = LogManager.getLogger(NexoUtils.class);
 
     public static NexoUtils getInstance() {
         if (instance == null) {
@@ -54,16 +51,13 @@ public class NexoUtils {
     }
 
     public void flush() {
-        OutputStream out;
-        try {
-            out = new FileOutputStream(propFilePath + propFileName);
+        try (OutputStream out = new FileOutputStream(propFilePath + propFileName)) {
             prop.store(out, "");
-            out.close();
-        } 
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     public BigDecimal getExchangeId() {
         String xchdIdStr = getProp("xchgid");

@@ -24,7 +24,7 @@ public class EMVParameters {
     @Column(name = "terminal_id", nullable = false)
     private String terminalId;
     @Column(name = "trsmid")
-    private String trsmid;
+    private String trsMid;
     @Column(name = "device_id",nullable = false)
     private String deviceId;
     @Column(name = "cpks", length = 500000,nullable = false)

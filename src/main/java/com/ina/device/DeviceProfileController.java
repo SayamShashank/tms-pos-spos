@@ -1,8 +1,8 @@
 package com.ina.device;
 
 import com.ina.common.device.model.DeviceProfileBlockRequest;
+import com.ina.common.device.model.DeviceUnblockRequest;
 import com.ina.common.device.service.DeviceProfileUpdateStatusService;
-import com.ina.common.model.CommonRequest;
 import com.ina.common.model.CommonResponse;
 import com.ina.common.model.Request;
 import org.springframework.http.MediaType;
@@ -29,12 +29,12 @@ public class DeviceProfileController {
     }
 
     @PostMapping(BLOCK)
-    public CommonResponse executeTransaction(@RequestBody @Validated DeviceProfileBlockRequest request) {
+    public CommonResponse deviceBlock(@RequestBody @Validated DeviceProfileBlockRequest request) {
         return deviceProfileUpdateStatusService.deviceBlockAndReset(request);
     }
 
     @PostMapping(UNBLOCK)
-    public CommonResponse executeTransaction(@RequestBody @Validated CommonRequest request) {
+    public CommonResponse deviceUnblock(@RequestBody @Validated DeviceUnblockRequest request) {
         return deviceProfileUpdateStatusService.deviceUnblock(request);
     }
 

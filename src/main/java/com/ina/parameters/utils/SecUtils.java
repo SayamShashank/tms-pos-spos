@@ -5,12 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigInteger;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.security.spec.*;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.Scanner;
 
@@ -18,7 +19,7 @@ import java.util.Scanner;
 public class SecUtils {
 
     private static SecUtils instance;
-    private static final String signAlgo = "SHA256WithRSA";
+    private static final String SIGN_ALGO = "SHA256WithRSA";
 
     public static SecUtils getInstance() {
         if (instance == null)
@@ -26,27 +27,7 @@ public class SecUtils {
         return instance;
     }
 
-    KeyPair createKey(String modulus, String pubExp, String privExp, String primeP, String primeQ,
-            String expP, String expQ, String coEff) {
 
-        RSAPublicKeySpec pubKeySpec = new RSAPublicKeySpec(
-                new BigInteger(modulus, 16), new BigInteger(pubExp, 16));
-
-        RSAPrivateCrtKeySpec privKeySpec = new RSAPrivateCrtKeySpec(
-                new BigInteger(modulus, 16), new BigInteger(pubExp, 16),
-                new BigInteger(privExp, 16), new BigInteger(primeP, 16),
-                new BigInteger(primeQ, 16), new BigInteger(expP, 16),
-                new BigInteger(expQ, 16), new BigInteger(coEff, 16));
-
-        try {
-            KeyFactory kf = KeyFactory.getInstance("RSA");
-            KeyPair keyPair = new KeyPair(kf.generatePublic(pubKeySpec), kf.generatePrivate(privKeySpec));
-            return keyPair;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     public byte[] sign(byte[] data, KeyPair kdhSignKp) {
         return this.sign(data, kdhSignKp.getPrivate());
@@ -54,7 +35,7 @@ public class SecUtils {
 
     public byte[] sign(byte[] data, PrivateKey kdhSigSk) {
         try {
-            Signature signature = Signature.getInstance(signAlgo);
+            Signature signature = Signature.getInstance(SIGN_ALGO);
             signature.initSign(kdhSigSk);
             signature.update(data);
             byte[] baSign = signature.sign();
@@ -62,7 +43,7 @@ public class SecUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return new byte[0];
     }
 
     public byte[] sha256(byte[] input) {
@@ -73,7 +54,7 @@ public class SecUtils {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        return null;
+        return new byte[0];
     }
 
     public String readCert(String pemFilePath) {

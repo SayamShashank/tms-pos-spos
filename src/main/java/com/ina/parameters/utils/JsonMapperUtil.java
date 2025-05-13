@@ -3,41 +3,56 @@ package com.ina.parameters.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ina.parameters.model.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.json.XML;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.IntStream;
+
+import static com.ina.constants.AppConstants.CARD_SCHEME;
+
 @Slf4j
 public class JsonMapperUtil {
     public static List<AidList> mapAidLists(JSONObject cardSchemeList) {
-        return Optional.ofNullable(cardSchemeList.optJSONArray("cardScheme"))
+        return  Optional.ofNullable(cardSchemeList.optJSONArray(CARD_SCHEME))
                 .map(cardSchemes -> IntStream.range(0, cardSchemes.length())
                         .mapToObj(cardSchemes::getJSONObject)
                         .map(JsonMapperUtil::mapAidList)
                         .filter(aidList -> aidList.getAidDataList() != null && !aidList.getAidDataList().isEmpty())
-                        .collect(Collectors.toList()))
+                        .toList())
                 .orElse(new ArrayList<>());
+
     }
 
 
     private static AidList mapAidList(JSONObject cardScheme) {
         AidList aidList = new AidList();
         String emvTerminalType = cardScheme.optString("emvTerminalType",null);
-        String applicationName= cardScheme.optString("cardSchemeNameEng",null);
         Optional.ofNullable(cardScheme.optJSONObject("aidList"))
-                .map(aidListJson -> aidListJson.optJSONObject("aidForm"))
-                .ifPresent(aidFormObject ->
-                        aidList.setAidDataList(Collections.singletonList(mapAIDData(aidFormObject,emvTerminalType,applicationName))));
+                .map(aidListObj -> aidListObj.optJSONArray("aidForm"))
+                .ifPresent(aidFormArray -> {
+                    List<AidData> aidDataList = IntStream.range(0, aidFormArray.length())
+                            .mapToObj(aidFormArray::optJSONObject)
+                            .filter(Objects::nonNull)
+                            .map(aidFormObject -> mapAIDData(aidFormObject, emvTerminalType))
+                            .toList();
+
+                    aidList.setAidDataList(aidDataList);
+                });
+
 
         return aidList;
     }
 
-    private static AidData mapAIDData(JSONObject aidJson, String emvTerminalType,String appName) {
+
+
+    private static AidData mapAIDData(JSONObject aidJson, String emvTerminalType) {
         AidData aidData = new AidData();
         if (aidJson != null) {
             JSONObject iccReaderForm = Optional.ofNullable(aidJson.optJSONObject("iccReaderList"))
@@ -45,27 +60,38 @@ public class JsonMapperUtil {
                     .orElse(new JSONObject());
             JSONObject contactLessReaderList = aidJson.optJSONObject("contactLessReaderList");
             aidData.setTerminalCapability(iccReaderForm.optString("terminalCapability", null));
+            aidData.setTerminalCapability(iccReaderForm.optString("addTerminalCapability", null));
+
             if (contactLessReaderList != null) {
-                aidData.setCvmLimit(contactLessReaderList.optString("termCVMRequiredLimit", null));
-                aidData.setFloorLimit(contactLessReaderList.optString("terminalContactlessFloorLimit", null));
-                aidData.setTransactionLimit(contactLessReaderList.optString("termContactlessTxnLimit", null));
+                aidData.setCvmLimit(padTo12DigitsIfNeeded(contactLessReaderList.optString("termCVMRequiredLimit", null)));
+                aidData.setFloorLimit(padTo12DigitsIfNeeded(contactLessReaderList.optString("terminalContactlessFloorLimit", null)));
+                aidData.setTransactionLimit(padTo12DigitsIfNeeded(contactLessReaderList.optString("termContactlessTxnLimit", null)));
+
             }
             aidData.setAid(aidJson.optString("aid",null));
             aidData.setEmvTerminalType(emvTerminalType);
-            aidData.setApplicationName(appName);
+            aidData.setApplicationName(aidJson.optString("aidLabel",null));
             aidData.setTacDenial(aidJson.optString("denialActionCode", null));
             aidData.setTacOnline(aidJson.optString("onlineActionCode", null));
             aidData.setTacDefault(aidJson.optString("defaultActionCode", null));
         }
         return aidData;
     }
+    private static String padTo12DigitsIfNeeded(String value) {
+        if (value == null || value.isEmpty()) return null;
+        if (value.length() < 12) {
+            return String.format("%012d", Long.parseLong(value));
+        }
+        return value;
+    }
+
     public static List<RidList> mapRidLists(JSONObject cardSchemeList) {
-        return Optional.ofNullable(cardSchemeList.optJSONArray("cardScheme"))
+        return Optional.ofNullable(cardSchemeList.optJSONArray(CARD_SCHEME))
                 .map(cardSchemes -> IntStream.range(0, cardSchemes.length())
                         .mapToObj(cardSchemes::getJSONObject)
                         .map(JsonMapperUtil::mapRidList)
-                        .filter(aidList -> !aidList.getRidDataList().isEmpty())
-                        .collect(Collectors.toList()))
+                        .filter(ridList -> ridList.getRidDataList() != null && !ridList.getRidDataList().isEmpty())
+                        .toList())
                 .orElse(new ArrayList<>());
     }
 
@@ -77,7 +103,7 @@ public class JsonMapperUtil {
                         .mapToObj(ridForm::optJSONObject)
                         .map(JsonMapperUtil::mapRidData)
                         .filter(Objects::nonNull)
-                        .collect(Collectors.toList()))
+                        .toList())
                 .orElse(new ArrayList<>());
 
         ridList.setRidDataList(ridDataList);
@@ -102,7 +128,7 @@ public class JsonMapperUtil {
     }
     public static MerchantTerminalData mapMerchantParam(JSONObject cardSchemeList) {
         MerchantTerminalData merchantTerminalData = new MerchantTerminalData();
-        Optional.ofNullable(cardSchemeList.optJSONArray("cardScheme"))
+        Optional.ofNullable(cardSchemeList.optJSONArray(CARD_SCHEME))
                 .filter(cardSchemes -> !cardSchemes.isEmpty())
                 .map(cardSchemes -> cardSchemes.optJSONObject(0))
                 .ifPresent(firstObject -> {
@@ -118,7 +144,6 @@ public class JsonMapperUtil {
         String encodedAppParams = org.apache.commons.codec.binary.Base64.encodeBase64String(String.join(",", appParamsList).getBytes());
         String decodedParams = new String(Base64.decodeBase64(encodedAppParams));
         log.info("app Params: {}", decodedParams);
-        log.info("merch decode params: " + merchParamsBa);
         JSONObject jsonObject = XML.toJSONObject(decodedParams);
         log.info("JSON app decoded params: " + jsonObject);
         JSONObject madaAppData = jsonObject.getJSONObject("madaAppData");

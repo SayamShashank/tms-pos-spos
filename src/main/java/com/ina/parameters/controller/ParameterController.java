@@ -1,9 +1,7 @@
 package com.ina.parameters.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.ina.common.model.CommonRequest;
 import com.ina.parameters.model.GetParametersRequest;
-import com.ina.parameters.model.ParameterResponse;
 import com.ina.parameters.model.ParameterSecureResponse;
 import com.ina.parameters.service.GetParametersService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,11 +32,7 @@ public class ParameterController {
         return getParametersService.getParameters(request);
     }
 
-    @PostMapping("getEMVParameters")
-    public ParameterResponse getEMVParameters(@RequestBody @Validated CommonRequest request) throws JsonProcessingException {
-        log.info("Inside getEMVParameters method");
-        return getParametersService.getParameters(request);
-    }
+
 
 
 }

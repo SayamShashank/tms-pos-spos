@@ -1,7 +1,7 @@
 package com.ina.parameters.messages;
 
+import com.ina.nexotms.packages.xml.v8.catm118.*;
 import com.ina.parameters.model.ParameterRequestData;
-import com.ina.parameters.packages.xml.v8.catm118.*;
 
 import java.util.HashMap;
 

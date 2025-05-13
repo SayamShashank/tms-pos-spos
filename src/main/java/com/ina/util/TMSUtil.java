@@ -12,8 +12,8 @@ import java.util.Date;
 
 @Component
 public class TMSUtil {
-
-
+    private TMSUtil() {
+    }
 
     public static ApiOutContext getApiOutContext(String inputRefId, String code, String inaPayMessages) {
         ApiOutContext apiOutContext = new ApiOutContext();

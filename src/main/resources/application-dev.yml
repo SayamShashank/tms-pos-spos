@@ -5,3 +5,10 @@ ina:
     password: postgres12
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://am-developement.cxkmqmqgup84.ap-south-1.rds.amazonaws.com/postgres?currentSchema=ina_pay_tms
+  property-config:
+    pkiConfig:
+    #        baseUrl: "http://localhost:8000"
+    baseUrl: "http://ec2-65-0-85-78.ap-south-1.compute.amazonaws.com:8000"
+    cryptoConfig:
+      #        baseUrl: "http://localhost:8001"
+      baseUrl: "http://ec2-65-0-85-78.ap-south-1.compute.amazonaws.com:8001"

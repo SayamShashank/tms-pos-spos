@@ -30,14 +30,14 @@ public class SPOSAuthKeyService extends CommonValidator<SPOSAuthKeyRequest> {
 
    private final CryptoUtils cryptoUtils;
 
-   private final InaPayMessages messages;
+   private final InaPayMessages inaPayMessages;
 
-    protected SPOSAuthKeyService(InaPayMessages messages, CryptoUtils cryptoUtils,
+    protected SPOSAuthKeyService(InaPayMessages inaPayMessages, CryptoUtils cryptoUtils,
                                  SPOSAuthenticationKeys sposAuthenticationKeys) {
-        super(messages);
+        super(inaPayMessages);
         this.cryptoUtils = cryptoUtils;
         this.sposAuthenticationKeys = sposAuthenticationKeys;
-        this.messages = messages;
+        this.inaPayMessages = inaPayMessages;
     }
 
 
@@ -59,15 +59,15 @@ public class SPOSAuthKeyService extends CommonValidator<SPOSAuthKeyRequest> {
             ServerCertsGenerationResponse serverCertsGenerationResponse =
                     cryptoUtils.updateServerCertificates(certChain, "ECP256", sposAuthKeyRequest.getApiInContext());
             if(serverCertsGenerationResponse.getStatusCode().equalsIgnoreCase("200")){
-                apiOutContext = getApiOutContext(sposAuthKeyRequest.getApiInContext().getInputRefId(),AUTHENTICATION_GENERATION_SUCCESSFUL, messages);
-                apiOutContext.setStatus(messages.get(SUCCESS_CODE));
+                apiOutContext = getApiOutContext(sposAuthKeyRequest.getApiInContext().getInputRefId(),AUTHENTICATION_GENERATION_SUCCESSFUL, inaPayMessages);
+                apiOutContext.setStatus(inaPayMessages.get(SUCCESS_CODE));
             } else{
-                apiOutContext = getApiOutContext(sposAuthKeyRequest.getApiInContext().getInputRefId(),AUTHENTICATION_GENERATION_FAILED, messages);
-                apiOutContext.setStatus(messages.get(AppErrorConstants.FAILED_CODE));
+                apiOutContext = getApiOutContext(sposAuthKeyRequest.getApiInContext().getInputRefId(),AUTHENTICATION_GENERATION_FAILED, inaPayMessages);
+                apiOutContext.setStatus(inaPayMessages.get(AppErrorConstants.FAILED_CODE));
             }
         } catch (CommonValidationException exception) {
             apiOutContext = getApiOutContext(sposAuthKeyRequest.getApiInContext().getInputRefId(),exception.getCode(), exception.getMessage());
-            apiOutContext.setStatus(messages.get(AppErrorConstants.FAILED_CODE));
+            apiOutContext.setStatus(inaPayMessages.get(AppErrorConstants.FAILED_CODE));
         }
         apiOutContext.setTimeStamp(String.valueOf(LocalDateTime.now(ZoneId.systemDefault())));
         response.setApiOutContext(apiOutContext);
@@ -83,15 +83,15 @@ public class SPOSAuthKeyService extends CommonValidator<SPOSAuthKeyRequest> {
             responseKey = sposAuthenticationKeys.
                     getSPOSAuthenticationKeys(request.getAuthKeyType(), request.getApiInContext().getInputRefId());
             if(responseKey.getStatusCode().equalsIgnoreCase("200")){
-                apiOutContext = getApiOutContext(request.getApiInContext().getInputRefId(),AUTHENTICATION_KEYS_RETRIEVED, messages);
-                apiOutContext.setStatus(messages.get(SUCCESS_CODE));
+                apiOutContext = getApiOutContext(request.getApiInContext().getInputRefId(),AUTHENTICATION_KEYS_RETRIEVED, inaPayMessages);
+                apiOutContext.setStatus(inaPayMessages.get(SUCCESS_CODE));
             } else{
-                apiOutContext = getApiOutContext(request.getApiInContext().getInputRefId(),AUTHENTICATION_KEYS_RETRIEVED_FAILED, messages);
-                apiOutContext.setStatus(messages.get(AppErrorConstants.FAILED_CODE));
+                apiOutContext = getApiOutContext(request.getApiInContext().getInputRefId(),AUTHENTICATION_KEYS_RETRIEVED_FAILED, inaPayMessages);
+                apiOutContext.setStatus(inaPayMessages.get(AppErrorConstants.FAILED_CODE));
             }
         } catch (CommonValidationException exception) {
             apiOutContext = getApiOutContext(request.getApiInContext().getInputRefId(),exception.getCode(), exception.getMessage());
-            apiOutContext.setStatus(messages.get(AppErrorConstants.FAILED_CODE));
+            apiOutContext.setStatus(inaPayMessages.get(AppErrorConstants.FAILED_CODE));
         }
         response.setApiOutContext(apiOutContext);
         return response;

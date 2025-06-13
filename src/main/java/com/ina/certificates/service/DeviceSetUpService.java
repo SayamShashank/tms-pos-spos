@@ -13,6 +13,9 @@ import com.ina.common.validator.CommonValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import static com.ina.common.constants.AppErrorConstants.*;
+import static com.ina.common.utils.CommonUtils.getApiOutContext;
+
 @Service
 @Slf4j
 public class DeviceSetUpService extends CommonValidator<DeviceTMSInitRequest> {
@@ -25,28 +28,25 @@ public class DeviceSetUpService extends CommonValidator<DeviceTMSInitRequest> {
     }
 
     public DeviceTMSInitResponse deviceTMSInit(DeviceTMSInitRequest request) {
-        log.info("Inside getTransportKeys method");
+        log.info("TMS init process started...!");
 
         evaluate(request);
 
         DeviceTMSInitResponse response = new DeviceTMSInitResponse();
-        ApiOutContext apiOutContext = new ApiOutContext();
+        ApiOutContext apiOutContext;
 
         SignedCertMetadata signedCertMetadata = null;
+        String inputRefId = request.getApiInContext().getInputRefId();
         try {
             signedCertMetadata = initService.initProcess(request.getCertCSRMetadata(),
-                    CertTypeAndLevel.TMS_INIT.getCertType(), request.getApiInContext().getInputRefId());
+                    CertTypeAndLevel.TMS_INIT.getCertType(), inputRefId);
 
-            apiOutContext.setCode(AppErrorConstants.SUCCESS_CODE);
-            apiOutContext.setMessage(messages.get(AppErrorConstants.SUCCESS_CODE));
-            apiOutContext.setStatus(messages.get(AppErrorConstants.SUCCESS_CODE));
+            apiOutContext = getApiOutContext(inputRefId, DEVICE_TMS_INIT_SUCCESS,
+                    messages, messages.get(SUCCESS_CODE));
         } catch (CommonValidationException exception) {
-            apiOutContext.setCode(exception.getCode());
-            apiOutContext.setMessage(exception.getMessage());
-            apiOutContext.setStatus(messages.get(AppErrorConstants.FAILED_CODE));
+            apiOutContext = getApiOutContext(inputRefId, DEVICE_TMS_INIT_FAILED,
+                    messages, messages.get(FAILED_CODE));
         }
-        apiOutContext.setOutputRefId(request.getApiInContext().getInputRefId());
-        apiOutContext.setOutputRefId(request.getApiInContext().getInputRefId());
 
         response.setApiOutContext(apiOutContext);
         response.setSignedCertMetadata(signedCertMetadata);

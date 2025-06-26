@@ -39,7 +39,7 @@ public class DeviceSetUpService extends CommonValidator<DeviceTMSInitRequest> {
         String inputRefId = request.getApiInContext().getInputRefId();
         try {
             signedCertMetadata = initService.initProcess(request.getCertCSRMetadata(),
-                    CertTypeAndLevel.TMS_INIT.getCertType(), inputRefId);
+                    CertTypeAndLevel.TMS_INIT.getCertType(), inputRefId, request.getDeviceMetadata().getDeviceId());
 
             apiOutContext = getApiOutContext(inputRefId, DEVICE_TMS_INIT_SUCCESS,
                     messages, messages.get(SUCCESS_CODE));

@@ -46,19 +46,18 @@ public class CustomNamespaceStreamWriter implements XMLStreamWriter {
 
     @Override
     public void writeEmptyElement(String namespaceURI, String localName)  {
-        // TODO Auto-generated method stub
+
         throw new UnsupportedOperationException(UNIMPLEMENTED);
     }
 
     @Override
     public void writeEmptyElement(String prefix, String localName, String namespaceURI)  {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException(UNIMPLEMENTED);
     }
 
     @Override
     public void writeEmptyElement(String localName)  {
-        // TODO Auto-generated method stub
+
         throw new UnsupportedOperationException(UNIMPLEMENTED);
     }
 
@@ -74,7 +73,6 @@ public class CustomNamespaceStreamWriter implements XMLStreamWriter {
 
     @Override
     public void close() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'close'");
     }
 
@@ -85,20 +83,18 @@ public class CustomNamespaceStreamWriter implements XMLStreamWriter {
 
     @Override
     public void writeAttribute(String localName, String value) {
-        // TODO Auto-generated method stub
+
         throw new UnsupportedOperationException(UNIMPLEMENTED_ATT);
     }
 
     @Override
     public void writeAttribute(String prefix, String namespaceURI, String localName, String value)
             {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException(UNIMPLEMENTED_ATT);
     }
 
     @Override
     public void writeAttribute(String namespaceURI, String localName, String value)  {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException(UNIMPLEMENTED_ATT);
     }
 
@@ -112,37 +108,37 @@ public class CustomNamespaceStreamWriter implements XMLStreamWriter {
 
     @Override
     public void writeComment(String data)  {
-        // TODO Auto-generated method stub
+
         throw new UnsupportedOperationException("Unimplemented method 'writeComment'");
     }
 
     @Override
     public void writeProcessingInstruction(String target)  {
-        // TODO Auto-generated method stub
+
         throw new UnsupportedOperationException("Unimplemented method 'writeProcessingInstruction'");
     }
 
     @Override
     public void writeProcessingInstruction(String target, String data)  {
-        // TODO Auto-generated method stub
+
         throw new UnsupportedOperationException("Unimplemented method 'writeProcessingInstruction'");
     }
 
     @Override
     public void writeCData(String data)  {
-        // TODO Auto-generated method stub
+
         throw new UnsupportedOperationException("Unimplemented method 'writeCData'");
     }
 
     @Override
     public void writeDTD(String dtd)  {
-        // TODO Auto-generated method stub
+
         throw new UnsupportedOperationException("Unimplemented method 'writeDTD'");
     }
 
     @Override
     public void writeEntityRef(String name)  {
-        // TODO Auto-generated method stub
+
         throw new UnsupportedOperationException("Unimplemented method 'writeEntityRef'");
     }
 
@@ -153,13 +149,13 @@ public class CustomNamespaceStreamWriter implements XMLStreamWriter {
 
     @Override
     public void writeStartDocument(String version)  {
-        // TODO Auto-generated method stub
+
         throw new UnsupportedOperationException("Unimplemented method 'writeStartDocument'");
     }
 
     @Override
     public void writeStartDocument(String encoding, String version)  {
-        // TODO Auto-generated method stub
+
         throw new UnsupportedOperationException("Unimplemented method 'writeStartDocument'");
     }
 
@@ -175,25 +171,22 @@ public class CustomNamespaceStreamWriter implements XMLStreamWriter {
 
     @Override
     public String getPrefix(String uri)  {
-        // TODO Auto-generated method stub
+
         throw new UnsupportedOperationException("Unimplemented method 'getPrefix'");
     }
 
     @Override
     public void setPrefix(String prefix, String uri) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setPrefix'");
     }
 
     @Override
     public void setDefaultNamespace(String uri) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setDefaultNamespace'");
     }
 
     @Override
     public void setNamespaceContext(NamespaceContext context) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setNamespaceContext'");
     }
 
@@ -204,7 +197,6 @@ public class CustomNamespaceStreamWriter implements XMLStreamWriter {
 
     @Override
     public Object getProperty(String name) throws IllegalArgumentException {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getProperty'");
     }
 }

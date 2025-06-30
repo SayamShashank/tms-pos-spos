@@ -12,6 +12,7 @@ public class AppErrorConstants {
     public static final String REGISTRATION_REQUEST_FAILED="6001";
     public static final String PARAMETER_REQUEST_FAILED="6002";
     public static final String ACK_FAILED="6003";
+    public static final String CHECKSUM_NOT_FOUND="6004";
 
 
 

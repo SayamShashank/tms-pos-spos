@@ -2,7 +2,6 @@ package com.ina.certificates.service;
 
 import com.ina.certificates.model.DeviceTMSInitRequest;
 import com.ina.certificates.model.DeviceTMSInitResponse;
-import com.ina.common.constants.AppErrorConstants;
 import com.ina.common.crypto.model.init.SignedCertMetadata;
 import com.ina.common.crypto.service.InitService;
 import com.ina.common.enums.CertTypeAndLevel;
@@ -57,7 +56,7 @@ public class DeviceSetUpService extends CommonValidator<DeviceTMSInitRequest> {
 
     @Override
     public void evaluate(DeviceTMSInitRequest request) throws CommonValidationException {
-        // TODO Auto-generated method stub
+        //Intentionally left blank
 
     }
 

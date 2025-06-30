@@ -10,283 +10,283 @@ Generated on: 2025.04.22 at 01:14:03 PM IST
   -->
   <bindings scd="x-schema::tns" xmlns:tns="urn:iso:std:iso:20022:tech:xsd:catm.001.001.08">
     <schemaBindings map="false">
-      <package name="com.ina.nexotms.packages.xml.v8.catm118"/>
+      <package name="com.ina.tms.packages.xml.v8.catm118"/>
     </schemaBindings>
     <bindings scd="~tns:Document">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.Document"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.Document"/>
     </bindings>
     <bindings scd="~tns:AlgorithmIdentification12">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.AlgorithmIdentification12"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.AlgorithmIdentification12"/>
     </bindings>
     <bindings scd="~tns:AlgorithmIdentification18">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.AlgorithmIdentification18"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.AlgorithmIdentification18"/>
     </bindings>
     <bindings scd="~tns:AlgorithmIdentification19">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.AlgorithmIdentification19"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.AlgorithmIdentification19"/>
     </bindings>
     <bindings scd="~tns:AlgorithmIdentification20">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.AlgorithmIdentification20"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.AlgorithmIdentification20"/>
     </bindings>
     <bindings scd="~tns:AlgorithmIdentification21">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.AlgorithmIdentification21"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.AlgorithmIdentification21"/>
     </bindings>
     <bindings scd="~tns:AlgorithmIdentification22">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.AlgorithmIdentification22"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.AlgorithmIdentification22"/>
     </bindings>
     <bindings scd="~tns:AlgorithmIdentification23">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.AlgorithmIdentification23"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.AlgorithmIdentification23"/>
     </bindings>
     <bindings scd="~tns:AlgorithmIdentification24">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.AlgorithmIdentification24"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.AlgorithmIdentification24"/>
     </bindings>
     <bindings scd="~tns:AuthenticatedData5">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.AuthenticatedData5"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.AuthenticatedData5"/>
     </bindings>
     <bindings scd="~tns:CertificateIssuer1">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.CertificateIssuer1"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.CertificateIssuer1"/>
     </bindings>
     <bindings scd="~tns:CommunicationCharacteristics4">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.CommunicationCharacteristics4"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.CommunicationCharacteristics4"/>
     </bindings>
     <bindings scd="~tns:ContentInformationType18">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.ContentInformationType18"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.ContentInformationType18"/>
     </bindings>
     <bindings scd="~tns:ContentInformationType19">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.ContentInformationType19"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.ContentInformationType19"/>
     </bindings>
     <bindings scd="~tns:CryptographicKey13">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.CryptographicKey13"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.CryptographicKey13"/>
     </bindings>
     <bindings scd="~tns:DataSetIdentification7">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.DataSetIdentification7"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.DataSetIdentification7"/>
     </bindings>
     <bindings scd="~tns:DigestedData5">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.DigestedData5"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.DigestedData5"/>
     </bindings>
     <bindings scd="~tns:DisplayCapabilities4">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.DisplayCapabilities4"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.DisplayCapabilities4"/>
     </bindings>
     <bindings scd="~tns:EncapsulatedContent3">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.EncapsulatedContent3"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.EncapsulatedContent3"/>
     </bindings>
     <bindings scd="~tns:EncryptedContent4">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.EncryptedContent4"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.EncryptedContent4"/>
     </bindings>
     <bindings scd="~tns:EnvelopedData5">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.EnvelopedData5"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.EnvelopedData5"/>
     </bindings>
     <bindings scd="~tns:GenericIdentification48">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.GenericIdentification48"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.GenericIdentification48"/>
     </bindings>
     <bindings scd="~tns:GenericIdentification71">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.GenericIdentification71"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.GenericIdentification71"/>
     </bindings>
     <bindings scd="~tns:GenericIdentification92">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.GenericIdentification92"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.GenericIdentification92"/>
     </bindings>
     <bindings scd="~tns:GenericInformation1">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.GenericInformation1"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.GenericInformation1"/>
     </bindings>
     <bindings scd="~tns:Header27">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.Header27"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.Header27"/>
     </bindings>
     <bindings scd="~tns:IssuerAndSerialNumber1">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.IssuerAndSerialNumber1"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.IssuerAndSerialNumber1"/>
     </bindings>
     <bindings scd="~tns:KEK5">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.KEK5"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.KEK5"/>
     </bindings>
     <bindings scd="~tns:KEKIdentifier2">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.KEKIdentifier2"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.KEKIdentifier2"/>
     </bindings>
     <bindings scd="~tns:KeyTransport5">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.KeyTransport5"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.KeyTransport5"/>
     </bindings>
     <bindings scd="~tns:MemoryCharacteristics1">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.MemoryCharacteristics1"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.MemoryCharacteristics1"/>
     </bindings>
     <bindings scd="~tns:NetworkParameters4">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.NetworkParameters4"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.NetworkParameters4"/>
     </bindings>
     <bindings scd="~tns:NetworkParameters5">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.NetworkParameters5"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.NetworkParameters5"/>
     </bindings>
     <bindings scd="~tns:OriginatorInformation1">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.OriginatorInformation1"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.OriginatorInformation1"/>
     </bindings>
     <bindings scd="~tns:Parameter10">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.Parameter10"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.Parameter10"/>
     </bindings>
     <bindings scd="~tns:Parameter11">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.Parameter11"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.Parameter11"/>
     </bindings>
     <bindings scd="~tns:Parameter12">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.Parameter12"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.Parameter12"/>
     </bindings>
     <bindings scd="~tns:Parameter5">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.Parameter5"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.Parameter5"/>
     </bindings>
     <bindings scd="~tns:Parameter7">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.Parameter7"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.Parameter7"/>
     </bindings>
     <bindings scd="~tns:Parameter9">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.Parameter9"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.Parameter9"/>
     </bindings>
     <bindings scd="~tns:PhysicalInterfaceParameter1">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.PhysicalInterfaceParameter1"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.PhysicalInterfaceParameter1"/>
     </bindings>
     <bindings scd="~tns:PointOfInteractionCapabilities8">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.PointOfInteractionCapabilities8"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.PointOfInteractionCapabilities8"/>
     </bindings>
     <bindings scd="~tns:PointOfInteractionComponent9">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.PointOfInteractionComponent9"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.PointOfInteractionComponent9"/>
     </bindings>
     <bindings scd="~tns:PointOfInteractionComponentAssessment1">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.PointOfInteractionComponentAssessment1"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.PointOfInteractionComponentAssessment1"/>
     </bindings>
     <bindings scd="~tns:PointOfInteractionComponentCharacteristics5">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.PointOfInteractionComponentCharacteristics5"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.PointOfInteractionComponentCharacteristics5"/>
     </bindings>
     <bindings scd="~tns:PointOfInteractionComponentIdentification1">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.PointOfInteractionComponentIdentification1"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.PointOfInteractionComponentIdentification1"/>
     </bindings>
     <bindings scd="~tns:PointOfInteractionComponentStatus3">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.PointOfInteractionComponentStatus3"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.PointOfInteractionComponentStatus3"/>
     </bindings>
     <bindings scd="~tns:Recipient5Choice">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.Recipient5Choice"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.Recipient5Choice"/>
     </bindings>
     <bindings scd="~tns:Recipient6Choice">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.Recipient6Choice"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.Recipient6Choice"/>
     </bindings>
     <bindings scd="~tns:RelativeDistinguishedName1">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.RelativeDistinguishedName1"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.RelativeDistinguishedName1"/>
     </bindings>
     <bindings scd="~tns:SignedData5">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.SignedData5"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.SignedData5"/>
     </bindings>
     <bindings scd="~tns:Signer4">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.Signer4"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.Signer4"/>
     </bindings>
     <bindings scd="~tns:StatusReport8">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.StatusReport8"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.StatusReport8"/>
     </bindings>
     <bindings scd="~tns:StatusReportContent8">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.StatusReportContent8"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.StatusReportContent8"/>
     </bindings>
     <bindings scd="~tns:StatusReportV08">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.StatusReportV08"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.StatusReportV08"/>
     </bindings>
     <bindings scd="~tns:TMSActionIdentification5">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.TMSActionIdentification5"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.TMSActionIdentification5"/>
     </bindings>
     <bindings scd="~tns:TMSEvent6">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.TMSEvent6"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.TMSEvent6"/>
     </bindings>
     <bindings scd="~tns:TerminalManagementDataSet25">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.TerminalManagementDataSet25"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.TerminalManagementDataSet25"/>
     </bindings>
     <bindings scd="~tns:TerminalManagementDataSet28">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.TerminalManagementDataSet28"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.TerminalManagementDataSet28"/>
     </bindings>
     <bindings scd="~tns:TriggerInformation1">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm118.TriggerInformation1"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm118.TriggerInformation1"/>
     </bindings>
     <bindings scd="~tns:Algorithm11Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.Algorithm11Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.Algorithm11Code"/>
     </bindings>
     <bindings scd="~tns:Algorithm16Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.Algorithm16Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.Algorithm16Code"/>
     </bindings>
     <bindings scd="~tns:Algorithm17Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.Algorithm17Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.Algorithm17Code"/>
     </bindings>
     <bindings scd="~tns:Algorithm18Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.Algorithm18Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.Algorithm18Code"/>
     </bindings>
     <bindings scd="~tns:Algorithm19Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.Algorithm19Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.Algorithm19Code"/>
     </bindings>
     <bindings scd="~tns:Algorithm7Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.Algorithm7Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.Algorithm7Code"/>
     </bindings>
     <bindings scd="~tns:Algorithm8Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.Algorithm8Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.Algorithm8Code"/>
     </bindings>
     <bindings scd="~tns:AttendanceContext1Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.AttendanceContext1Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.AttendanceContext1Code"/>
     </bindings>
     <bindings scd="~tns:AttributeType1Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.AttributeType1Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.AttributeType1Code"/>
     </bindings>
     <bindings scd="~tns:BytePadding1Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.BytePadding1Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.BytePadding1Code"/>
     </bindings>
     <bindings scd="~tns:CardDataReading6Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.CardDataReading6Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.CardDataReading6Code"/>
     </bindings>
     <bindings scd="~tns:CardholderVerificationCapability4Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.CardholderVerificationCapability4Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.CardholderVerificationCapability4Code"/>
     </bindings>
     <bindings scd="~tns:ContentType2Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.ContentType2Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.ContentType2Code"/>
     </bindings>
     <bindings scd="~tns:CryptographicKeyType3Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.CryptographicKeyType3Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.CryptographicKeyType3Code"/>
     </bindings>
     <bindings scd="~tns:DataSetCategory12Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.DataSetCategory12Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.DataSetCategory12Code"/>
     </bindings>
     <bindings scd="~tns:EncryptionFormat2Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.EncryptionFormat2Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.EncryptionFormat2Code"/>
     </bindings>
     <bindings scd="~tns:ExchangePolicy1Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.ExchangePolicy1Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.ExchangePolicy1Code"/>
     </bindings>
     <bindings scd="~tns:KeyUsage1Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.KeyUsage1Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.KeyUsage1Code"/>
     </bindings>
     <bindings scd="~tns:MemoryUnit1Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.MemoryUnit1Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.MemoryUnit1Code"/>
     </bindings>
     <bindings scd="~tns:NetworkType1Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.NetworkType1Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.NetworkType1Code"/>
     </bindings>
     <bindings scd="~tns:OnLineCapability1Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.OnLineCapability1Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.OnLineCapability1Code"/>
     </bindings>
     <bindings scd="~tns:OutputFormat1Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.OutputFormat1Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.OutputFormat1Code"/>
     </bindings>
     <bindings scd="~tns:POICommunicationType2Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.POICommunicationType2Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.POICommunicationType2Code"/>
     </bindings>
     <bindings scd="~tns:POIComponentAssessment1Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.POIComponentAssessment1Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.POIComponentAssessment1Code"/>
     </bindings>
     <bindings scd="~tns:POIComponentStatus1Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.POIComponentStatus1Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.POIComponentStatus1Code"/>
     </bindings>
     <bindings scd="~tns:POIComponentType5Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.POIComponentType5Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.POIComponentType5Code"/>
     </bindings>
     <bindings scd="~tns:PartyType5Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.PartyType5Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.PartyType5Code"/>
     </bindings>
     <bindings scd="~tns:PartyType6Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.PartyType6Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.PartyType6Code"/>
     </bindings>
     <bindings scd="~tns:PartyType7Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.PartyType7Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.PartyType7Code"/>
     </bindings>
     <bindings scd="~tns:TerminalManagementAction4Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.TerminalManagementAction4Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.TerminalManagementAction4Code"/>
     </bindings>
     <bindings scd="~tns:TerminalManagementActionResult4Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.TerminalManagementActionResult4Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.TerminalManagementActionResult4Code"/>
     </bindings>
     <bindings scd="~tns:UserInterface4Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm118.UserInterface4Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm118.UserInterface4Code"/>
     </bindings>
   </bindings>
 </bindings>

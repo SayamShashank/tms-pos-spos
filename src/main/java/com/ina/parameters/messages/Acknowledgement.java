@@ -2,8 +2,8 @@ package com.ina.parameters.messages;
 
 
 import com.ina.config.RequestPropertyConfig;
-import com.ina.nexotms.packages.xml.v8.catm118.*;
-import com.ina.parameters.utils.NexoUtils;
+import com.ina.parameters.utils.ParamUtils;
+import com.ina.tms.packages.xml.v8.catm118.*;
 
 public class Acknowledgement extends BaseStatusReport{
 
@@ -26,17 +26,17 @@ public class Acknowledgement extends BaseStatusReport{
 
         TMSEvent6 evtData = new TMSEvent6();
 
-        evtData.setTmStmp(NexoUtils.getCurrentDateTime());
+        evtData.setTmStmp(ParamUtils.getCurrentDateTime());
 
         evtData.setRslt(TerminalManagementActionResult4Code.SUCC);
 
         TMSActionIdentification5 tmsAction = new TMSActionIdentification5();
 
-        tmsAction.setActnTp(TerminalManagementAction4Code.DWNL); //TODO: Acknowledgement based on response
+        tmsAction.setActnTp(TerminalManagementAction4Code.DWNL);
 
         DataSetIdentification7 dataSetIdentification = new DataSetIdentification7();
 
-        dataSetIdentification.setCreDtTm(NexoUtils.getCurrentDateTime());
+        dataSetIdentification.setCreDtTm(ParamUtils.getCurrentDateTime());
 
         dataSetIdentification.setNm("Parameter"); 
 

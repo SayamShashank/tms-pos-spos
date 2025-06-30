@@ -13,7 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static com.ina.constants.AppConstants.CARD_SCHEME;
 
@@ -128,19 +130,26 @@ public class JsonMapperUtil {
     }
     public static MerchantTerminalData mapMerchantParam(JSONObject cardSchemeList) {
         MerchantTerminalData merchantTerminalData = new MerchantTerminalData();
+
         Optional.ofNullable(cardSchemeList.optJSONArray(CARD_SCHEME))
-                .filter(cardSchemes -> !cardSchemes.isEmpty())
-                .map(cardSchemes -> cardSchemes.optJSONObject(0))
-                .ifPresent(firstObject -> {
-                    String merchantId = firstObject.optString("merchantId", null);
-                    String merchantCategoryCode = firstObject.optString("merchantCategoryCode", null);
-                    merchantTerminalData.setMerchantId(merchantId);
-                    merchantTerminalData.setMerchantCategoryCode(merchantCategoryCode);
+                .filter(array -> array.length() > 0)
+                .map(array -> IntStream.range(0, array.length())
+                        .mapToObj(array::optJSONObject)
+                        .filter(Objects::nonNull)
+                        .findFirst())
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .ifPresent(obj -> {
+                    merchantTerminalData.setMerchantId(obj.optString("merchantId", null));
+                    merchantTerminalData.setMerchantCategoryCode(obj.optString("merchantCategoryCode", null));
                 });
+
         return merchantTerminalData;
     }
+
+
     @NotNull
-    public static Result getResult(List<String> appParamsList, List<String> merchParamsBa) throws JsonProcessingException {
+    public static Result getResult(List<String> appParamsList) throws JsonProcessingException {
         String encodedAppParams = org.apache.commons.codec.binary.Base64.encodeBase64String(String.join(",", appParamsList).getBytes());
         String decodedParams = new String(Base64.decodeBase64(encodedAppParams));
         log.info("app Params: {}", decodedParams);

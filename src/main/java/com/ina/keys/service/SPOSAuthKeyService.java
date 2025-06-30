@@ -1,6 +1,5 @@
 package com.ina.keys.service;
 
-import com.ina.common.constants.AppErrorConstants;
 import com.ina.common.crypto.model.certs.CertChain;
 import com.ina.common.crypto.model.certs.ServerCertsGenerationResponse;
 import com.ina.common.crypto.model.keys.FetchSPOSAuthKeyRequest;
@@ -15,9 +14,6 @@ import com.ina.common.response.message.InaPayMessages;
 import com.ina.common.validator.CommonValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 import static com.ina.common.constants.AppErrorConstants.*;
 import static com.ina.common.utils.CommonUtils.getApiOutContext;

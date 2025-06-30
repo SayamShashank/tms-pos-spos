@@ -10,163 +10,163 @@ Generated on: 2025.04.28 at 05:30:27 PM IST
   -->
   <bindings scd="x-schema::tns" xmlns:tns="urn:iso:std:iso:20022:tech:xsd:catm.008.001.02">
     <schemaBindings map="false">
-      <package name="com.ina.nexotms.packages.xml.v8.catm812"/>
+      <package name="com.ina.tms.packages.xml.v8.catm812"/>
     </schemaBindings>
     <bindings scd="~tns:Document">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.Document"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.Document"/>
     </bindings>
     <bindings scd="~tns:AlgorithmIdentification12">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.AlgorithmIdentification12"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.AlgorithmIdentification12"/>
     </bindings>
     <bindings scd="~tns:AlgorithmIdentification18">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.AlgorithmIdentification18"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.AlgorithmIdentification18"/>
     </bindings>
     <bindings scd="~tns:AlgorithmIdentification19">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.AlgorithmIdentification19"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.AlgorithmIdentification19"/>
     </bindings>
     <bindings scd="~tns:AlgorithmIdentification20">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.AlgorithmIdentification20"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.AlgorithmIdentification20"/>
     </bindings>
     <bindings scd="~tns:AlgorithmIdentification21">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.AlgorithmIdentification21"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.AlgorithmIdentification21"/>
     </bindings>
     <bindings scd="~tns:AlgorithmIdentification22">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.AlgorithmIdentification22"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.AlgorithmIdentification22"/>
     </bindings>
     <bindings scd="~tns:AlgorithmIdentification23">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.AlgorithmIdentification23"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.AlgorithmIdentification23"/>
     </bindings>
     <bindings scd="~tns:AuthenticatedData5">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.AuthenticatedData5"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.AuthenticatedData5"/>
     </bindings>
     <bindings scd="~tns:CertificateIssuer1">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.CertificateIssuer1"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.CertificateIssuer1"/>
     </bindings>
     <bindings scd="~tns:CertificateManagementResponse1">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.CertificateManagementResponse1"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.CertificateManagementResponse1"/>
     </bindings>
     <bindings scd="~tns:CertificateManagementResponseV02">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.CertificateManagementResponseV02"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.CertificateManagementResponseV02"/>
     </bindings>
     <bindings scd="~tns:ContentInformationType18">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.ContentInformationType18"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.ContentInformationType18"/>
     </bindings>
     <bindings scd="~tns:EncapsulatedContent3">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.EncapsulatedContent3"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.EncapsulatedContent3"/>
     </bindings>
     <bindings scd="~tns:GenericIdentification72">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.GenericIdentification72"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.GenericIdentification72"/>
     </bindings>
     <bindings scd="~tns:GenericIdentification93">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.GenericIdentification93"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.GenericIdentification93"/>
     </bindings>
     <bindings scd="~tns:GenericInformation1">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.GenericInformation1"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.GenericInformation1"/>
     </bindings>
     <bindings scd="~tns:Header29">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.Header29"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.Header29"/>
     </bindings>
     <bindings scd="~tns:IssuerAndSerialNumber1">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.IssuerAndSerialNumber1"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.IssuerAndSerialNumber1"/>
     </bindings>
     <bindings scd="~tns:KEK5">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.KEK5"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.KEK5"/>
     </bindings>
     <bindings scd="~tns:KEKIdentifier2">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.KEKIdentifier2"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.KEKIdentifier2"/>
     </bindings>
     <bindings scd="~tns:KeyTransport5">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.KeyTransport5"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.KeyTransport5"/>
     </bindings>
     <bindings scd="~tns:NetworkParameters4">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.NetworkParameters4"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.NetworkParameters4"/>
     </bindings>
     <bindings scd="~tns:NetworkParameters5">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.NetworkParameters5"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.NetworkParameters5"/>
     </bindings>
     <bindings scd="~tns:Parameter10">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.Parameter10"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.Parameter10"/>
     </bindings>
     <bindings scd="~tns:Parameter11">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.Parameter11"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.Parameter11"/>
     </bindings>
     <bindings scd="~tns:Parameter12">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.Parameter12"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.Parameter12"/>
     </bindings>
     <bindings scd="~tns:Parameter5">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.Parameter5"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.Parameter5"/>
     </bindings>
     <bindings scd="~tns:Parameter7">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.Parameter7"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.Parameter7"/>
     </bindings>
     <bindings scd="~tns:Parameter9">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.Parameter9"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.Parameter9"/>
     </bindings>
     <bindings scd="~tns:Recipient5Choice">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.Recipient5Choice"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.Recipient5Choice"/>
     </bindings>
     <bindings scd="~tns:Recipient6Choice">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.Recipient6Choice"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.Recipient6Choice"/>
     </bindings>
     <bindings scd="~tns:RelativeDistinguishedName1">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.RelativeDistinguishedName1"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.RelativeDistinguishedName1"/>
     </bindings>
     <bindings scd="~tns:ResponseType6">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.ResponseType6"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.ResponseType6"/>
     </bindings>
     <bindings scd="~tns:SignedData5">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.SignedData5"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.SignedData5"/>
     </bindings>
     <bindings scd="~tns:Signer4">
-      <class ref="com.ina.nexotms.packages.xml.v8.catm812.Signer4"/>
+      <class ref="com.ina.tms.packages.xml.v8.catm812.Signer4"/>
     </bindings>
     <bindings scd="~tns:Algorithm11Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm812.Algorithm11Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm812.Algorithm11Code"/>
     </bindings>
     <bindings scd="~tns:Algorithm16Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm812.Algorithm16Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm812.Algorithm16Code"/>
     </bindings>
     <bindings scd="~tns:Algorithm17Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm812.Algorithm17Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm812.Algorithm17Code"/>
     </bindings>
     <bindings scd="~tns:Algorithm18Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm812.Algorithm18Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm812.Algorithm18Code"/>
     </bindings>
     <bindings scd="~tns:Algorithm19Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm812.Algorithm19Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm812.Algorithm19Code"/>
     </bindings>
     <bindings scd="~tns:Algorithm7Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm812.Algorithm7Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm812.Algorithm7Code"/>
     </bindings>
     <bindings scd="~tns:Algorithm8Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm812.Algorithm8Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm812.Algorithm8Code"/>
     </bindings>
     <bindings scd="~tns:AttributeType1Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm812.AttributeType1Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm812.AttributeType1Code"/>
     </bindings>
     <bindings scd="~tns:BytePadding1Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm812.BytePadding1Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm812.BytePadding1Code"/>
     </bindings>
     <bindings scd="~tns:CardPaymentServiceType10Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm812.CardPaymentServiceType10Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm812.CardPaymentServiceType10Code"/>
     </bindings>
     <bindings scd="~tns:ContentType2Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm812.ContentType2Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm812.ContentType2Code"/>
     </bindings>
     <bindings scd="~tns:EncryptionFormat2Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm812.EncryptionFormat2Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm812.EncryptionFormat2Code"/>
     </bindings>
     <bindings scd="~tns:NetworkType1Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm812.NetworkType1Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm812.NetworkType1Code"/>
     </bindings>
     <bindings scd="~tns:PartyType6Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm812.PartyType6Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm812.PartyType6Code"/>
     </bindings>
     <bindings scd="~tns:Response2Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm812.Response2Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm812.Response2Code"/>
     </bindings>
     <bindings scd="~tns:ResultDetail3Code">
-      <typesafeEnumClass ref="com.ina.nexotms.packages.xml.v8.catm812.ResultDetail3Code"/>
+      <typesafeEnumClass ref="com.ina.tms.packages.xml.v8.catm812.ResultDetail3Code"/>
     </bindings>
   </bindings>
 </bindings>

@@ -1,11 +1,11 @@
 package com.ina.parameters.messages;
 
 import com.ina.config.RequestPropertyConfig;
-import com.ina.nexotms.packages.xml.v8.catm118.*;
 import com.ina.parameters.model.ParameterRequestData;
 import com.ina.parameters.utils.Marshal;
-import com.ina.parameters.utils.NexoUtils;
+import com.ina.parameters.utils.ParamUtils;
 import com.ina.parameters.utils.SecUtils;
+import com.ina.tms.packages.xml.v8.catm118.*;
 import com.ina.util.TMSUtil;
 
 import java.math.BigDecimal;
@@ -13,11 +13,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class BaseStatusReport implements NexoDataProviderInterface {
+public class BaseStatusReport implements DataProviderInterface {
     private  final RequestPropertyConfig propertyConfig;
 
     DataSetCategory12Code category12Code = DataSetCategory12Code.STRP;
-    NexoDataProviderInterface dataProviderInterface = null;
+    DataProviderInterface dataProviderInterface = null;
 
     public BaseStatusReport(RequestPropertyConfig propertyConfig) {
         this.propertyConfig = propertyConfig;
@@ -42,7 +42,7 @@ public class BaseStatusReport implements NexoDataProviderInterface {
 
         GenericIdentification92 rcptPty = new GenericIdentification92();
         // 6.1. id
-        rcptPty.setId("SPTMS2.0"); // TODO: assign from prop
+        rcptPty.setId("SPTMS2.0");
         // 6.2. type
         rcptPty.setTp(getRecipientPartyCode());
 
@@ -60,7 +60,7 @@ public class BaseStatusReport implements NexoDataProviderInterface {
         // 3. exchange id
         header.setXchgId(new BigDecimal(TMSUtil.generateUniqueId()));
         // 4. creation date and time
-        header.setCreDtTm(NexoUtils.getCurrentDateTime());
+        header.setCreDtTm(ParamUtils.getCurrentDateTime());
         // 5. initiating party
         header.setInitgPty(this.setInitgPty(data));
         // 6. receiving party
@@ -74,7 +74,7 @@ public class BaseStatusReport implements NexoDataProviderInterface {
         ContentInformationType18 sctyTrlr = new ContentInformationType18();
 
         // 1. content type
-        sctyTrlr.setCnttTp(ContentType2Code.SIGN); // TODO: Initial stat report untill symmetric keys are not exchanged
+        sctyTrlr.setCnttTp(ContentType2Code.SIGN);
                                                    // will sign otherwise will use MAC
         // 2. signed data
         SignedData5 signedData = new SignedData5();
@@ -123,13 +123,13 @@ public class BaseStatusReport implements NexoDataProviderInterface {
         // 2.1.1. type
         id.setTp(getDataSetCategoryCode());
         // 2.1.2. create date and time
-        id.setCreDtTm(NexoUtils.getCurrentDateTime());
+        id.setCreDtTm(ParamUtils.getCurrentDateTime());
         dataSet.setId(id);
 
         // 2.2. content
         StatusReportContent8 cntt = new StatusReportContent8();
         // 2.2.1. POI date and time
-        cntt.setPOIDtTm(NexoUtils.getCurrentDateTime());
+        cntt.setPOIDtTm(ParamUtils.getCurrentDateTime());
         // 2.2.2. data set required
         TerminalManagementDataSet25 dataSetReqrd = new TerminalManagementDataSet25();
         // 2.2.2.1. dsr id
@@ -141,16 +141,15 @@ public class BaseStatusReport implements NexoDataProviderInterface {
 
         if (getDataSetRequiredVersion() != null) {
             dsrId.setVrsn(getDataSetRequiredVersion());
-            dsrId.setCreDtTm(NexoUtils.getCurrentDateTime());
+            dsrId.setCreDtTm(ParamUtils.getCurrentDateTime());
         }
 
         dataSetReqrd.setId(dsrId);
 
-        // TODO: Looks xsd converts data to base64, TMS2 expects ascii (some bytes)
+
         if (getPoiChallenge() != null)
             dataSetReqrd.setPOIChllng(getPoiChallenge());
 
-        // TODO: Looks xsd converts data to base64, TMS2 expects ascii (some bytes)
         if (getPoiChallenge() != null)
             dataSetReqrd.setTMChllng(getTmChallenge());
 

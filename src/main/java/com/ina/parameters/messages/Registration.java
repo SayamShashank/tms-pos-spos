@@ -1,8 +1,8 @@
 package com.ina.parameters.messages;
 
 import com.ina.config.RequestPropertyConfig;
-import com.ina.nexotms.packages.xml.v8.catm118.DataSetCategory12Code;
 import com.ina.parameters.model.ParameterRequestData;
+import com.ina.tms.packages.xml.v8.catm118.DataSetCategory12Code;
 
 import java.util.HashMap;
 

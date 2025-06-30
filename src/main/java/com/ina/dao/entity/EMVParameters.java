@@ -33,6 +33,8 @@ public class EMVParameters {
     private String aids;
     @Column(name = "terminal_config", length = 100000,nullable = false)
     private String terminalConfig;
+    @Column(name="param_checksum",nullable = false)
+    private String paramCheckSum;
     @Column(name = "created_date",nullable = false)
     private Timestamp createdDate;
     @Column(name = "updated_date",nullable = false)

@@ -11,6 +11,7 @@ public class AidData {
     private String aid;//
     private String applicationName;
     private String securityCapability;
+    private String addTerminalCapability;//addTerminalCapability
     private String terminalCapability;//terminalCapability
     private String tacDenial;//denialActionCode
     private String tacOnline;//onlineActionCode

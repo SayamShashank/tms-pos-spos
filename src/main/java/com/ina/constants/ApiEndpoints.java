@@ -10,12 +10,12 @@ public class ApiEndpoints {
     public static final String VERSION = "/v1";
     public static final String DEVICE_SETUP = "/device/setup";
     public static final String DEVICE_CERTS = "/device/certs";
-    public static final String GET_CERTIFICATE_ONLINE_STATUS = "/getOnlineCertificateStatus";
 
     public static final String GENERATE_ROOT_CERT = "/generateRootCert";
     public static final String GENERATE_SERVER_CERTS = "/generateServerCerts";
     public static final String GENERATE_SERVER_L4_CERTS = "/generateServerL4Certs";
     public static final String GET_ALL_SERVER_CERTS = "/getAllServerCerts";
+    public static final String GET_ALL_DEVICE_CERTS = "/getAllDeviceCerts";
     public static final String GET_SERVER_CERTS_WITH_STATUS = "/getServerCertsWithStatus";
     public static final String VIEW_CERT_INFO = "/viewCertInfo";
 

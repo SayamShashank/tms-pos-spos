@@ -5,15 +5,14 @@ import com.ina.common.crypto.model.certs.*;
 import com.ina.common.crypto.service.CertGenerationService;
 import com.ina.common.crypto.service.ServerEncryptionAndSignatureCertificateService;
 import com.ina.common.exception.CommonValidationException;
-import com.ina.common.model.ApiInContext;
-import com.ina.common.model.ApiOutContext;
-import com.ina.common.model.CommonResponse;
-import com.ina.common.model.Request;
+import com.ina.common.model.*;
 import com.ina.common.response.message.InaPayMessages;
 import com.ina.common.validator.CommonValidator;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
+import static com.ina.common.constants.AppConstants.TXN;
 import static com.ina.common.constants.AppErrorConstants.*;
 import static com.ina.common.utils.CommonUtils.getApiOutContext;
 import static java.util.Objects.nonNull;
@@ -125,6 +124,38 @@ public class InitialiseCertificateService extends CommonValidator<ApiInContext> 
         apiOutContext.setMessage(messages.get(SUCCESS_CODE));
         allServerCerts.setApiOutContext(apiOutContext);
         return allServerCerts;
+    }
+
+    public DeviceCertsResponse getDeviceCerts(CommonRequest request) {
+
+        log.info("Started fetching all device certs....!");
+
+        DeviceCertsResponse response = new DeviceCertsResponse();
+        ApiOutContext apiOutContext;
+
+        String deviceId = request.getDeviceMetadata().getDeviceId();
+        String inputRefId = request.getApiInContext().getInputRefId();
+
+        log.info("Started fetching all device certs for device Id : {}", deviceId);
+
+        DeviceCertsResponse deviceCertsResponse = certGenerationService
+                .getAllDeviceSpecificCerts(deviceId, inputRefId);
+
+        if (CollectionUtils.isNotEmpty(deviceCertsResponse.getDeviceCerts())) {
+            log.info("Device certs are not empty...!");
+            apiOutContext = getApiOutContext(inputRefId, DEVICE_CERTS_RETRIEVED_SUCCESSFULLY,
+                    messages, messages.get(SUCCESS_CODE), TXN);
+            response.setDeviceCerts(deviceCertsResponse.getDeviceCerts());
+        } else {
+            log.info("Device certs are empty...!");
+            apiOutContext = getApiOutContext(inputRefId, DEVICE_CERTS_RETRIEVAL_FAILED,
+                    messages, messages.get(FAILED_CODE), TXN);
+            apiOutContext.setStatus(messages.get(FAILED_CODE));
+        }
+
+        response.setApiOutContext(apiOutContext);
+        log.info("Fetching device certs is completed...!");
+        return response;
     }
 
     public ServerCertsStatusResponse getServerCertificateStatus(InitialiseCertRequest certRequest) {

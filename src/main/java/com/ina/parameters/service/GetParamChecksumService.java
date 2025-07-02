@@ -8,6 +8,7 @@ import com.ina.parameters.model.GetParamChecksumRequest;
 import com.ina.parameters.model.ParamChecksumResponse;
 import org.springframework.stereotype.Service;
 
+import static com.ina.constants.AppConstants.TMS;
 import static com.ina.constants.AppErrorConstants.CHECKSUM_NOT_FOUND;
 import static com.ina.constants.AppErrorConstants.SUCCESS_CODE;
 import static com.ina.util.TMSUtil.throwValidationException;
@@ -33,7 +34,7 @@ public class GetParamChecksumService {
             response.setApiOutContext(CommonUtils.getApiOutContext(
                     request.getApiInContext().getInputRefId(),
                     SUCCESS_CODE,
-                    inaPayMessages.get(SUCCESS_CODE)));
+                    inaPayMessages.get(SUCCESS_CODE), TMS));
             return response;
         }else {
              throw throwValidationException(

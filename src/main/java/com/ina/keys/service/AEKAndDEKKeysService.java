@@ -52,13 +52,13 @@ public class AEKAndDEKKeysService extends CommonValidator<Request> {
 
             if (!aekAndDEKInfos.contains("500")) {
                 apiOutContext = getApiOutContext(inputRefId,AEK_AND_DEK_KEY_GENERATION_SUCCESSFUL,
-                        messages, messages.get(SUCCESS_CODE));
+                        messages, messages.get(SUCCESS_CODE), TMS);
 
             } else{
-                apiOutContext = getApiOutContext(inputRefId,AEK_KEY_GENERATION_FAILED, messages, messages.get(FAILED_CODE));
+                apiOutContext = getApiOutContext(inputRefId,AEK_KEY_GENERATION_FAILED, messages, messages.get(FAILED_CODE), TMS);
             }
         } catch (CommonValidationException exception) {
-            apiOutContext = getApiOutContext(inputRefId,exception.getCode(), exception.getMessage(), messages.get(FAILED_CODE));
+            apiOutContext = getApiOutContext(inputRefId,exception.getCode(), exception.getMessage(), messages.get(FAILED_CODE), TMS);
         }
         response.setApiOutContext(apiOutContext);
         return response;
@@ -78,12 +78,12 @@ public class AEKAndDEKKeysService extends CommonValidator<Request> {
                     .collect(Collectors.toSet());
 
             if (!aekAndDEKInfos.contains("500")) {
-                apiOutContext = getApiOutContext(inputRefId,AEK_AND_DEK_KEY_ROTATION_I_SUCCESSFUL, messages, messages.get(SUCCESS_CODE));
+                apiOutContext = getApiOutContext(inputRefId,AEK_AND_DEK_KEY_ROTATION_I_SUCCESSFUL, messages, messages.get(SUCCESS_CODE), TMS);
             } else{
-                apiOutContext = getApiOutContext(inputRefId,AEK_AND_DEK_KEY_ROTATION_FAILED, messages, messages.get(SUCCESS_CODE));
+                apiOutContext = getApiOutContext(inputRefId,AEK_AND_DEK_KEY_ROTATION_FAILED, messages, messages.get(SUCCESS_CODE), TMS);
             }
         } catch (CommonValidationException exception) {
-            apiOutContext = getApiOutContext(inputRefId,exception.getCode(), exception.getMessage(), messages.get(SUCCESS_CODE));
+            apiOutContext = getApiOutContext(inputRefId,exception.getCode(), exception.getMessage(), messages.get(SUCCESS_CODE), TMS);
         }
         response.setApiOutContext(apiOutContext);
         return response;
@@ -91,10 +91,8 @@ public class AEKAndDEKKeysService extends CommonValidator<Request> {
 
     public AvailableServerKeysResponse getAllAEKAndDEkServerKeys(Request request) {
         AvailableServerKeysResponse availableKeys = aekAndDEKService.getAvailableKeys();
-        ApiOutContext apiOutContext = new ApiOutContext();
-        apiOutContext.setOutputRefId(request.getApiInContext().getInputRefId());
-        apiOutContext.setCode(SUCCESS_CODE);
-        apiOutContext.setMessage(messages.get(SUCCESS_CODE));
+        ApiOutContext apiOutContext =  getApiOutContext(request.getApiInContext().getInputRefId(), SUCCESS_CODE,messages,
+        messages.get(SUCCESS_CODE), TMS);
         availableKeys.setApiOutContext(apiOutContext);
         return availableKeys;
     }

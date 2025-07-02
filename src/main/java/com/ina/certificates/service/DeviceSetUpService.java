@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import static com.ina.common.constants.AppErrorConstants.*;
 import static com.ina.common.utils.CommonUtils.getApiOutContext;
+import static com.ina.constants.AppConstants.TMS;
 
 @Service
 @Slf4j
@@ -41,10 +42,10 @@ public class DeviceSetUpService extends CommonValidator<DeviceTMSInitRequest> {
                     CertTypeAndLevel.TMS_INIT.getCertType(), inputRefId, request.getDeviceMetadata().getDeviceId());
 
             apiOutContext = getApiOutContext(inputRefId, DEVICE_TMS_INIT_SUCCESS,
-                    messages, messages.get(SUCCESS_CODE));
+                    messages, messages.get(SUCCESS_CODE), TMS);
         } catch (CommonValidationException exception) {
             apiOutContext = getApiOutContext(inputRefId, DEVICE_TMS_INIT_FAILED,
-                    messages, messages.get(FAILED_CODE));
+                    messages, messages.get(FAILED_CODE), TMS);
         }
 
         response.setApiOutContext(apiOutContext);

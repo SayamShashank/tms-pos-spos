@@ -12,7 +12,6 @@ public class AppConstants {
 
     public static final String UN_AUTHORIZED = "Unauthorized";
     public static final String TMS = "TMS";
-    public static final String SHA_512_ALGORITHM = "SHA-512";
     public static final String UNIMPLEMENTED = "Unimplemented method 'writeEmptyElement'";
     public static final String UNIMPLEMENTED_ATT = "Unimplemented method 'writeAttribute'";
     public static final String CARD_SCHEME="cardScheme";

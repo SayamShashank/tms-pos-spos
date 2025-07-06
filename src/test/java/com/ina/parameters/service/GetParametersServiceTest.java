@@ -11,6 +11,7 @@ import com.ina.common.model.SecureReqMetadata;
 import com.ina.common.model.SecureRespMetadata;
 import com.ina.common.response.message.InaPayMessages;
 import com.ina.common.utils.CommonUtils;
+import com.ina.common.utils.HashUtils;
 import com.ina.config.RequestPropertyConfig;
 import com.ina.dao.EMVParametersRepository;
 import com.ina.dao.entity.EMVParameters;

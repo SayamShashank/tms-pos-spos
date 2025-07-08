@@ -2,6 +2,7 @@ package com.ina.certificates.controller;
 
 import com.ina.certificates.service.InitialiseCertificateService;
 import com.ina.common.crypto.model.certs.*;
+import com.ina.common.model.CommonRequest;
 import com.ina.common.model.CommonResponse;
 import com.ina.common.model.Request;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.ina.constants.ApiEndpoints.*;
+import static com.ina.constants.ApiEndpoints.GET_ALL_DEVICE_CERTS;
 
 @RestController
 @RequestMapping(value = SERVER_CONTEXT_FOR_TMS + API + VERSION + DEVICE_CERTS,
@@ -44,6 +46,11 @@ public class CertsController {
 	@PostMapping(GET_ALL_SERVER_CERTS)
 	public ServerCertsResponse getServerCerts(@RequestBody Request request) {
 		return initialiseCertificateService.getAllServerCerts(request);
+	}
+
+	@PostMapping(GET_ALL_DEVICE_CERTS)
+	public DeviceCertsResponse getDeviceCerts(@RequestBody CommonRequest request) {
+		return initialiseCertificateService.getDeviceCerts(request);
 	}
 
 	@PostMapping(GET_SERVER_CERTS_WITH_STATUS)

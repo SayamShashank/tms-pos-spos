@@ -78,7 +78,7 @@ class DeviceSetUpServiceTest {
         DeviceTMSInitResponse response = deviceSetUpService.deviceTMSInit(deviceTXNInitRequest);
         assertNotNull(response);
         assertNotNull(response.getApiOutContext());
-        assertEquals("TMS5002", response.getApiOutContext().getCode());
+        assertEquals("TMS814", response.getApiOutContext().getCode());
         assertNull(response.getSignedCertMetadata());
     }
 }

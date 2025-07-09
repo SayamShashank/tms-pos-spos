@@ -41,10 +41,10 @@ public class DeviceSetUpService extends CommonValidator<DeviceTMSInitRequest> {
             signedCertMetadata = initService.initProcess(request.getCertCSRMetadata(),
                     CertTypeAndLevel.TMS_INIT.getCertType(), inputRefId, request.getDeviceMetadata().getDeviceId());
 
-            apiOutContext = getApiOutContext(inputRefId, DEVICE_TMS_INIT_SUCCESS,
+            apiOutContext = getApiOutContext(inputRefId, DEVICE_INIT_IS_SUCCESSFUL,
                     messages, messages.get(SUCCESS_CODE), TMS);
         } catch (CommonValidationException exception) {
-            apiOutContext = getApiOutContext(inputRefId, DEVICE_TMS_INIT_FAILED,
+            apiOutContext = getApiOutContext(inputRefId, DEVICE_INIT_IS_SUCCESSFUL,
                     messages, messages.get(FAILED_CODE), TMS);
         }
 

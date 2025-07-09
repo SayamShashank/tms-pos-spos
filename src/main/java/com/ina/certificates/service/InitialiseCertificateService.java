@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
-import static com.ina.common.constants.AppConstants.TXN;
 import static com.ina.common.constants.AppErrorConstants.*;
 import static com.ina.common.utils.CommonUtils.getApiOutContext;
 import static com.ina.constants.AppConstants.TMS;
@@ -49,10 +48,10 @@ public class InitialiseCertificateService extends CommonValidator<ApiInContext> 
             certificateGenerationResponse = certGenerationService
                     .generateCertificate(request.getCertificateType(), request.getApiInContext());
             if (certificateGenerationResponse.getStatus().equalsIgnoreCase("success")) {
-                apiOutContext = getApiOutContext(inputRefId, CERTIFICATES_GENERATED_SUCCESSFULLY, messages, messages.get(SUCCESS_CODE), TMS);
+                apiOutContext = getApiOutContext(inputRefId, CERTIFICATE_GENERATION_IS_SUCCESSFUL, messages, messages.get(SUCCESS_CODE), TMS);
 
             } else{
-                apiOutContext = getApiOutContext(inputRefId,CERTIFICATES_GENERATION_FAILED, messages, messages.get(FAILED_CODE), TMS);
+                apiOutContext = getApiOutContext(inputRefId, CERTIFICATE_GENERATION_FAILED, messages, messages.get(FAILED_CODE), TMS);
 
             }
         } catch(CommonValidationException commonValidationException){
@@ -74,9 +73,9 @@ public class InitialiseCertificateService extends CommonValidator<ApiInContext> 
             certificateGenerationResponse =
                     certGenerationService.saveCertificatesIntoDB(certChain, "ECP521", request.getApiInContext());
             if (certificateGenerationResponse.getStatus().equalsIgnoreCase("success")) {
-                apiOutContext = getApiOutContext(inputRefId,CERTIFICATES_GENERATED_SUCCESSFULLY, messages, messages.get(SUCCESS_CODE), TMS);
+                apiOutContext = getApiOutContext(inputRefId,ROOT_CA_GENERATION_IS_SUCCESSFUL, messages, messages.get(SUCCESS_CODE), TMS);
             } else{
-                apiOutContext = getApiOutContext(inputRefId,CERTIFICATES_GENERATION_FAILED, messages, messages.get(FAILED_CODE), TMS);
+                apiOutContext = getApiOutContext(inputRefId,ROOT_CA_GENERATION_IS_FAILED, messages, messages.get(FAILED_CODE), TMS);
             }
         } catch(CommonValidationException commonValidationException){
             apiOutContext = getApiOutContext(inputRefId,commonValidationException.getCode(),
@@ -105,7 +104,7 @@ public class InitialiseCertificateService extends CommonValidator<ApiInContext> 
             if (serverCertsInfoResponse.getApiOutContext().getStatus().equalsIgnoreCase(messages.get(SUCCESS_CODE))) {
                 apiOutContext = serverCertsInfoResponse.getApiOutContext();
             } else{
-                apiOutContext = getApiOutContext(inputRefId,CERTIFICATES_GENERATION_FAILED, messages, messages.get(FAILED_CODE), TMS);
+                apiOutContext = getApiOutContext(inputRefId,CERTIFICATE_GENERATION_FAILED, messages, messages.get(FAILED_CODE), TMS);
             }
         } catch (CommonValidationException exception) {
             apiOutContext = getApiOutContext(inputRefId,exception.getCode(),exception.getMessage(), messages.get(FAILED_CODE), TMS);
@@ -142,12 +141,12 @@ public class InitialiseCertificateService extends CommonValidator<ApiInContext> 
 
         if (CollectionUtils.isNotEmpty(deviceCertsResponse.getDeviceCerts())) {
             log.info("Device certs are not empty...!");
-            apiOutContext = getApiOutContext(inputRefId, DEVICE_CERTS_RETRIEVED_SUCCESSFULLY,
+            apiOutContext = getApiOutContext(inputRefId, REQUESTED_CERTIFICATE_RETRIEVED_SUCCESSFULLY,
                     messages, messages.get(SUCCESS_CODE), TMS);
             response.setDeviceCerts(deviceCertsResponse.getDeviceCerts());
         } else {
             log.info("Device certs are empty...!");
-            apiOutContext = getApiOutContext(inputRefId, DEVICE_CERTS_RETRIEVAL_FAILED,
+            apiOutContext = getApiOutContext(inputRefId, REQUESTED_CERTIFICATE_IS_NOT_AVAILABLE,
                     messages, messages.get(FAILED_CODE), TMS);
             apiOutContext.setStatus(messages.get(FAILED_CODE));
         }
@@ -175,14 +174,14 @@ public class InitialiseCertificateService extends CommonValidator<ApiInContext> 
             certificateInfo = certGenerationService.
                     viewCertificate(certRequest.getCertificateType(), inputRefId);
             if(nonNull(certificateInfo)){
-                apiOutContext = getApiOutContext(inputRefId,CERTIFICATE_RETRIEVED_SUCCESSFULLY,
-                        messages.get(CERTIFICATE_RETRIEVED_SUCCESSFULLY), messages.get(SUCCESS_CODE), TMS);
+                apiOutContext = getApiOutContext(inputRefId,REQUESTED_CERTIFICATE_RETRIEVED_SUCCESSFULLY,
+                        messages, messages.get(SUCCESS_CODE), TMS);
             } else{
-                apiOutContext = getApiOutContext(inputRefId,CERTIFICATE_IS_NOT_AVAILABLE,
-                        messages.get(CERTIFICATE_IS_NOT_AVAILABLE), messages.get(FAILED_CODE), TMS);
+                apiOutContext = getApiOutContext(inputRefId,REQUESTED_CERTIFICATE_IS_NOT_AVAILABLE,
+                        messages, messages.get(FAILED_CODE), TMS);
             }
         } catch (CommonValidationException exception) {
-            apiOutContext = getApiOutContext(inputRefId,exception.getCode(), messages.get(exception.getCode()), messages.get(FAILED_CODE), TMS);
+            apiOutContext = getApiOutContext(inputRefId,exception.getCode(), exception.getMessage(), messages.get(FAILED_CODE), TMS);
         }
         certificateInfo.setApiOutContext(apiOutContext);
         return certificateInfo;

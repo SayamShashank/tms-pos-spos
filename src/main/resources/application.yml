@@ -79,12 +79,10 @@ ina:
       "keyUseFor": "B"
       "version": "00"
     pkiConfig:
-      #        baseUrl: "http://localhost:8000"
       baseUrl: "http://10.69.0.36:8000"
       pathToGenerateCert: "/v1/serv/init"
       pathToSignCert: "/v1/serv/cert"
     cryptoConfig:
-      #        baseUrl: "http://localhost:8001"
       baseUrl: "http://10.69.0.36:8001"
       hsmName: "PS"
       pathToGenerateDEK: "/v1/crypto/key_gen"

@@ -78,9 +78,9 @@ public class AEKAndDEKKeysService extends CommonValidator<Request> {
                     .collect(Collectors.toSet());
 
             if (!aekAndDEKInfos.contains("500")) {
-                apiOutContext = getApiOutContext(inputRefId,AEK_AND_DEK_KEY_ROTATION_I_SUCCESSFUL, messages, messages.get(SUCCESS_CODE), TMS);
+                apiOutContext = getApiOutContext(inputRefId,AEK_AND_DEK_KEY_ROTATION_IS_SUCCESSFUL, messages, messages.get(SUCCESS_CODE), TMS);
             } else{
-                apiOutContext = getApiOutContext(inputRefId,AEK_AND_DEK_KEY_ROTATION_FAILED, messages, messages.get(SUCCESS_CODE), TMS);
+                apiOutContext = getApiOutContext(inputRefId,FAILED_TO_ROTATE_AEK_AND_DEK_KEY, messages, messages.get(SUCCESS_CODE), TMS);
             }
         } catch (CommonValidationException exception) {
             apiOutContext = getApiOutContext(inputRefId,exception.getCode(), exception.getMessage(), messages.get(SUCCESS_CODE), TMS);

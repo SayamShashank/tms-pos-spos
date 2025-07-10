@@ -77,7 +77,7 @@ public class AEKAndDEKKeysServiceTest {
         CommonResponse result = aekAndDEKKeysService.generateDEKAndAEKKey(request);
         assertEquals("OK", result.getApiOutContext().getStatus());
         assertEquals("123", result.getApiOutContext().getOutputRefId());
-        assertEquals("ERR_CODE", result.getApiOutContext().getCode());
+        assertEquals("TMSERR_CODE", result.getApiOutContext().getCode());
     }
 
     @Test
@@ -106,7 +106,7 @@ public class AEKAndDEKKeysServiceTest {
                 .thenThrow(new CommonValidationException("123", "ROTATE_ERR", "Rotate Error", "Extra", null));
         CommonResponse result = aekAndDEKKeysService.rotateDEK(request);
         assertEquals("OK", result.getApiOutContext().getStatus());
-        assertEquals("ROTATE_ERR", result.getApiOutContext().getCode());
+        assertEquals("TMSROTATE_ERR", result.getApiOutContext().getCode());
         assertEquals("123", result.getApiOutContext().getOutputRefId());
     }
 

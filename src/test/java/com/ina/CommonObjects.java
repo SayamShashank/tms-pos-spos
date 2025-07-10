@@ -3,12 +3,10 @@ package com.ina;
 
 import com.ina.certificates.model.DeviceTMSInitRequest;
 import com.ina.certificates.model.DeviceTMSInitResponse;
+import com.ina.common.crypto.entity.DeviceCert;
 import com.ina.common.crypto.model.aekdek.AvailableServerKeys;
 import com.ina.common.crypto.model.aekdek.AvailableServerKeysResponse;
-import com.ina.common.crypto.model.certs.CertificateGenerationResponse;
-import com.ina.common.crypto.model.certs.InitialiseCertRequest;
-import com.ina.common.crypto.model.certs.PublishRootCertificateRequest;
-import com.ina.common.crypto.model.certs.RootCertificateResponse;
+import com.ina.common.crypto.model.certs.*;
 import com.ina.common.crypto.model.init.CertCSRMetadata;
 import com.ina.common.crypto.model.init.SignedCertMetadata;
 import com.ina.common.device.model.DeviceProfileBlockRequest;
@@ -27,7 +25,10 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -66,9 +67,6 @@ public class CommonObjects {
 
         return request;
     }
-
-
-
 
     public static CommonResponse commonResponse(Request request) {
         CommonResponse response = new CommonResponse();
@@ -233,13 +231,30 @@ public class CommonObjects {
             tmsParams .setCpks(ridList);
             tmsParams.setAids(aidList);
             tmsParams.setTerminalConfig(merchantTerminalData);*/
+      public static DeviceCertsResponse buildDeviceCertsResponse(){
+          DeviceCertsResponse deviceCertsResponse=new DeviceCertsResponse();
+          deviceCertsResponse.setDeviceCerts( List.of(
+                  new DeviceCert("cert001", "device001", "-----BEGIN CERT-----A1", "RSA", "AUTH", "CertAuthority1", "CA001", "LEVEL1", "CN=Device001", "SHA256withRSA", Timestamp.from(Instant.parse("2025-12-31T23:59:59Z")), "admin", Timestamp.from(Instant.now()), null, null),
+                  new DeviceCert("cert002", "device002", "-----BEGIN CERT-----B2", "ECDSA", "ENCRYPTION", "CertAuthority2", "CA002", "LEVEL2", "CN=Device002", "SHA384withECDSA", Timestamp.from(Instant.parse("2026-06-30T23:59:59Z")), "system", Timestamp.from(Instant.now()), "supervisor", Timestamp.from(Instant.now()))));
+          return deviceCertsResponse;
+      }
+    public static DeviceCertsResponse buildEmptyDeviceCertsResponse(){
+        DeviceCertsResponse deviceCertsResponse = new DeviceCertsResponse();
+        deviceCertsResponse.setDeviceCerts(Collections.emptyList());
+        return deviceCertsResponse;
+    }
 
-
-
-
-
-
-
+    public static CommonRequest buildCommonRequest(){
+        CommonRequest commonRequest=new CommonRequest();
+        commonRequest.setApiInContext(getApiInContext());
+        commonRequest.setDeviceMetadata(buildDeviceMetaData());
+        return commonRequest;
+    }
+    public static DeviceMetadata buildDeviceMetaData(){
+        DeviceMetadata deviceMetadata=new DeviceMetadata();
+        deviceMetadata.setDeviceId("device123");
+        return deviceMetadata;
+    }
 }
 
 

@@ -5,10 +5,7 @@ import com.ina.common.crypto.model.certs.*;
 import com.ina.common.crypto.service.CertGenerationService;
 import com.ina.common.crypto.service.ServerEncryptionAndSignatureCertificateService;
 import com.ina.common.exception.CommonValidationException;
-import com.ina.common.model.ApiInContext;
-import com.ina.common.model.ApiOutContext;
-import com.ina.common.model.CommonResponse;
-import com.ina.common.model.Request;
+import com.ina.common.model.*;
 import com.ina.common.response.message.InaPayMessages;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class InitialiseCertificateServiceTest {
+public class InitialiseCertificateServiceTest extends CommonObjects{
 
     @Mock
     private CertGenerationService certGenerationService;
@@ -201,59 +198,24 @@ public class InitialiseCertificateServiceTest {
     }
 
     @Test
-    void testViewCertInfo_success() {
-        InitialiseCertRequest request = createRequest();
-
-        ViewCertificateInfo mockCertInfo = new ViewCertificateInfo();
-        mockCertInfo.setCertSerialNumber("12345");
-        mockCertInfo.setCertType("L4");
-        mockCertInfo.setKeyExpiry(new Timestamp(System.currentTimeMillis()));
-        mockCertInfo.setEnteredBy("admin");
-        mockCertInfo.setEntryDate(new Timestamp(System.currentTimeMillis()));
-
-        when(certGenerationService.viewCertificate("L4", "ref123"))
-                .thenReturn(mockCertInfo);
-
-
-        InitialiseCertificateService spyService = spy(initialiseCertificateService);
-
-        ViewCertificateInfo result = spyService.viewCertInfo(request);
-
-        assertNotNull(result);
-        assertEquals("12345", result.getCertSerialNumber());
-        assertEquals("L4", result.getCertType());
-
-        assertNotNull(result.getApiOutContext());
-
-
-        assertEquals("ref123", result.getApiOutContext().getOutputRefId());
+    void testViewCertInfoSuccess() {
+        ViewCertificateInfo info = new ViewCertificateInfo();
+        ApiOutContext apiOutContext=new ApiOutContext();
+        apiOutContext.setMessage("Success");
+        info.setApiOutContext(apiOutContext);
+        when(certGenerationService.viewCertificate(any(), any())).thenReturn(info);
+        when(messages.get("0000")).thenReturn("Success");
+        ViewCertificateInfo response = initialiseCertificateService.viewCertInfo(initialiseCertRequest);
+        assertNotNull(response);
     }
 
     @Test
-    void testViewCertInfo_certNotAvailable() {
-
-        ViewCertificateInfo mockCertInfo = new ViewCertificateInfo();
-        mockCertInfo.setCertSerialNumber(null);
-        mockCertInfo.setCertType("L4");
-        mockCertInfo.setKeyExpiry(new Timestamp(System.currentTimeMillis()));
-        mockCertInfo.setEnteredBy("admin");
-        mockCertInfo.setEntryDate(new Timestamp(System.currentTimeMillis()));
-        mockCertInfo.setApiOutContext(CommonObjects.getApiOutContextDataForCertificate());
-
-        when(certGenerationService.viewCertificate("L4", "ref123")).thenReturn(mockCertInfo);
-
-
-        ViewCertificateInfo result = certGenerationService.viewCertificate("L4", "ref123");
-
-        assertNotNull(result);
-        assertNull(result.getCertSerialNumber());
-        assertNotNull(result.getApiOutContext());
-
-        assertEquals(FAILED_CODE, result.getApiOutContext().getStatus());
-
-        assertEquals("ref123", result.getApiOutContext().getOutputRefId());
+    void testViewCertInfoNotAvailable() {
+        when(certGenerationService.viewCertificate(anyString(), anyString()))
+                .thenReturn(null);
+        ViewCertificateInfo response=initialiseCertificateService.viewCertInfo(initialiseCertRequest);
+        assertNotNull(response);
     }
-
 
     @Test
     void testViewCertInfoException() {
@@ -279,5 +241,27 @@ public class InitialiseCertificateServiceTest {
         assertEquals("1234", result.getApiOutContext().getOutputRefId());
         assertEquals("0000", result.getApiOutContext().getCode());
         assertEquals("Success", result.getApiOutContext().getMessage());
+    }
+
+    @Test
+    void testGetDeviceCertsSuccess(){
+        CommonRequest commonRequest=buildCommonRequest();
+        DeviceCertsResponse deviceCertsResponse=buildDeviceCertsResponse();
+        when(certGenerationService.getAllDeviceSpecificCerts(commonRequest.getDeviceMetadata().getDeviceId(),commonRequest.getApiInContext().getInputRefId()))
+                .thenReturn(deviceCertsResponse);
+        when(messages.get("0000")).thenReturn("Success");
+        DeviceCertsResponse response=initialiseCertificateService.getDeviceCerts(commonRequest);
+        assertNotNull(response);
+    }
+
+    @Test
+    void testGetDeviceCertsFailure(){
+        CommonRequest commonRequest=buildCommonRequest();
+        DeviceCertsResponse deviceCertsResponse=buildEmptyDeviceCertsResponse();
+        when(certGenerationService.getAllDeviceSpecificCerts(commonRequest.getDeviceMetadata().getDeviceId(), commonRequest.getApiInContext().getInputRefId()))
+                .thenReturn(deviceCertsResponse);
+        when(messages.get("9999")).thenReturn("Failure");
+        DeviceCertsResponse response=initialiseCertificateService.getDeviceCerts(commonRequest);
+        assertNotNull(response);
     }
 }

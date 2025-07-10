@@ -112,7 +112,7 @@ class SPOSAuthKeyServiceTest {
 
         CommonResponse response = sposAuthKeyService.generateSPOSAuthKey(request);
 
-        assertEquals("VALIDATION_FAILED", response.getApiOutContext().getCode());
+        assertEquals("TMSVALIDATION_FAILED", response.getApiOutContext().getCode());
         assertEquals("Failed", response.getApiOutContext().getStatus());
         assertEquals("1234", response.getApiOutContext().getOutputRefId());
     }
@@ -182,7 +182,7 @@ class SPOSAuthKeyServiceTest {
 
 
         assertEquals("1234", result.getApiOutContext().getOutputRefId());
-        assertEquals("ERR_CODE", result.getApiOutContext().getCode());
+        assertEquals("TMSERR_CODE", result.getApiOutContext().getCode());
     }
 
 

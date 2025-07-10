@@ -91,7 +91,7 @@ public class GetParametersService {
     @NotNull
     private ParameterSecureResponse getParameterSecureResponse(TmsParams emvParameters, GetParametersRequest request,GetParametersRequestData requestData) throws JsonProcessingException {
         ParameterSecureResponse response = new ParameterSecureResponse();
-        ApiOutContext apiOutContext = CommonUtils.getApiOutContext(request.getApiInContext().getInputRefId(), AppErrorConstants.SUCCESS_CODE, inaPayMessages, inaPayMessages.get(AppErrorConstants.SUCCESS_CODE));
+        ApiOutContext apiOutContext = CommonUtils.getApiOutContext(request.getApiInContext().getInputRefId(), AppErrorConstants.SUCCESS_CODE, inaPayMessages, inaPayMessages.get(AppErrorConstants.SUCCESS_CODE), TMS);
         ParameterResponse parameterResponse = new ParameterResponse();
         parameterResponse.setApiOutContext(apiOutContext);
         log.info("Retrieved EMV parameters:{}",emvParameters);

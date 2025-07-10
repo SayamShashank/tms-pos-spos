@@ -13,6 +13,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.security.NoSuchAlgorithmException;
+
 import static com.ina.CommonObjects.getApiInContext;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -41,7 +43,7 @@ class ParameterControllerTest {
     }
 
     @Test
-    void getParameters() throws JsonProcessingException {
+    void getParameters() throws JsonProcessingException{
         GetParametersRequest request = new GetParametersRequest();
         request.setApiInContext(getApiInContext());
         ApiOutContext apiOutContext = new ApiOutContext();

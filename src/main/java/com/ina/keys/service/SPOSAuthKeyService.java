@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import static com.ina.common.constants.AppErrorConstants.*;
 import static com.ina.common.utils.CommonUtils.getApiOutContext;
+import static com.ina.constants.AppConstants.TMS;
 
 @Service
 @Slf4j
@@ -56,14 +57,14 @@ public class SPOSAuthKeyService extends CommonValidator<SPOSAuthKeyRequest> {
             ServerCertsGenerationResponse serverCertsGenerationResponse =
                     cryptoUtils.updateServerCertificates(certChain, "ECP256", sposAuthKeyRequest.getApiInContext());
             if(serverCertsGenerationResponse.getStatusCode().equalsIgnoreCase("200")){
-                apiOutContext = getApiOutContext(inputRefId,AUTHENTICATION_GENERATION_SUCCESSFUL, inaPayMessages, inaPayMessages.get(SUCCESS_CODE));
+                apiOutContext = getApiOutContext(inputRefId,SPOS_AUTH_KEYS_GENERATED_SUCCESSFULLY, inaPayMessages, inaPayMessages.get(SUCCESS_CODE), TMS);
 
             } else{
-                apiOutContext = getApiOutContext(inputRefId,AUTHENTICATION_GENERATION_FAILED, inaPayMessages, inaPayMessages.get(FAILED_CODE));
+                apiOutContext = getApiOutContext(inputRefId,SPOS_AUTH_KEYS_GENERATION_FAILED, inaPayMessages, inaPayMessages.get(FAILED_CODE), TMS);
 
             }
         } catch (CommonValidationException exception) {
-            apiOutContext = getApiOutContext(inputRefId,exception.getCode(), exception.getMessage(), inaPayMessages.get(FAILED_CODE));
+            apiOutContext = getApiOutContext(inputRefId,exception.getCode(), exception.getMessage(), inaPayMessages.get(FAILED_CODE), TMS);
 
         }
         response.setApiOutContext(apiOutContext);
@@ -81,14 +82,14 @@ public class SPOSAuthKeyService extends CommonValidator<SPOSAuthKeyRequest> {
                     getSPOSAuthenticationKeys(request.getAuthKeyType(), inputRefId);
 
             if(responseKey.getStatusCode().equalsIgnoreCase("200")){
-                apiOutContext = getApiOutContext(inputRefId,AUTHENTICATION_KEYS_RETRIEVED, inaPayMessages, inaPayMessages.get(SUCCESS_CODE));
+                apiOutContext = getApiOutContext(inputRefId,SPOS_AUTH_KEYS_RETRIEVED_SUCCESSFULLY, inaPayMessages, inaPayMessages.get(SUCCESS_CODE), TMS);
 
             } else{
-                apiOutContext = getApiOutContext(inputRefId,AUTHENTICATION_KEYS_RETRIEVED_FAILED, inaPayMessages, inaPayMessages.get(FAILED_CODE));
+                apiOutContext = getApiOutContext(inputRefId,SPOS_AUTH_KEYS_RETRIEVAL_FAILED, inaPayMessages, inaPayMessages.get(FAILED_CODE), TMS);
 
             }
         } catch (CommonValidationException exception) {
-            apiOutContext = getApiOutContext(inputRefId,exception.getCode(), exception.getMessage(), inaPayMessages.get(FAILED_CODE));
+            apiOutContext = getApiOutContext(inputRefId,exception.getCode(), exception.getMessage(), inaPayMessages.get(FAILED_CODE), TMS);
 
         }
         response.setApiOutContext(apiOutContext);

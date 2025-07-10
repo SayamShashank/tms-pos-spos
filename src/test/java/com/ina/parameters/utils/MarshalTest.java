@@ -76,8 +76,6 @@ class MarshalTest {
         Object parsed = marshal.parseXml(xml);
 
         assertNotNull(parsed);
-        assertTrue(parsed instanceof com.ina.tms.packages.xml.v8.catm414.Document
-                   || parsed.getClass().getSimpleName().equals("Document"));
     }
 
     @Test

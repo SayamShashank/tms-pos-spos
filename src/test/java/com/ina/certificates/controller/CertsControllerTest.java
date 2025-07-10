@@ -1,8 +1,10 @@
 package com.ina.certificates.controller;
 
+import com.ina.CommonObjects;
 import com.ina.certificates.service.InitialiseCertificateService;
 import com.ina.common.crypto.model.certs.*;
 import com.ina.common.model.ApiOutContext;
+import com.ina.common.model.CommonRequest;
 import com.ina.common.model.Request;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-class CertsControllerTest   {
+class CertsControllerTest extends CommonObjects {
 
     @InjectMocks
     private CertsController certsController;
@@ -128,8 +130,18 @@ class CertsControllerTest   {
         ServerCertsStatusResponse response = (ServerCertsStatusResponse) certsController.generateRootCertificate(request);
         assertNotNull(response);
         assertEquals(request.getApiInContext().getInputRefId(), response.getApiOutContext().getOutputRefId());
+    }
 
-
+    @Test
+    void testGetDeviceCerts(){
+        CommonRequest commonRequest=buildCommonRequest();
+        DeviceCertsResponse deviceCertsResponse=buildDeviceCertsResponse();
+        deviceCertsResponse.setApiOutContext(getApiOutContextData());
+        when(initialiseCertificateService.getDeviceCerts(commonRequest))
+                .thenReturn(deviceCertsResponse);
+        DeviceCertsResponse response=certsController.getDeviceCerts(commonRequest);
+        assertNotNull(response);
+        assertEquals(commonRequest.getApiInContext().getInputRefId(),response.getApiOutContext().getOutputRefId());
     }
 }
 

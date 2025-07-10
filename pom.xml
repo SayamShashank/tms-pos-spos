@@ -27,8 +27,15 @@
         <url/>
     </scm>
     <properties>
-        <java.version>21</java.version>
+        <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+        <sonar.sources>src/main/java</sonar.sources>
+        <sonar.tests>src/test/java</sonar.tests>
+        <sonar.exclusions>src/test/java/**/*</sonar.exclusions>
+        <sonar.test.exclusions>src/test/java/**/*</sonar.test.exclusions>
         <sonar.exclusions>**/com/ina/tms/packages/**/*</sonar.exclusions>
+        <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+        <sonar.language>java</sonar.language>
+        <java.version>21</java.version>
     </properties>
     <dependencies>
         <dependency>

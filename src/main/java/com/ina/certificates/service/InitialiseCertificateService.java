@@ -171,11 +171,18 @@ public class InitialiseCertificateService extends CommonValidator<ApiInContext> 
         ViewCertificateInfo certificateInfo = new ViewCertificateInfo();
         String inputRefId = certRequest.getApiInContext().getInputRefId();
         try {
-            certificateInfo = certGenerationService.
+            ViewCertificateInfo response = certGenerationService.
                     viewCertificate(certRequest.getCertificateType(), inputRefId);
-            if(nonNull(certificateInfo)){
+            if(nonNull(response)){
                 apiOutContext = getApiOutContext(inputRefId,REQUESTED_CERTIFICATE_RETRIEVED_SUCCESSFULLY,
                         messages, messages.get(SUCCESS_CODE), TMS);
+                certificateInfo.setCertType(response.getCertType());
+                certificateInfo.setCertContent(response.getCertContent());
+                certificateInfo.setEnteredBy(response.getEnteredBy());
+                certificateInfo.setEntryDate(response.getEntryDate());
+                certificateInfo.setCertSerialNumber(response.getCertSerialNumber());
+                certificateInfo.setKeyExpiry(response.getKeyExpiry());
+
             } else{
                 apiOutContext = getApiOutContext(inputRefId,REQUESTED_CERTIFICATE_IS_NOT_AVAILABLE,
                         messages, messages.get(FAILED_CODE), TMS);

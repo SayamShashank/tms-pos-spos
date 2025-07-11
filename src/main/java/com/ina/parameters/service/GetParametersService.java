@@ -76,7 +76,6 @@ public class GetParametersService {
 
     public ParameterSecureResponse getParameters(GetParametersRequest request) throws JsonProcessingException {
         String inputRefId = request.getApiInContext().getInputRefId();
-//        String decryptedData = request.getSecureReqMetadata().getData();
         String decryptedData = dataDecryptionService.decryptData(request.getSecureReqMetadata(), TMS,
                 request.getDeviceMetadata().getDeviceId(), inputRefId);
         GetParametersRequestData requestData = objectMapper.readValue(decryptedData, GetParametersRequestData.class);
@@ -115,8 +114,6 @@ public class GetParametersService {
         checksumParams.setParamCheckSum(checksum);
         EMVParameters parameters = emvParametersRepository.save(checksumParams);
         log.info("paramCheckSum:{}",parameters.getParamCheckSum());
-//        SecureRespMetadata secureRespMetadata = new SecureRespMetadata();
-//        secureRespMetadata.setData(data);
         SecureRespMetadata secureRespMetadata = getSecureRespMetadata(request, data);
         response.setSecureRespMetadata(secureRespMetadata);
         response.setApiOutContext(apiOutContext);

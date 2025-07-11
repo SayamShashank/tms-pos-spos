@@ -11,6 +11,7 @@ import com.ina.common.model.SecureReqMetadata;
 import com.ina.common.model.SecureRespMetadata;
 import com.ina.common.response.message.InaPayMessages;
 import com.ina.common.utils.CommonUtils;
+import com.ina.common.utils.HashUtils;
 import com.ina.config.RequestPropertyConfig;
 import com.ina.dao.EMVParametersRepository;
 import com.ina.dao.entity.EMVParameters;
@@ -74,80 +75,126 @@ public class GetParametersServiceTest extends CommonObjects {
 
     @Test
     public void testGetParametersSuccess() throws Exception {
+        // Prepare test data
         String decryptedJson = getRequestData();
         ObjectMapper mapper = new ObjectMapper();
         GetParametersRequestData mockRequestData = mapper.readValue(decryptedJson, GetParametersRequestData.class);
         GetParametersRequest mockRequest = getMockRequest();
+
         SecureRespMetadata secureRespMetadata = new SecureRespMetadata();
         secureRespMetadata.setData("data");
         secureRespMetadata.setSalt("salt");
         secureRespMetadata.setSignature("sign");
+
         JsonNode root = mapper.readTree(getData());
         JsonNode emvParametersNode = root.get("emvParameters");
-        String emvParams = mapper.writeValueAsString(emvParametersNode);
-        TmsParams params = mapper.readValue(emvParams, TmsParams.class);
-        String xml = readXmlAsString();
-        Object respObject= maptoParamDocObject(xml);
-        log.info("ResString:{}",mapper.writeValueAsString(respObject));
-        JsonMapperUtil.Result result=new JsonMapperUtil.Result(params.getAids(),params.getCpks(),params.getTerminalConfig(),objectMapper);
-        try (MockedStatic<JsonMapperUtil> mockedStatic = mockStatic(JsonMapperUtil.class)) {
-            mockedStatic.when(() ->
-                    JsonMapperUtil.getResult(any())
-            ).thenReturn(result);
+        String emvParamsJson = mapper.writeValueAsString(emvParametersNode);
+        TmsParams params = mapper.readValue(emvParamsJson, TmsParams.class);
 
-                when(dataDecryptionService.decryptData(any(), any(), anyString(), anyString()))
-                .thenReturn(decryptedJson);
-        when(objectMapper.readValue(anyString(), eq(GetParametersRequestData.class)))
-                .thenReturn(mockRequestData);
-        when(emvParametersRepository.findByTrsMidAndTerminalIdAndDeviceId(anyString(),anyString(),anyString())).thenReturn(getEmvParameters());
-        when(propertyConfig.getKrdSign2()).thenReturn("test.model");
-        when(propertyConfig.getShortName()).thenReturn("GeideaUAT01");
-        when(marshal.marshalToXml(any(com.ina.tms.packages.xml.v8.catm118.Document.class),eq("Document"))).thenReturn(getReqXmlData());
-        when(dataEncryptionService.encryptData(any(), any(), any(), any()))
-                .thenReturn(secureRespMetadata);
-        when(httpClient.exchange(any(), any())).thenReturn(xml);
-        when(marshal.getExpectedNsUri()).thenReturn("urn:iso:std:iso:20022:tech:xsd:catm.003.001.08");
-        when(marshal.parseXml(anyString())).thenReturn(respObject);
-        ParameterSecureResponse response = getParametersService.getParameters(mockRequest);
-        assertNotNull(response);
-        assertNotNull(response.getSecureRespMetadata());
-        assertNotNull(response.getApiOutContext());
+        String xmlResponse = readXmlAsString();
+        Object respObject = maptoParamDocObject(xmlResponse);
+
+        JsonMapperUtil.Result mockResult = new JsonMapperUtil.Result(
+                params.getAids(), params.getCpks(), params.getTerminalConfig(), objectMapper
+        );
+
+        // Mock static method
+        try (MockedStatic<JsonMapperUtil> mockedStatic = mockStatic(JsonMapperUtil.class)) {
+            mockedStatic.when(() -> JsonMapperUtil.getResult(any()))
+                    .thenReturn(mockResult);
+
+            // Mock dependencies
+            when(dataDecryptionService.decryptData(any(), any(), anyString(), anyString()))
+                    .thenReturn(decryptedJson);
+            when(objectMapper.readValue(anyString(), eq(GetParametersRequestData.class)))
+                    .thenReturn(mockRequestData);
+
+            EMVParameters mockEmvParameters = getEmvParameters(); // must return non-null paramCheckSum
+            when(emvParametersRepository.findByTrsMidAndTerminalIdAndDeviceId(anyString(), anyString(), anyString()))
+                    .thenReturn(mockEmvParameters);
+            when(emvParametersRepository.save(any(EMVParameters.class)))
+                    .thenAnswer(invocation -> invocation.getArgument(0)); // return saved object
+
+            when(propertyConfig.getKrdSign2()).thenReturn("test.model");
+            when(propertyConfig.getShortName()).thenReturn("GeideaUAT01");
+            when(marshal.marshalToXml(any(com.ina.tms.packages.xml.v8.catm118.Document.class), eq("Document")))
+                    .thenReturn(getReqXmlData());
+            when(dataEncryptionService.encryptData(any(), any(), any(), any()))
+                    .thenReturn(secureRespMetadata);
+            when(httpClient.exchange(any(), any()))
+                    .thenReturn(xmlResponse);
+            when(marshal.getExpectedNsUri()).thenReturn("urn:iso:std:iso:20022:tech:xsd:catm.003.001.08");
+            when(marshal.parseXml(anyString()))
+                    .thenReturn(respObject);
+
+            // Call method under test
+            ParameterSecureResponse response = getParametersService.getParameters(mockRequest);
+
+            // Verify results
+            assertNotNull(response);
+            assertNotNull(response.getSecureRespMetadata());
+            assertNotNull(response.getApiOutContext());
         }
     }
+
     @Test
     public void testGetParametersSuccessWithNewDevice() throws Exception {
         String decryptedJson = getRequestData();
         ObjectMapper mapper = new ObjectMapper();
         GetParametersRequestData mockRequestData = mapper.readValue(decryptedJson, GetParametersRequestData.class);
         GetParametersRequest mockRequest = getMockRequest();
+
         SecureRespMetadata secureRespMetadata = new SecureRespMetadata();
         secureRespMetadata.setData("data");
         secureRespMetadata.setSalt("salt");
         secureRespMetadata.setSignature("sign");
+
         JsonNode root = mapper.readTree(getData());
         JsonNode emvParametersNode = root.get("emvParameters");
         String emvParams = mapper.writeValueAsString(emvParametersNode);
         TmsParams params = mapper.readValue(emvParams, TmsParams.class);
         String xml = readXmlAsString();
-        Object respObject= maptoParamDocObject(xml);
-        JsonMapperUtil.Result result=new JsonMapperUtil.Result(params.getAids(),params.getCpks(),params.getTerminalConfig(),objectMapper);
+        Object respObject = maptoParamDocObject(xml);
+
+        JsonMapperUtil.Result result = new JsonMapperUtil.Result(
+                params.getAids(), params.getCpks(), params.getTerminalConfig(), objectMapper
+        );
+
         try (MockedStatic<JsonMapperUtil> mockedStatic = mockStatic(JsonMapperUtil.class)) {
-            mockedStatic.when(() ->
-                    JsonMapperUtil.getResult(any())
-            ).thenReturn(result);
+            mockedStatic.when(() -> JsonMapperUtil.getResult(any()))
+                    .thenReturn(result);
+
             when(dataDecryptionService.decryptData(any(), any(), anyString(), anyString()))
                     .thenReturn(decryptedJson);
             when(objectMapper.readValue(anyString(), eq(GetParametersRequestData.class)))
                     .thenReturn(mockRequestData);
-            when(emvParametersRepository.findByTrsMidAndTerminalIdAndDeviceId(anyString(),anyString(),anyString())).thenReturn(null);
+
+            // ✏️ Sequential stubbing: first null, then saved EMVParameters
+            EMVParameters savedEmvParameters = new EMVParameters();
+            savedEmvParameters.setParamCheckSum("dummy-checksum");
+            when(emvParametersRepository.findByTrsMidAndTerminalIdAndDeviceId(anyString(), anyString(), anyString()))
+                    .thenReturn(null)                // first call
+                    .thenReturn(savedEmvParameters); // second call
+
+            when(emvParametersRepository.save(any(EMVParameters.class)))
+                    .thenAnswer(invocation -> {
+                        EMVParameters param = invocation.getArgument(0);
+                        if (param.getParamCheckSum() == null) {
+                            param.setParamCheckSum("new-checksum");
+                        }
+                        return param;
+                    });
+
             when(propertyConfig.getKrdSign2()).thenReturn("test.model");
             when(propertyConfig.getShortName()).thenReturn("GeideaUAT01");
-            when(marshal.marshalToXml(any(com.ina.tms.packages.xml.v8.catm118.Document.class),eq("Document"))).thenReturn(getReqXmlData());
+            when(marshal.marshalToXml(any(com.ina.tms.packages.xml.v8.catm118.Document.class), eq("Document")))
+                    .thenReturn(getReqXmlData());
             when(dataEncryptionService.encryptData(any(), any(), any(), any()))
                     .thenReturn(secureRespMetadata);
             when(httpClient.exchange(any(), any())).thenReturn(xml);
             when(marshal.getExpectedNsUri()).thenReturn("urn:iso:std:iso:20022:tech:xsd:catm.003.001.08");
             when(marshal.parseXml(anyString())).thenReturn(respObject);
+
             ParameterSecureResponse response = getParametersService.getParameters(mockRequest);
             assertNotNull(response);
             assertNotNull(response.getSecureRespMetadata());

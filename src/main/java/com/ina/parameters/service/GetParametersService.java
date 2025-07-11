@@ -9,6 +9,7 @@ import com.ina.common.model.ApiOutContext;
 import com.ina.common.model.SecureRespMetadata;
 import com.ina.common.response.message.InaPayMessages;
 import com.ina.common.utils.CommonUtils;
+import com.ina.common.utils.HashUtils;
 import com.ina.config.RequestPropertyConfig;
 import com.ina.constants.AppErrorConstants;
 import com.ina.dao.EMVParametersRepository;
@@ -17,7 +18,6 @@ import com.ina.parameters.messages.Acknowledgement;
 import com.ina.parameters.messages.ParameterDownload;
 import com.ina.parameters.messages.Registration;
 import com.ina.parameters.model.*;
-import com.ina.parameters.utils.HashUtils;
 import com.ina.parameters.utils.HttpClient;
 import com.ina.parameters.utils.JsonMapperUtil;
 import com.ina.parameters.utils.Marshal;
@@ -74,7 +74,6 @@ public class GetParametersService {
     }
 
 
-
     public ParameterSecureResponse getParameters(GetParametersRequest request) throws JsonProcessingException {
         String inputRefId = request.getApiInContext().getInputRefId();
         String decryptedData = dataDecryptionService.decryptData(request.getSecureReqMetadata(), TMS,
@@ -84,8 +83,9 @@ public class GetParametersService {
                 requestData.getApiInContext().getInputRefId(),
                 requestData.getDeviceMetadata().getDeviceId(),
                 request.getApiInContext(), request.getDeviceMetadata());
-        TmsParams emvParameters = registerParameterAck(requestData);
-        return getParameterSecureResponse(emvParameters, request,requestData);
+        EMVParameters savedEmvParams = getEmvParameters(requestData);
+        TmsParams emvParameters = registerParameterAck(requestData,savedEmvParams);
+        return getParameterSecureResponse(emvParameters, request, requestData);
     }
 
     @NotNull
@@ -101,15 +101,19 @@ public class GetParametersService {
             log.info("EMV parameters is null and executing with static parameters:{}",getData());
             JsonNode root = objectMapper.readTree(getData());
             log.info("root parameters");
-            JsonNode emvParametersNode = root.get("emvParameters");
+            JsonNode emvParametersNode = root.get("secureParams");
             String emvParams = objectMapper.writeValueAsString(emvParametersNode);
             TmsParams params = objectMapper.readValue(emvParams, TmsParams.class);
             log.info("tms parameters");
-
             parameterResponse.setEmvParameters(params);
             log.info("param response:{}",parameterResponse);
         }
         String data = objectMapper.writeValueAsString(parameterResponse);
+        String checksum = hashUtils.generateSHA512(data);
+        EMVParameters checksumParams=getEmvParameters(requestData);
+        checksumParams.setParamCheckSum(checksum);
+        EMVParameters parameters = emvParametersRepository.save(checksumParams);
+        log.info("paramCheckSum:{}",parameters.getParamCheckSum());
         SecureRespMetadata secureRespMetadata = getSecureRespMetadata(request, data);
         response.setSecureRespMetadata(secureRespMetadata);
         response.setApiOutContext(apiOutContext);
@@ -121,7 +125,6 @@ public class GetParametersService {
     }
     private <T> String exchange(T classObj) throws JsonProcessingException {
 
-        // 1. marshal to xml
         marshal.setUseCustomWriter(Boolean.FALSE);
         marshal.setAddNs(Boolean.TRUE);
         String stsRptMsg = marshal.marshalToXml(classObj, classObj.getClass().getSimpleName());
@@ -129,7 +132,6 @@ public class GetParametersService {
         log.info("req: ");
         log.info(stsRptMsg);
 
-        // 2. send and receive
 
         String ep = "statusReport.htm";
         String respXmlData = httpClient.exchange(ep, stsRptMsg);
@@ -166,10 +168,9 @@ public class GetParametersService {
                         .getRespObj();
                 log.info("mgmt plan replace: ");
                 log.info(mgmtPlanDoc.getMgmtPlanRplcmnt().getMgmtPlan().getDataSet()
-                        .getCntt().getActn().get(0).getDataSetId().getNm());
-                // check for content/Action/DataSetId/Type=Parameters
+                        .getCntt().getActn().getFirst().getDataSetId().getNm());
                 com.ina.tms.packages.xml.v8.catm217.DataSetCategory12Code dsiType = mgmtPlanDoc.getMgmtPlanRplcmnt()
-                        .getMgmtPlan().getDataSet().getCntt().getActn().get(0).getDataSetId().getTp();
+                        .getMgmtPlan().getDataSet().getCntt().getActn().getFirst().getDataSetId().getTp();
                 if (dsiType.value().equals("Parameters")) {
                     return true;
                 }
@@ -196,7 +197,7 @@ public class GetParametersService {
         this.exchange(doc);
     }
 
-    public ParameterResult paramDownload(GetParametersRequestData request) throws JsonProcessingException {
+    public ParameterResult paramDownload(GetParametersRequestData request,EMVParameters savedEmvParams) throws JsonProcessingException {
 
         ParameterDownload paramDld = getParameterDownload();
         Document doc = paramDld.genStsRpt(request.getRequestData());
@@ -207,14 +208,15 @@ public class GetParametersService {
         if (expectedNsUri != null) {
             if (expectedNsUri.equals(ACCEPT_CONFIG_UPDATE_NS_URI)) {
                 log.info("param success");
-                getParams(request, tmsParams);
+                EMVParameters params = getParams(request, tmsParams, savedEmvParams);
+                return new ParameterResult(true,tmsParams,params);
             }
-            return new ParameterResult(true,tmsParams);
+            return new ParameterResult(true,tmsParams,savedEmvParams);
         }
-        return new ParameterResult(true,tmsParams);
+        return new ParameterResult(true,tmsParams,savedEmvParams);
     }
 
-    private void getParams(GetParametersRequestData request, TmsParams tmsParams) throws JsonProcessingException {
+    private EMVParameters getParams(GetParametersRequestData request, TmsParams tmsParams,EMVParameters savedEmvParams) throws JsonProcessingException {
         com.ina.tms.packages.xml.v8.catm318.Document acptrConfigUpdateDoc = (com.ina.tms.packages.xml.v8.catm318.Document) this
                 .getRespObj();
         List<String> appParamsList = acptrConfigUpdateDoc.getAccptrCfgtnUpd()
@@ -232,11 +234,8 @@ public class GetParametersService {
         tmsParams.setAids(result.aidLists());
         tmsParams.setCpks(result.ridList());
         tmsParams.setTerminalConfig(result.terminalConfig());
-        String tmsParamString = objectMapper.writeValueAsString(tmsParams);
-        String paramCheckSum = hashUtils.generateHashWithSHA512(tmsParamString);
-        log.info("ParamChecksum:{}",paramCheckSum);
-
-        EMVParameters savedEmvParams = getEmvParameters(request);
+        String parameterDownload = result.objectMapper().writeValueAsString(tmsParams);
+        log.info("Fetched Parameters:{}",parameterDownload);
         if (isNull(savedEmvParams)) {
             EMVParameters savedEmvParameters = EMVParameters.builder()
                     .deviceId(request.getDeviceMetadata().getDeviceId())
@@ -246,22 +245,18 @@ public class GetParametersService {
                     .aids(result.objectMapper().writeValueAsString(result.aidLists()))
                     .cpks(result.objectMapper().writeValueAsString(result.ridList()))
                     .terminalConfig(result.objectMapper().writeValueAsString(result.terminalConfig()))
-                    .paramCheckSum(paramCheckSum)
                     .createdDate(Timestamp.valueOf(LocalDateTime.now()))
                     .updatedDate(Timestamp.valueOf(LocalDateTime.now()))
                     .build();
-            emvParametersRepository.save(savedEmvParameters);
+           return emvParametersRepository.save(savedEmvParameters);
         }else {
-
             savedEmvParams.setAids(result.objectMapper().writeValueAsString(result.aidLists()));
             savedEmvParams.setCpks(result.objectMapper().writeValueAsString(result.ridList()));
             savedEmvParams.setTerminalConfig(result.objectMapper().writeValueAsString(result.terminalConfig()));
-            savedEmvParams.setParamCheckSum(paramCheckSum);
             savedEmvParams.setUpdatedDate(Timestamp.valueOf(LocalDateTime.now()));
-            emvParametersRepository.save(savedEmvParams);
+            return emvParametersRepository.save(savedEmvParams);
         }
-        String parameterDownload = result.objectMapper().writeValueAsString(tmsParams);
-        log.info("Fetched Parameters:{}",parameterDownload);
+
     }
 
     @NotNull
@@ -274,22 +269,22 @@ public class GetParametersService {
     }
 
 
-    public record ParameterResult(boolean isPerformed, TmsParams parameters){}
 
 
-    public TmsParams registerParameterAck(GetParametersRequestData request) throws JsonProcessingException {
-        EMVParameters savedEmvParams = getEmvParameters(request);
+    public record ParameterResult(boolean isPerformed, TmsParams parameters,EMVParameters emvParameters){}
 
+
+    public TmsParams registerParameterAck(GetParametersRequestData request,EMVParameters savedEmvParams) throws JsonProcessingException {
         if (isNull(savedEmvParams)) {
             if (Boolean.TRUE.equals(registration(request))) {
-                ParameterResult parameterResult = extractParameters(request);
+                ParameterResult parameterResult = extractParameters(request,null);
                 if (nonNull(parameterResult)  && parameterResult.isPerformed) {
                     acknowledgment(request);
                     return parameterResult.parameters;
                 }
             }
         } else {
-            ParameterResult parameterResult = extractParameters(request);
+            ParameterResult parameterResult = extractParameters(request,savedEmvParams);
             if (nonNull(parameterResult)  && parameterResult.isPerformed)  {
                 acknowledgment(request);
                 return parameterResult.parameters;
@@ -299,8 +294,8 @@ public class GetParametersService {
         return null;
     }
 
-    private ParameterResult extractParameters(GetParametersRequestData request) throws JsonProcessingException {
-        return paramDownload(request);
+    private ParameterResult extractParameters(GetParametersRequestData request,EMVParameters savedEmvParams) throws JsonProcessingException {
+        return paramDownload(request,savedEmvParams);
     }
 
 

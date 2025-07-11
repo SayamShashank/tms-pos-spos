@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -28,11 +27,18 @@
         <url/>
     </scm>
     <properties>
+        <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+        <sonar.sources>src/main/java</sonar.sources>
+        <sonar.tests>src/test/java</sonar.tests>
+        <sonar.exclusions>src/test/java/**/*</sonar.exclusions>
+        <sonar.test.exclusions>src/test/java/**/*</sonar.test.exclusions>
+        <sonar.exclusions>**/com/ina/tms/packages/**/*</sonar.exclusions>
+        <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+        <sonar.language>java</sonar.language>
         <java.version>21</java.version>
         <sonar.exclusions>**/com/ina/tms/packages/**/*</sonar.exclusions>
     </properties>
     <dependencies>
-
         <dependency>
             <groupId>com.ina</groupId>
             <artifactId>ina-pay-common</artifactId>
@@ -53,23 +59,17 @@
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
             <version>4.4.0</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+        </dependency>        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
             <version>6.4.6</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-crypto -->
+        </dependency>        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-crypto -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-crypto</artifactId>
             <version>6.4.5</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-core -->
+        </dependency>        <!-- https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-core -->
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
@@ -144,27 +144,22 @@
             <groupId>org.apache.httpcomponents.client5</groupId>
             <artifactId>httpclient5</artifactId>
             <version>5.4.4</version>
-        </dependency>
-		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>42.7.7</version>
-		</dependency>
-        <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+        </dependency>       <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.7</version>
+        </dependency>        <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>6.2.7</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
+        </dependency>        <!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
             <version>6.2.8</version>
         </dependency>
-
     </dependencies>
     <build>
         <plugins>
@@ -178,8 +173,7 @@
                         <include>**/*Test.java</include>
                     </includes>
                 </configuration>
-            </plugin>
-            <!-- Maven Failsafe Plugin (for Integration Tests) -->
+            </plugin>            <!-- Maven Failsafe Plugin (for Integration Tests) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
@@ -360,7 +354,6 @@
                             <packageName>com.ina.tms.packages.xml.v6.catm811</packageName>
                         </configuration>
                     </execution>
-
                     <execution>
                         <id>xjc-schema8</id>
                         <goals>
@@ -473,7 +466,6 @@
                             <packageName>com.ina.tms.packages.xml.v8.catm414</packageName>
                         </configuration>
                     </execution>
-
                 </executions>
             </plugin>
         </plugins>

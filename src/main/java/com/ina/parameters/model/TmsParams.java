@@ -13,4 +13,5 @@ public class TmsParams {
     private List<AidList> aids;
     private List<RidList> cpks;
     private MerchantTerminalData terminalConfig;
+    private MerchantDetails merchantDetails;
 }

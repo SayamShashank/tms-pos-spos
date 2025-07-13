@@ -15,6 +15,7 @@ import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -90,16 +91,14 @@ class JsonMapperUtilTest {
   }
 """);
 
-
-
-
         List<String> appParamsList = List.of(sampleXml);
+        List<String> merchParamsList =new ArrayList<>();
        JsonMapperUtil.Result result;
         try (MockedStatic<XML> mockedStatic = mockStatic(XML.class)) {
             mockedStatic.when(() ->
                     XML.toJSONObject(sampleXml)
             ).thenReturn(jsonObject);
-             result = JsonMapperUtil.getResult(appParamsList);
+             result = JsonMapperUtil.getResult(appParamsList,merchParamsList);
         }
 
 

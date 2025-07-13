@@ -95,12 +95,12 @@ public class GetParametersServiceTest extends CommonObjects {
         Object respObject = maptoParamDocObject(xmlResponse);
 
         JsonMapperUtil.Result mockResult = new JsonMapperUtil.Result(
-                params.getAids(), params.getCpks(), params.getTerminalConfig(), objectMapper
+                params.getAids(), params.getCpks(), params.getTerminalConfig(), params.getMerchantDetails()
         );
 
         // Mock static method
         try (MockedStatic<JsonMapperUtil> mockedStatic = mockStatic(JsonMapperUtil.class)) {
-            mockedStatic.when(() -> JsonMapperUtil.getResult(any()))
+            mockedStatic.when(() -> JsonMapperUtil.getResult(any(),any()))
                     .thenReturn(mockResult);
 
             // Mock dependencies
@@ -157,24 +157,22 @@ public class GetParametersServiceTest extends CommonObjects {
         Object respObject = maptoParamDocObject(xml);
 
         JsonMapperUtil.Result result = new JsonMapperUtil.Result(
-                params.getAids(), params.getCpks(), params.getTerminalConfig(), objectMapper
+                params.getAids(), params.getCpks(), params.getTerminalConfig(),params.getMerchantDetails()
         );
 
         try (MockedStatic<JsonMapperUtil> mockedStatic = mockStatic(JsonMapperUtil.class)) {
-            mockedStatic.when(() -> JsonMapperUtil.getResult(any()))
+            mockedStatic.when(() -> JsonMapperUtil.getResult(any(),any()))
                     .thenReturn(result);
 
             when(dataDecryptionService.decryptData(any(), any(), anyString(), anyString()))
                     .thenReturn(decryptedJson);
             when(objectMapper.readValue(anyString(), eq(GetParametersRequestData.class)))
                     .thenReturn(mockRequestData);
-
-            // ✏️ Sequential stubbing: first null, then saved EMVParameters
             EMVParameters savedEmvParameters = new EMVParameters();
             savedEmvParameters.setParamCheckSum("dummy-checksum");
             when(emvParametersRepository.findByTrsMidAndTerminalIdAndDeviceId(anyString(), anyString(), anyString()))
-                    .thenReturn(null)                // first call
-                    .thenReturn(savedEmvParameters); // second call
+                    .thenReturn(null)
+                    .thenReturn(savedEmvParameters);
 
             when(emvParametersRepository.save(any(EMVParameters.class)))
                     .thenAnswer(invocation -> {

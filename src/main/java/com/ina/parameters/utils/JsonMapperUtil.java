@@ -149,14 +149,13 @@ public class JsonMapperUtil {
 
 
     @NotNull
-    public static Result getResult(List<String> appParamsList) throws JsonProcessingException {
-        String encodedAppParams = org.apache.commons.codec.binary.Base64.encodeBase64String(String.join(",", appParamsList).getBytes());
-        String decodedParams = new String(Base64.decodeBase64(encodedAppParams));
-        log.info("app Params: {}", decodedParams);
-        JSONObject jsonObject = XML.toJSONObject(decodedParams);
-        log.info("JSON app decoded params: " + jsonObject);
-        JSONObject madaAppData = jsonObject.getJSONObject("madaAppData");
-        JSONObject madaTrmlData =jsonObject.getJSONObject("madaTrmlData");
+    public static Result getResult(List<String> appParamsList,List<String> merchParams) throws JsonProcessingException {
+        JSONObject merchParamJsonObject =getJsonObject(merchParams);
+        JSONObject appParamJsonObject = getJsonObject(appParamsList);
+        log.info("JSON app decoded params:{} ",  appParamJsonObject);
+        log.info("JSON merch decoded params:{} ",merchParamJsonObject);
+        JSONObject madaAppData = appParamJsonObject.getJSONObject("madaAppData");
+        JSONObject madaTrmlData =appParamJsonObject.getJSONObject("madaTrmlData");
         JSONObject cardSchemeList = madaAppData.getJSONObject("cardSchemeList");
         List<AidList> aidLists = mapAidLists(cardSchemeList);
         aidLists.forEach(aidList ->  log.info("JSON app decoded aidList:{} ", aidList));
@@ -166,17 +165,42 @@ public class JsonMapperUtil {
         terminalConfig.setTerminalId(madaTrmlData.optString("terminalId",null));
         terminalConfig.setTerminalCountryCode(madaTrmlData.optString("terminalCountryCode",null));
         terminalConfig.setTerminalCurrencyCode(madaTrmlData.optString("terminalCurrencyCode",null));
+        MerchantDetails merchantDetails =getMerchantDetails(merchParamJsonObject);
         ObjectMapper objectMapper = new ObjectMapper();
         String aidListsJson = objectMapper.writeValueAsString(aidLists);
         String ridJsonList=objectMapper.writeValueAsString(ridList);
         String terminalData= objectMapper.writeValueAsString(terminalConfig);
+        String merchantDetailsParams=objectMapper.writeValueAsString(merchantDetails);
         log.info("JSON decoded aid params:{} ", aidListsJson);
         log.info("JSON decoded rid params:{} ", ridJsonList);
         log.info("JSON decoded terminalConfig params:{} ", terminalData);
-        return new Result(aidLists, ridList, terminalConfig, objectMapper);
+        log.info("JSON decoded merchantDetails params:{} ", merchantDetailsParams);
+        return new Result(aidLists, ridList, terminalConfig,merchantDetails);
+    }
+    private static MerchantDetails getMerchantDetails(JSONObject merchParamJsonObject) {
+        JSONObject merchantData =merchParamJsonObject.getJSONObject("merchant");
+        MerchantDetails merchantDetails = new MerchantDetails();
+        merchantDetails.setMerchantNameEN(merchantData.optString("retailerNameEng",null));
+        merchantDetails.setMerchantNameAR(merchantData.optString("retailerNameArab",null));
+        merchantDetails.setMerchantNameAddress1AR(merchantData.optString("retailerAddress1Arab",null));
+        merchantDetails.setMerchantNameAddress1EN(merchantData.optString("retailerAddress1Eng",null));
+        merchantDetails.setMerchantNameAddress2EN(merchantData.optString("retailerAddress2Eng",null));
+        merchantDetails.setMerchantNameAddress2AR(merchantData.optString("retailerAddress2Arab",null));
+        merchantDetails.setMerchantNameCityAR(merchantData.optString("retailerCityArab",null));
+        merchantDetails.setMerchantNameCityEN(merchantData.optString("retailerCityEng",null));
+        return merchantDetails;
     }
 
-    public record Result(List<AidList> aidLists, List<RidList> ridList, MerchantTerminalData terminalConfig, ObjectMapper objectMapper) {
+    @NotNull
+    private static JSONObject getJsonObject(List<String> appParamsList) {
+        String encodedAppParams = Base64.encodeBase64String(String.join(",", appParamsList).getBytes());
+        String decodedParams = new String(Base64.decodeBase64(encodedAppParams));
+        log.info("app Params: {}", decodedParams);
+        JSONObject jsonObject = XML.toJSONObject(decodedParams);
+        return jsonObject;
+    }
+
+    public record Result(List<AidList> aidLists, List<RidList> ridList, MerchantTerminalData terminalConfig,MerchantDetails merchantDetails) {
     }
 
 

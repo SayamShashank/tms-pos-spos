@@ -113,7 +113,7 @@ public class GetParametersService {
         EMVParameters checksumParams=getEmvParameters(requestData);
         checksumParams.setParamCheckSum(checksum);
         EMVParameters parameters = emvParametersRepository.save(checksumParams);
-        log.info("paramCheckSum:{}",parameters.getParamCheckSum());
+        log.info("paramCheckSum:{}", parameters.getParamCheckSum());
         SecureRespMetadata secureRespMetadata = getSecureRespMetadata(request, data);
         response.setSecureRespMetadata(secureRespMetadata);
         response.setApiOutContext(apiOutContext);
@@ -219,6 +219,16 @@ public class GetParametersService {
     private EMVParameters getParams(GetParametersRequestData request, TmsParams tmsParams,EMVParameters savedEmvParams) throws JsonProcessingException {
         com.ina.tms.packages.xml.v8.catm318.Document acptrConfigUpdateDoc = (com.ina.tms.packages.xml.v8.catm318.Document) this
                 .getRespObj();
+        List<String> merchParams = acptrConfigUpdateDoc.getAccptrCfgtnUpd()
+                .getAccptrCfgtn()
+                .getDataSet()
+                .stream()
+                .flatMap(dataset -> dataset.getCntt().getMrchntParams().stream()
+                        .map(param -> {
+                            byte[] othrParams = param.getOthrParams();
+                            return new String(Base64.decodeBase64(Base64.encodeBase64String(othrParams)));
+                        }))
+                .toList();
         List<String> appParamsList = acptrConfigUpdateDoc.getAccptrCfgtnUpd()
                 .getAccptrCfgtn()
                 .getDataSet()
@@ -230,11 +240,12 @@ public class GetParametersService {
                                 .stream()
                                 .map(param -> new String(Base64.decodeBase64(Base64.encodeBase64String(param))))))
                 .toList();
-        JsonMapperUtil.Result result = getResult(appParamsList);
+        JsonMapperUtil.Result result = getResult(appParamsList,merchParams);
         tmsParams.setAids(result.aidLists());
         tmsParams.setCpks(result.ridList());
         tmsParams.setTerminalConfig(result.terminalConfig());
-        String parameterDownload = result.objectMapper().writeValueAsString(tmsParams);
+        tmsParams.setMerchantDetails(result.merchantDetails());
+        String parameterDownload = objectMapper.writeValueAsString(tmsParams);
         log.info("Fetched Parameters:{}",parameterDownload);
         if (isNull(savedEmvParams)) {
             EMVParameters savedEmvParameters = EMVParameters.builder()
@@ -242,17 +253,18 @@ public class GetParametersService {
                     .merchantId(result.terminalConfig().getMerchantId())
                     .terminalId(result.terminalConfig().getTerminalId())
                     .trsMid(request.getRequestData().getTrsMid())
-                    .aids(result.objectMapper().writeValueAsString(result.aidLists()))
-                    .cpks(result.objectMapper().writeValueAsString(result.ridList()))
-                    .terminalConfig(result.objectMapper().writeValueAsString(result.terminalConfig()))
+                    .aids(objectMapper.writeValueAsString(result.aidLists()))
+                    .cpks(objectMapper.writeValueAsString(result.ridList()))
+                    .terminalConfig(objectMapper.writeValueAsString(result.terminalConfig()))
+                    .merchantDetails(objectMapper.writeValueAsString(result.merchantDetails()))
                     .createdDate(Timestamp.valueOf(LocalDateTime.now()))
                     .updatedDate(Timestamp.valueOf(LocalDateTime.now()))
                     .build();
            return emvParametersRepository.save(savedEmvParameters);
         }else {
-            savedEmvParams.setAids(result.objectMapper().writeValueAsString(result.aidLists()));
-            savedEmvParams.setCpks(result.objectMapper().writeValueAsString(result.ridList()));
-            savedEmvParams.setTerminalConfig(result.objectMapper().writeValueAsString(result.terminalConfig()));
+            savedEmvParams.setAids(objectMapper.writeValueAsString(result.aidLists()));
+            savedEmvParams.setCpks(objectMapper.writeValueAsString(result.ridList()));
+            savedEmvParams.setTerminalConfig(objectMapper.writeValueAsString(result.terminalConfig()));
             savedEmvParams.setUpdatedDate(Timestamp.valueOf(LocalDateTime.now()));
             return emvParametersRepository.save(savedEmvParams);
         }

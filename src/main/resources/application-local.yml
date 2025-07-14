@@ -21,9 +21,10 @@ server:
 ina:
   database:
     username: postgres
-    password: postgres12
+    password: admin
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://am-developement.cxkmqmqgup84.ap-south-1.rds.amazonaws.com/postgres?currentSchema=ina_pay_tms
+    url: jdbc:postgresql://localhost:5432/inapayments
+    #    url: jdbc:postgresql://am-developement.cxkmqmqgup84.ap-south-1.rds.amazonaws.com/postgres?currentSchema=ina_pay_tms
     poolName: INAMHHikariCP
     maxPoolSize: 100
     minimumIdle: 10

@@ -47,7 +47,14 @@ class GetParamChecksumServiceTest extends CommonObjects {
         request.setDeviceMetadata(DeviceMetadata.builder()
                         .deviceId("1234")
                 .build());
-        EMVParameters emvParameters = new EMVParameters(Long.valueOf(1), "merchantId", "terminalId", "trsMid", "deviceId", "cpks", "aids", "terminalConfig", "paramCheckSum", new Timestamp(0, 0, 0, 0, 0, 0, 0), new Timestamp(0, 0, 0, 0, 0, 0, 0));
+        EMVParameters emvParameters = new EMVParameters(Long.valueOf(1),
+                "merchantId",
+                "terminalId",
+                   "trsMid", "deviceId",
+                "cpks", "aids", "terminalConfig",
+                "paramCheckSum","merchantDetails",
+                new Timestamp(0, 0, 0, 0, 0, 0, 0),
+                new Timestamp(0, 0, 0, 0, 0, 0, 0));
         when(emvParametersRepository.findByTrsMidAndTerminalIdAndDeviceId(anyString(), anyString(), anyString())).thenReturn(emvParameters);
         when(inaPayMessages.get(anyString())).thenReturn("getResponse");
 

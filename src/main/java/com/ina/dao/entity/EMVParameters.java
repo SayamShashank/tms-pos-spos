@@ -33,6 +33,9 @@ public class EMVParameters {
     private String aids;
     @Column(name = "terminal_config", length = 100000,nullable = false)
     private String terminalConfig;
+    @Column(name = "merchant_details", length = 100000,nullable = false)
+    private String merchantDetails;
+
     @Column(name="param_checksum")
     private String paramCheckSum;
     @Column(name = "created_date",nullable = false)

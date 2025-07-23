@@ -79,10 +79,10 @@ public class GetParametersService {
         String decryptedData = dataDecryptionService.decryptData(request.getSecureReqMetadata(), TMS,
                 request.getDeviceMetadata().getDeviceId(), inputRefId);
         GetParametersRequestData requestData = objectMapper.readValue(decryptedData, GetParametersRequestData.class);
-        commonUtils.validateDecryptedRequest(
-                requestData.getApiInContext().getInputRefId(),
-                requestData.getDeviceMetadata().getDeviceId(),
-                request.getApiInContext(), request.getDeviceMetadata());
+//        commonUtils.validateDecryptedRequest(
+//                requestData.getApiInContext().getInputRefId(),
+//                requestData.getDeviceMetadata().getDeviceId(),
+//                request.getApiInContext(), request.getDeviceMetadata());
         EMVParameters savedEmvParams = getEmvParameters(requestData);
         TmsParams emvParameters = registerParameterAck(requestData,savedEmvParams);
         return getParameterSecureResponse(emvParameters, request, requestData);

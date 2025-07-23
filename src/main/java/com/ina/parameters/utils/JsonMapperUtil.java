@@ -37,13 +37,14 @@ public class JsonMapperUtil {
     private static AidList mapAidList(JSONObject cardScheme) {
         AidList aidList = new AidList();
         String emvTerminalType = cardScheme.optString("emvTerminalType",null);
+        String cardSchemeAcId=cardScheme.optString("cardSchemeAcquirerId",null);
         Optional.ofNullable(cardScheme.optJSONObject("aidList"))
                 .map(aidListObj -> aidListObj.optJSONArray("aidForm"))
                 .ifPresent(aidFormArray -> {
                     List<AidData> aidDataList = IntStream.range(0, aidFormArray.length())
                             .mapToObj(aidFormArray::optJSONObject)
                             .filter(Objects::nonNull)
-                            .map(aidFormObject -> mapAIDData(aidFormObject, emvTerminalType))
+                            .map(aidFormObject -> mapAIDData(aidFormObject, emvTerminalType,cardSchemeAcId))
                             .toList();
 
                     aidList.setAidDataList(aidDataList);
@@ -55,7 +56,7 @@ public class JsonMapperUtil {
 
 
 
-    private static AidData mapAIDData(JSONObject aidJson, String emvTerminalType) {
+    private static AidData mapAIDData(JSONObject aidJson, String emvTerminalType,String cardSchemeAcId) {
         AidData aidData = new AidData();
         if (aidJson != null) {
             JSONObject iccReaderForm = Optional.ofNullable(aidJson.optJSONObject("iccReaderList"))
@@ -73,6 +74,7 @@ public class JsonMapperUtil {
             }
             aidData.setAid(aidJson.optString("aid",null));
             aidData.setEmvTerminalType(emvTerminalType);
+            aidData.setCardSchemeAcquirerId(cardSchemeAcId);
             aidData.setApplicationName(aidJson.optString("aidLabel",null));
             aidData.setTacDenial(aidJson.optString("denialActionCode", null));
             aidData.setTacOnline(aidJson.optString("onlineActionCode", null));
@@ -190,6 +192,7 @@ public class JsonMapperUtil {
         merchantDetails.setMerchantNameAddress2AR(merchantData.optString("retailerAddress2Arab",null));
         merchantDetails.setMerchantNameCityAR(merchantData.optString("retailerCityArab",null));
         merchantDetails.setMerchantNameCityEN(merchantData.optString("retailerCityEng",null));
+        merchantDetails.setMerchantPostalCode(merchantData.optString("retailerPostalCode",null));
         return merchantDetails;
     }
 
@@ -200,12 +203,8 @@ public class JsonMapperUtil {
         String decodedParams = new String(Base64.decodeBase64(encodedParams), StandardCharsets.UTF_8);
         log.info("decoded Params: {}", decodedParams);
 
-        JSONObject root = XML.toJSONObject(decodedParams);
-        if (root.length() > 0) {
-            String firstKey = root.keys().next();
-            return root.getJSONObject(firstKey);
-        }
-        return new JSONObject();
+        return XML.toJSONObject(decodedParams);
+
     }
 
 

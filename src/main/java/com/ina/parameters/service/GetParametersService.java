@@ -10,6 +10,7 @@ import com.ina.common.model.SecureRespMetadata;
 import com.ina.common.response.message.InaPayMessages;
 import com.ina.common.utils.CommonUtils;
 import com.ina.common.utils.HashUtils;
+import com.ina.common.validator.DeviceProfileValidator;
 import com.ina.config.RequestPropertyConfig;
 import com.ina.constants.AppErrorConstants;
 import com.ina.dao.EMVParametersRepository;
@@ -48,7 +49,7 @@ public class GetParametersService {
     private final ObjectMapper objectMapper;
     private final DataEncryptionService dataEncryptionService;
     private final DataDecryptionService dataDecryptionService;
-    private final CommonUtils commonUtils;
+    private final DeviceProfileValidator deviceProfileValidator;
     private final RequestPropertyConfig requestPropertyConfig;
     @Getter
     @Setter
@@ -60,13 +61,13 @@ public class GetParametersService {
     private static final String MGMT_PLAN_NS_URI = "urn:iso:std:iso:20022:tech:xsd:catm.002.001.07";
     private static final String ACCEPT_CONFIG_UPDATE_NS_URI = "urn:iso:std:iso:20022:tech:xsd:catm.003.001.08";
 
-    public GetParametersService(InaPayMessages inaPayMessages, EMVParametersRepository emvParametersRepository, ObjectMapper objectMapper, DataEncryptionService dataEncryptionService, DataDecryptionService dataDecryptionService, CommonUtils commonUtils, RequestPropertyConfig requestPropertyConfig, HashUtils hashUtils, HttpClient httpClient, Marshal marshal) {
+    public GetParametersService(InaPayMessages inaPayMessages, EMVParametersRepository emvParametersRepository, ObjectMapper objectMapper, DataEncryptionService dataEncryptionService, DataDecryptionService dataDecryptionService, DeviceProfileValidator deviceProfileValidator, RequestPropertyConfig requestPropertyConfig, HashUtils hashUtils, HttpClient httpClient, Marshal marshal) {
         this.inaPayMessages = inaPayMessages;
         this.emvParametersRepository = emvParametersRepository;
         this.objectMapper = objectMapper;
         this.dataEncryptionService = dataEncryptionService;
         this.dataDecryptionService = dataDecryptionService;
-        this.commonUtils = commonUtils;
+        this.deviceProfileValidator = deviceProfileValidator;
         this.requestPropertyConfig = requestPropertyConfig;
         this.hashUtils = hashUtils;
         this.httpClient = httpClient;
@@ -79,7 +80,7 @@ public class GetParametersService {
         String decryptedData = dataDecryptionService.decryptData(request.getSecureReqMetadata(), TMS,
                 request.getDeviceMetadata().getDeviceId(), inputRefId);
         GetParametersRequestData requestData = objectMapper.readValue(decryptedData, GetParametersRequestData.class);
-        commonUtils.validateDecryptedRequest(
+        deviceProfileValidator.validateDecryptedRequest(
                 requestData.getApiInContext().getInputRefId(),
                 requestData.getDeviceMetadata().getDeviceId(),
                 request.getApiInContext(), request.getDeviceMetadata());

@@ -9,6 +9,7 @@ import com.ina.common.exception.CommonValidationException;
 import com.ina.common.model.ApiOutContext;
 import com.ina.common.response.message.InaPayMessages;
 import com.ina.common.validator.CommonValidator;
+import com.ina.common.validator.DeviceProfileValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +23,12 @@ public class DeviceSetUpService extends CommonValidator<DeviceTMSInitRequest> {
 
     private final InitService initService;
 
-    protected DeviceSetUpService(InaPayMessages messages, InitService initService) {
+    private final DeviceProfileValidator deviceProfileValidator;
+
+    protected DeviceSetUpService(InaPayMessages messages, InitService initService, DeviceProfileValidator deviceProfileValidator) {
         super(messages);
         this.initService = initService;
+        this.deviceProfileValidator = deviceProfileValidator;
     }
 
     public DeviceTMSInitResponse deviceTMSInit(DeviceTMSInitRequest request) {
@@ -57,7 +61,11 @@ public class DeviceSetUpService extends CommonValidator<DeviceTMSInitRequest> {
 
     @Override
     public void evaluate(DeviceTMSInitRequest request) throws CommonValidationException {
-        //Intentionally left blank
+        String inputRefId = request.getApiInContext().getInputRefId();
+
+        deviceProfileValidator.timeStampFreshnessCheck(inputRefId, request.getApiInContext().getTimeStamp());
+
+        deviceProfileValidator.checkDeviceProfileFlagsForTMSINIT(request.getDeviceMetadata().getDeviceId(), inputRefId);
 
     }
 

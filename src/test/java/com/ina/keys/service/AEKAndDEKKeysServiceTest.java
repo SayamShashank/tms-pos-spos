@@ -4,6 +4,7 @@ import com.ina.common.crypto.model.aekdek.AvailableServerKeysResponse;
 import com.ina.common.crypto.model.aekdek.GenerateAEKAndDEKInfo;
 import com.ina.common.crypto.model.aekdek.GenerateAEKAndDEKResponse;
 import com.ina.common.crypto.service.AEKAndDEKService;
+import com.ina.common.enums.NextCommandDetails;
 import com.ina.common.exception.CommonValidationException;
 import com.ina.common.model.ApiInContext;
 import com.ina.common.model.CommonResponse;
@@ -73,7 +74,7 @@ public class AEKAndDEKKeysServiceTest {
     @Test
     void testGenerateDEKAndAEKKeyException() {
         when(aekAndDEKService.generateAEKAndDEK("TMS", "123"))
-                .thenThrow(new CommonValidationException("123", "ERR_CODE", "Some error", "Additional", null));
+                .thenThrow(new CommonValidationException("123", "ERR_CODE", "Some error", NextCommandDetails.BLOCK, null));
         CommonResponse result = aekAndDEKKeysService.generateDEKAndAEKKey(request);
         assertEquals("OK", result.getApiOutContext().getStatus());
         assertEquals("123", result.getApiOutContext().getOutputRefId());
@@ -103,7 +104,7 @@ public class AEKAndDEKKeysServiceTest {
     @Test
     void testRotateDEKException() {
         when(aekAndDEKService.rotateDEK("TMS", "123"))
-                .thenThrow(new CommonValidationException("123", "ROTATE_ERR", "Rotate Error", "Extra", null));
+                .thenThrow(new CommonValidationException("123", "ROTATE_ERR", "Rotate Error", NextCommandDetails.BLOCK, null));
         CommonResponse result = aekAndDEKKeysService.rotateDEK(request);
         assertEquals("OK", result.getApiOutContext().getStatus());
         assertEquals("TMSROTATE_ERR", result.getApiOutContext().getCode());

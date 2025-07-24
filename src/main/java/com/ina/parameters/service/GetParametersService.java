@@ -12,7 +12,6 @@ import com.ina.common.utils.CommonUtils;
 import com.ina.common.utils.HashUtils;
 import com.ina.common.validator.DeviceProfileValidator;
 import com.ina.config.RequestPropertyConfig;
-import com.ina.constants.AppErrorConstants;
 import com.ina.dao.EMVParametersRepository;
 import com.ina.dao.entity.EMVParameters;
 import com.ina.parameters.messages.Acknowledgement;
@@ -35,6 +34,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.ina.common.constants.AppErrorConstants.SUCCESS_CODE;
 import static com.ina.constants.AppConstants.TMS;
 import static com.ina.parameters.utils.JsonMapperUtil.getResult;
 import static java.util.Objects.isNull;
@@ -92,7 +92,7 @@ public class GetParametersService {
     @NotNull
     private ParameterSecureResponse getParameterSecureResponse(TmsParams emvParameters, GetParametersRequest request,GetParametersRequestData requestData) throws JsonProcessingException {
         ParameterSecureResponse response = new ParameterSecureResponse();
-        ApiOutContext apiOutContext = CommonUtils.getApiOutContext(request.getApiInContext().getInputRefId(), AppErrorConstants.SUCCESS_CODE, inaPayMessages, inaPayMessages.get(AppErrorConstants.SUCCESS_CODE), TMS);
+        ApiOutContext apiOutContext = CommonUtils.getApiOutContext(request.getApiInContext().getInputRefId(), SUCCESS_CODE , inaPayMessages, inaPayMessages.get(SUCCESS_CODE));
         ParameterResponse parameterResponse = new ParameterResponse();
         parameterResponse.setApiOutContext(apiOutContext);
         log.info("Retrieved EMV parameters:{}",emvParameters);

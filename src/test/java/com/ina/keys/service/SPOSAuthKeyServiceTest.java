@@ -7,6 +7,7 @@ import com.ina.common.crypto.model.keys.SPOSAuthKeyInfo;
 import com.ina.common.crypto.model.keys.SPOSAuthKeyRequest;
 import com.ina.common.crypto.service.SPOSAuthenticationKeys;
 import com.ina.common.crypto.util.CryptoUtils;
+import com.ina.common.enums.NextCommandDetails;
 import com.ina.common.exception.CommonValidationException;
 import com.ina.common.model.CommonResponse;
 import com.ina.common.response.message.InaPayMessages;
@@ -76,7 +77,7 @@ class SPOSAuthKeyServiceTest {
         responseMock.setStatusCode("200");
         when(cryptoUtils.updateServerCertificates(any(), anyString(), any()))
                 .thenReturn(responseMock);
-        when(inaPayMessages.get("0000")).thenReturn("SUCCESS");
+        when(inaPayMessages.get("000")).thenReturn("SUCCESS");
         CommonResponse response = sposAuthKeyService.generateSPOSAuthKey(request);
         assertEquals("1234", response.getApiOutContext().getOutputRefId());
         assertNotNull(response.getApiOutContext().getTimeStamp());
@@ -93,7 +94,7 @@ class SPOSAuthKeyServiceTest {
         responseMock.setStatusCode("400");
         when(cryptoUtils.updateServerCertificates(any(), anyString(), any()))
                 .thenReturn(responseMock);
-        when(inaPayMessages.get("9999"))
+        when(inaPayMessages.get("999"))
                 .thenReturn("Failed");
         CommonResponse response = sposAuthKeyService.generateSPOSAuthKey(request);
         assertEquals("1234", response.getApiOutContext().getOutputRefId());
@@ -107,8 +108,8 @@ class SPOSAuthKeyServiceTest {
         request.setApiInContext(CommonObjects.getApiInContext());
 
         when(cryptoUtils.updateServerCertificates(any(), anyString(), any()))
-                .thenThrow(new CommonValidationException("E101", "VALIDATION_FAILED", "Invalid certificate", "", null));
-        when(inaPayMessages.get("9999")).thenReturn("Failed");
+                .thenThrow(new CommonValidationException("E101", "VALIDATION_FAILED", "Invalid certificate", NextCommandDetails.BLOCK, null));
+        when(inaPayMessages.get("999")).thenReturn("Failed");
 
         CommonResponse response = sposAuthKeyService.generateSPOSAuthKey(request);
 
@@ -176,7 +177,7 @@ class SPOSAuthKeyServiceTest {
         fetchSPOSAuthKeyRequest.setAuthKeyType("ECDSA");
         fetchSPOSAuthKeyRequest.setApiInContext(CommonObjects.getApiInContext());
         when(sposAuthenticationKeys.getSPOSAuthenticationKeys("ECDSA", "1234"))
-                .thenThrow(new CommonValidationException("123", "ERR_CODE", "Some error", "Additional", null));
+                .thenThrow(new CommonValidationException("123", "ERR_CODE", "Some error", NextCommandDetails.BLOCK, null));
 
         CommonResponse result = sposAuthKeyService.getSPOSAuthKey(fetchSPOSAuthKeyRequest);
 

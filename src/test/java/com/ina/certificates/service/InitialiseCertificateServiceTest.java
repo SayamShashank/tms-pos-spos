@@ -57,7 +57,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects{
 
     @Test
     void testGenerateServerCerts_Success() {
-        when(messages.get("0000")).thenReturn("Success");
+        when(messages.get("000")).thenReturn("Success");
         CertificateGenerationResponse certResponse = new CertificateGenerationResponse();
         certResponse.setStatus("success");
 
@@ -69,7 +69,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects{
 
     @Test
     void testGenerateServerCerts_Failure() {
-        when(messages.get("9999")).thenReturn("Failed");
+        when(messages.get("999")).thenReturn("Failed");
         CertificateGenerationResponse certResponse = new CertificateGenerationResponse();
         certResponse.setStatus("failure");
         certResponse.setMessage("Failed");
@@ -91,7 +91,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects{
 
     @Test
     void testGenerateRootCertificate_Success() {
-        when(messages.get("0000")).thenReturn("Success");
+        when(messages.get("000")).thenReturn("Success");
         PublishRootCertificateRequest publishRootCertificateRequest = new PublishRootCertificateRequest();
         RootCertificateResponse rootCertificateResponse = new RootCertificateResponse();
         rootCertificateResponse.setCert("cert-data");
@@ -112,7 +112,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects{
 
     @Test
     void testGenerateRootCertificateFailure() {
-        when(messages.get("9999")).thenReturn("Failed");
+        when(messages.get("999")).thenReturn("Failed");
         PublishRootCertificateRequest publishRootCertificateRequest = new PublishRootCertificateRequest();
         RootCertificateResponse rootCertificateResponse = new RootCertificateResponse();
         rootCertificateResponse.setCert("cert data");
@@ -149,7 +149,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects{
 
     @Test
     void testGenerateL4Certs_Success() {
-        when(messages.get("0000")).thenReturn("Success");
+        when(messages.get("000")).thenReturn("Success");
         ApiOutContext outContext = new ApiOutContext();
         outContext.setStatus("Success");
 
@@ -165,7 +165,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects{
 
     @Test
     void testGenerateL4CertsFailure() {
-        when(messages.get("0000")).thenReturn("Failed");
+        when(messages.get("000")).thenReturn("Failed");
         ApiOutContext outContext = new ApiOutContext();
         outContext.setStatus("Failure");
 
@@ -189,7 +189,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects{
 
     @Test
     void testGetAllServerCerts() {
-        when(messages.get("0000")).thenReturn("Success");
+        when(messages.get("000")).thenReturn("Success");
         ServerCertsResponse certsResponse = new ServerCertsResponse();
         when(certGenerationService.getAllServerCerts()).thenReturn(certsResponse);
 
@@ -204,7 +204,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects{
         apiOutContext.setMessage("Success");
         info.setApiOutContext(apiOutContext);
         when(certGenerationService.viewCertificate(any(), any())).thenReturn(info);
-        when(messages.get("0000")).thenReturn("Success");
+        when(messages.get("000")).thenReturn("Success");
         ViewCertificateInfo response = initialiseCertificateService.viewCertInfo(initialiseCertRequest);
         assertNotNull(response);
     }
@@ -233,7 +233,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects{
         ServerCertsStatusResponse certsStatusResponse = new ServerCertsStatusResponse();
         when(certGenerationService.getServerCertificateStatus("SSL"))
                 .thenReturn(certsStatusResponse);
-        when(messages.get("0000")).thenReturn("Success");
+        when(messages.get("000")).thenReturn("Success");
 
         ServerCertsStatusResponse result = initialiseCertificateService.getServerCertificateStatus(certRequest);
         assertNotNull(result);
@@ -249,7 +249,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects{
         DeviceCertsResponse deviceCertsResponse=buildDeviceCertsResponse();
         when(certGenerationService.getAllDeviceSpecificCerts(commonRequest.getDeviceMetadata().getDeviceId(),commonRequest.getApiInContext().getInputRefId()))
                 .thenReturn(deviceCertsResponse);
-        when(messages.get("0000")).thenReturn("Success");
+        when(messages.get("000")).thenReturn("Success");
         DeviceCertsResponse response=initialiseCertificateService.getDeviceCerts(commonRequest);
         assertNotNull(response);
     }
@@ -260,7 +260,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects{
         DeviceCertsResponse deviceCertsResponse=buildEmptyDeviceCertsResponse();
         when(certGenerationService.getAllDeviceSpecificCerts(commonRequest.getDeviceMetadata().getDeviceId(), commonRequest.getApiInContext().getInputRefId()))
                 .thenReturn(deviceCertsResponse);
-        when(messages.get("9999")).thenReturn("Failure");
+        when(messages.get("999")).thenReturn("Failure");
         DeviceCertsResponse response=initialiseCertificateService.getDeviceCerts(commonRequest);
         assertNotNull(response);
     }

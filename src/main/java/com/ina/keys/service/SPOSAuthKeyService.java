@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import static com.ina.common.constants.AppErrorConstants.*;
 import static com.ina.common.utils.CommonUtils.getApiOutContext;
+import static com.ina.common.utils.CommonUtils.throwValidationException;
 import static com.ina.constants.AppConstants.TMS;
 import static java.util.Objects.isNull;
 
@@ -50,8 +51,8 @@ public class SPOSAuthKeyService extends CommonValidator<SPOSAuthKeyRequest> {
 
         String inputRefId = authKeyRequest.getApiInContext().getInputRefId();
         if (isNull(authKeyRequest.getApiInContext().getTimeStamp())) {
-            throw new CommonValidationException(inputRefId, TIME_STAMP_IS_MISSED_IN_REQUEST,
-                    messages.get(TIME_STAMP_IS_MISSED_IN_REQUEST), NextCommandDetails.BLOCK, null);
+            throw throwValidationException(inputRefId, TIME_STAMP_IS_NOT_AVAILABLE_IN_REQUEST,
+                    messages,NextCommandDetails.BLOCK);
         }
 
         deviceProfileValidator.timeStampFreshnessCheck(inputRefId, authKeyRequest.getApiInContext().getTimeStamp());
@@ -71,14 +72,14 @@ public class SPOSAuthKeyService extends CommonValidator<SPOSAuthKeyRequest> {
             ServerCertsGenerationResponse serverCertsGenerationResponse =
                     cryptoUtils.updateServerCertificates(certChain, "ECP256", sposAuthKeyRequest.getApiInContext());
             if (serverCertsGenerationResponse.getStatusCode().equalsIgnoreCase("200")) {
-                apiOutContext = getApiOutContext(inputRefId, SPOS_AUTH_KEYS_GENERATED_SUCCESSFULLY, inaPayMessages, inaPayMessages.get(SUCCESS_CODE), TMS);
+                apiOutContext = getApiOutContext(inputRefId, SPOS_AUTH_KEYS_GENERATED_SUCCESSFULLY, inaPayMessages, inaPayMessages.get(SUCCESS_CODE));
 
             } else {
-                apiOutContext = getApiOutContext(inputRefId, SPOS_AUTH_KEYS_GENERATION_FAILED, inaPayMessages, inaPayMessages.get(FAILED_CODE), TMS);
+                apiOutContext = getApiOutContext(inputRefId, SPOS_AUTH_KEYS_GENERATION_FAILED, inaPayMessages, inaPayMessages.get(FAILED_CODE));
 
             }
         } catch (CommonValidationException exception) {
-            apiOutContext = getApiOutContext(inputRefId, exception.getCode(), exception.getMessage(), inaPayMessages.get(FAILED_CODE), TMS);
+            apiOutContext = getApiOutContext(inputRefId, exception.getCode(), exception.getMessage(), inaPayMessages.get(FAILED_CODE));
 
         }
         response.setApiOutContext(apiOutContext);
@@ -96,14 +97,14 @@ public class SPOSAuthKeyService extends CommonValidator<SPOSAuthKeyRequest> {
                     getSPOSAuthenticationKeys(request.getAuthKeyType(), inputRefId);
 
             if (responseKey.getStatusCode().equalsIgnoreCase("200")) {
-                apiOutContext = getApiOutContext(inputRefId, SPOS_AUTH_KEYS_RETRIEVED_SUCCESSFULLY, inaPayMessages, inaPayMessages.get(SUCCESS_CODE), TMS);
+                apiOutContext = getApiOutContext(inputRefId, SPOS_AUTH_KEYS_RETRIEVED_SUCCESSFULLY, inaPayMessages, inaPayMessages.get(SUCCESS_CODE));
 
             } else {
-                apiOutContext = getApiOutContext(inputRefId, SPOS_AUTH_KEYS_RETRIEVAL_FAILED, inaPayMessages, inaPayMessages.get(FAILED_CODE), TMS);
+                apiOutContext = getApiOutContext(inputRefId, SPOS_AUTH_KEYS_RETRIEVAL_FAILED, inaPayMessages, inaPayMessages.get(FAILED_CODE));
 
             }
         } catch (CommonValidationException exception) {
-            apiOutContext = getApiOutContext(inputRefId, exception.getCode(), exception.getMessage(), inaPayMessages.get(FAILED_CODE), TMS);
+            apiOutContext = getApiOutContext(inputRefId, exception.getCode(), exception.getMessage(), inaPayMessages.get(FAILED_CODE));
 
         }
         response.setApiOutContext(apiOutContext);

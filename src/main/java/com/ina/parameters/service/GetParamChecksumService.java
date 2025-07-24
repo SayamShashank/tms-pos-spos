@@ -8,9 +8,9 @@ import com.ina.parameters.model.GetParamChecksumRequest;
 import com.ina.parameters.model.ParamChecksumResponse;
 import org.springframework.stereotype.Service;
 
+import static com.ina.common.constants.AppErrorConstants.SUCCESS_CODE;
 import static com.ina.constants.AppConstants.TMS;
 import static com.ina.constants.AppErrorConstants.CHECKSUM_NOT_FOUND;
-import static com.ina.constants.AppErrorConstants.SUCCESS_CODE;
 import static com.ina.util.TMSUtil.throwValidationException;
 import static java.util.Objects.nonNull;
 

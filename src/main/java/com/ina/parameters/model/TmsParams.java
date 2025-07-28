@@ -10,8 +10,8 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 public class TmsParams {
-    private List<AidList> aids;
-    private List<RidList> cpks;
+    private List<AidData> aids;
+    private List<RidData> cpks;
     private MerchantTerminalData terminalConfig;
     private MerchantDetails merchantDetails;
 }

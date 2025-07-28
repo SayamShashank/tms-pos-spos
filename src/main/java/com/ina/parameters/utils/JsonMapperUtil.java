@@ -22,20 +22,22 @@ import static com.ina.constants.AppConstants.CARD_SCHEME;
 
 @Slf4j
 public class JsonMapperUtil {
-    public static List<AidList> mapAidLists(JSONObject cardSchemeList) {
-        return  Optional.ofNullable(cardSchemeList.optJSONArray(CARD_SCHEME))
+
+
+    public static List<AidData> mapAidLists(JSONObject cardSchemeList) {
+        return Optional.ofNullable(cardSchemeList.optJSONArray(CARD_SCHEME))
                 .map(cardSchemes -> IntStream.range(0, cardSchemes.length())
                         .mapToObj(cardSchemes::getJSONObject)
                         .map(JsonMapperUtil::mapAidList)
-                        .filter(aidList -> aidList.getAidDataList() != null && !aidList.getAidDataList().isEmpty())
+                        .filter(aid -> aid != null && !aid.isEmpty())
+                        .flatMap(List::stream)
                         .toList())
-                .orElse(new ArrayList<>());
-
+                .orElseGet(ArrayList::new);
     }
 
 
-    private static AidList mapAidList(JSONObject cardScheme) {
-        AidList aidList = new AidList();
+    private static List<AidData> mapAidList(JSONObject cardScheme) {
+        List<AidData> aidList=new ArrayList<>();
         String emvTerminalType = cardScheme.optString("emvTerminalType",null);
         String cardSchemeAcId=cardScheme.optString("cardSchemeAcquirerId",null);
         Optional.ofNullable(cardScheme.optJSONObject("aidList"))
@@ -46,11 +48,8 @@ public class JsonMapperUtil {
                             .filter(Objects::nonNull)
                             .map(aidFormObject -> mapAIDData(aidFormObject, emvTerminalType,cardSchemeAcId))
                             .toList();
-
-                    aidList.setAidDataList(aidDataList);
+                    aidList.addAll(aidDataList);
                 });
-
-
         return aidList;
     }
 
@@ -90,18 +89,20 @@ public class JsonMapperUtil {
         return value;
     }
 
-    public static List<RidList> mapRidLists(JSONObject cardSchemeList) {
+    public static List<RidData> mapRidLists(JSONObject cardSchemeList) {
         return Optional.ofNullable(cardSchemeList.optJSONArray(CARD_SCHEME))
                 .map(cardSchemes -> IntStream.range(0, cardSchemes.length())
                         .mapToObj(cardSchemes::getJSONObject)
-                        .map(JsonMapperUtil::mapRidList)
-                        .filter(ridList -> ridList.getRidDataList() != null && !ridList.getRidDataList().isEmpty())
+                        .map(JsonMapperUtil::mapRidList) // This returns List<RidData>
+                        .filter(ridDataList -> ridDataList != null && !ridDataList.isEmpty())
+                        .flatMap(List::stream) // Flatten all List<RidData> into one
                         .toList())
-                .orElse(new ArrayList<>());
+                .orElseGet(ArrayList::new);
     }
 
-    public static RidList mapRidList(JSONObject cardScheme) {
-        RidList ridList = new RidList();
+
+
+    public static List<RidData> mapRidList(JSONObject cardScheme) {
         List<RidData> ridDataList = Optional.ofNullable(cardScheme.optJSONObject("ridList"))
                 .map(ridListJson -> ridListJson.optJSONArray("ridForm"))
                 .map(ridForm -> IntStream.range(0, ridForm.length())
@@ -111,8 +112,7 @@ public class JsonMapperUtil {
                         .toList())
                 .orElse(new ArrayList<>());
 
-        ridList.setRidDataList(ridDataList);
-        return ridList;
+        return new ArrayList<>(ridDataList);
     }
 
     private static RidData mapRidData(JSONObject ridJson) {
@@ -160,9 +160,8 @@ public class JsonMapperUtil {
         JSONObject madaAppData = appParamJsonObject.getJSONObject("madaAppData");
         JSONObject madaTrmlData =appParamJsonObject.getJSONObject("madaTrmlData");
         JSONObject cardSchemeList = madaAppData.getJSONObject("cardSchemeList");
-        List<AidList> aidLists = mapAidLists(cardSchemeList);
-        aidLists.forEach(aidList ->  log.info("JSON app decoded aidList:{} ", aidList));
-        List<RidList> ridList =mapRidLists(cardSchemeList);
+        List<AidData> aidLists = mapAidLists(cardSchemeList);
+        List<RidData> ridList =mapRidLists(cardSchemeList);
         log.info("JSON app decoded ridList:{} ", ridList);
         MerchantTerminalData terminalConfig = mapMerchantParam(cardSchemeList);
         terminalConfig.setTerminalId(madaTrmlData.optString("terminalId",null));
@@ -208,7 +207,7 @@ public class JsonMapperUtil {
     }
 
 
-    public record Result(List<AidList> aidLists, List<RidList> ridList, MerchantTerminalData terminalConfig,MerchantDetails merchantDetails) {
+    public record Result(List<AidData> aidLists, List<RidData> ridList, MerchantTerminalData terminalConfig,MerchantDetails merchantDetails) {
     }
 
 

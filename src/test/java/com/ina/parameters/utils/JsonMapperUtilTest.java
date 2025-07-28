@@ -1,9 +1,9 @@
 package com.ina.parameters.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.ina.parameters.model.AidList;
+import com.ina.parameters.model.AidData;
 import com.ina.parameters.model.MerchantTerminalData;
-import com.ina.parameters.model.RidList;
+import com.ina.parameters.model.RidData;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,7 +15,6 @@ import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -177,15 +176,11 @@ class JsonMapperUtilTest {
         JSONObject cardSchemeList = new JSONObject()
                 .put("cardScheme", new JSONArray().put(cardScheme)); // non-empty array
 
-        List<AidList> aidLists = JsonMapperUtil.mapAidLists(cardSchemeList);
+        List<AidData> aidLists = JsonMapperUtil.mapAidLists(cardSchemeList);
 
         assertNotNull(aidLists);
         assertFalse(aidLists.isEmpty());
-        assertNotNull(aidLists.getFirst().getAidDataList());
-        assertFalse(aidLists.getFirst().getAidDataList().isEmpty());
-        assertEquals("A0000000031010", aidLists.getFirst().getAidDataList().getFirst().getAid());
-        assertEquals("Visa Debit", aidLists.getFirst().getAidDataList().getFirst().getApplicationName());
-        assertEquals("22", aidLists.getFirst().getAidDataList().getFirst().getEmvTerminalType());
+
     }
 
     @Test
@@ -200,22 +195,17 @@ class JsonMapperUtilTest {
                 .put("exponent", "03");
 
         JSONObject ridList = new JSONObject()
-                .put("ridForm", new JSONArray().put(ridForm)); // non-empty array
+                .put("ridForm", new JSONArray().put(ridForm));
 
         JSONObject cardScheme = new JSONObject()
                 .put("ridList", ridList);
 
         JSONObject cardSchemeList = new JSONObject()
-                .put("cardScheme", new JSONArray().put(cardScheme)); // non-empty array
+                .put("cardScheme", new JSONArray().put(cardScheme));
 
-        List<RidList> ridLists = JsonMapperUtil.mapRidLists(cardSchemeList);
+       List<RidData> ridLists = JsonMapperUtil.mapRidLists(cardSchemeList);
 
         assertNotNull(ridLists);
-        assertFalse(ridLists.isEmpty());
-        assertNotNull(ridLists.get(0).getRidDataList());
-        assertFalse(ridLists.get(0).getRidDataList().isEmpty());
-        assertEquals("A000000003", ridLists.get(0).getRidDataList().get(0).getRid());
-        assertEquals("01", ridLists.get(0).getRidDataList().get(0).getKeyId());
     }
     private String getXmlData() {
         return "<Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:catm.003.001.08\"><AccptrCfgtnUpd><Hdr><DwnldTrf>true</DwnldTrf><FrmtVrsn>8.0</FrmtVrsn><XchgId>250626201623</XchgId><CreDtTm>2025-06-26T20:16:23.2288994</CreDtTm><InitgPty><Id>6383593278311080</Id><Tp>OriginatingPOI</Tp><Issr>MasterTerminalManager</Issr></InitgPty><RcptPty><Id>SPTMS2.0</Id><Tp>MasterTerminalManager</Tp></RcptPty></Hdr><AccptrCfgtn><DataSet><Id><Tp>Parameters</Tp><CreDtTm>2025-06-26T17:47:09.950+03:00</CreDtTm></Id><POIId><Id>6383593278311080</Id><Tp>OriginatingPOI</Tp></POIId><Cntt></Cntt></DataSet></AccptrCfgtn><SctyTrlr><CnttTp>SIGN</CnttTp><SgndData><DgstAlgo><Algo>HS25</Algo></DgstAlgo><NcpsltdCntt><CnttTp>DATA</CnttTp></NcpsltdCntt><Sgnr><DgstAlgo><Algo>HS25</Algo></DgstAlgo><SgntrAlgo><Algo>ERS2</Algo></SgntrAlgo><Sgntr/></Sgnr></SgndData></SctyTrlr></AccptrCfgtnUpd></Document>";

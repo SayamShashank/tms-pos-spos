@@ -47,7 +47,7 @@ public class InitialiseCertificateService extends CommonValidator<ApiInContext> 
 
         if (nonNull(apiInContext.getTimeStamp())){
             throw throwValidationException(inputRefId, TIME_STAMP_IS_NOT_AVAILABLE_IN_REQUEST,
-                    messages,NextCommandDetails.BLOCK);
+                    messages, NextCommandDetails.BLOCK);
         }
         deviceProfileValidator.timeStampFreshnessCheck(inputRefId, apiInContext.getTimeStamp());
 

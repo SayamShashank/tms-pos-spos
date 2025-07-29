@@ -48,7 +48,7 @@ public class AEKAndDEKKeysService extends CommonValidator<Request> {
             String inputRefId = request.getApiInContext().getInputRefId();
             if (isNull(request.getApiInContext().getTimeStamp())){
                 throw throwValidationException(inputRefId, TIME_STAMP_IS_NOT_AVAILABLE_IN_REQUEST,
-                        messages,NextCommandDetails.BLOCK);
+                        messages, NextCommandDetails.BLOCK);
             }
 
             deviceProfileValidator.timeStampFreshnessCheck(inputRefId, request.getApiInContext().getTimeStamp());

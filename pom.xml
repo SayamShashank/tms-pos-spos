@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.3</version>
+        <version>3.4.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.ina</groupId>
@@ -36,7 +36,7 @@
         <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
         <sonar.language>java</sonar.language>
         <java.version>21</java.version>
-        <sonar.exclusions>**/com/ina/tms/packages/**/*</sonar.exclusions>
+
     </properties>
     <dependencies>
         <dependency>

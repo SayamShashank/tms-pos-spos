@@ -1,5 +1,6 @@
 package com.ina.parameters.service;
 
+import com.ina.common.enums.NextCommandDetails;
 import com.ina.common.response.message.InaPayMessages;
 import com.ina.common.utils.CommonUtils;
 import com.ina.dao.EMVParametersRepository;
@@ -9,9 +10,9 @@ import com.ina.parameters.model.ParamChecksumResponse;
 import org.springframework.stereotype.Service;
 
 import static com.ina.common.constants.AppErrorConstants.SUCCESS_CODE;
+import static com.ina.common.utils.CommonUtils.throwValidationException;
 import static com.ina.constants.AppConstants.TMS;
 import static com.ina.constants.AppErrorConstants.CHECKSUM_NOT_FOUND;
-import static com.ina.util.TMSUtil.throwValidationException;
 import static java.util.Objects.nonNull;
 
 @Service
@@ -20,6 +21,7 @@ public class GetParamChecksumService {
     private final InaPayMessages inaPayMessages;
 
     public GetParamChecksumService(EMVParametersRepository emvParametersRepository, InaPayMessages inaPayMessages) {
+        super();
         this.emvParametersRepository = emvParametersRepository;
         this.inaPayMessages = inaPayMessages;
     }
@@ -34,13 +36,14 @@ public class GetParamChecksumService {
             response.setApiOutContext(CommonUtils.getApiOutContext(
                     request.getApiInContext().getInputRefId(),
                     SUCCESS_CODE,
-                    inaPayMessages.get(SUCCESS_CODE), TMS));
+                    inaPayMessages,inaPayMessages.get(SUCCESS_CODE)));
             return response;
         }else {
              throw throwValidationException(
                     request.getApiInContext().getInputRefId(),
                     CHECKSUM_NOT_FOUND,
-                    inaPayMessages);
+                    inaPayMessages.get( CHECKSUM_NOT_FOUND),
+                     NextCommandDetails.BLOCK);
         }
 
     }

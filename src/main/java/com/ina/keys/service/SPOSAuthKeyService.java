@@ -52,7 +52,7 @@ public class SPOSAuthKeyService extends CommonValidator<SPOSAuthKeyRequest> {
         String inputRefId = authKeyRequest.getApiInContext().getInputRefId();
         if (isNull(authKeyRequest.getApiInContext().getTimeStamp())) {
             throw throwValidationException(inputRefId, TIME_STAMP_IS_NOT_AVAILABLE_IN_REQUEST,
-                    messages,NextCommandDetails.BLOCK);
+                    messages, NextCommandDetails.BLOCK);
         }
 
         deviceProfileValidator.timeStampFreshnessCheck(inputRefId, authKeyRequest.getApiInContext().getTimeStamp());

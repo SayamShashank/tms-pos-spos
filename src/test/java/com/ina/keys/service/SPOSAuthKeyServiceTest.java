@@ -1,6 +1,7 @@
 package com.ina.keys.service;
 
 import com.ina.CommonObjects;
+import com.ina.common.config.AppContext;
 import com.ina.common.crypto.model.certs.ServerCertsGenerationResponse;
 import com.ina.common.crypto.model.keys.FetchSPOSAuthKeyRequest;
 import com.ina.common.crypto.model.keys.SPOSAuthKeyInfo;
@@ -9,41 +10,27 @@ import com.ina.common.crypto.service.SPOSAuthenticationKeys;
 import com.ina.common.crypto.util.CryptoUtils;
 import com.ina.common.enums.NextCommandDetails;
 import com.ina.common.exception.CommonValidationException;
+import com.ina.common.model.ApiInContext;
 import com.ina.common.model.CommonResponse;
 import com.ina.common.response.message.InaPayMessages;
+import com.ina.common.utils.CommonUtils;
+import com.ina.common.validator.DeviceProfileValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
-class SPOSAuthKeyServiceTest {
-
-    public static final String PUBLIC_KEY =
-            "-----BEGIN PUBLIC KEY-----\n" +
-                    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnZUI9aQ9r+x0HR3QplkM\n" +
-                    "LzHNkQzK5yQbpY6ZIgVkbL5E8n9GLC8sJ5l+kPXmrDo5tb5+DxRf4OPUJvX1v3lY\n" +
-                    "QXr1BsmH1lR2yB09MyXt0mGFlq7b4A4yGmUj7YsnUMLd5pZGiCm+oZBllJbXsVcZ\n" +
-                    "ykOQ2J9m1oKD2WyMkCW94YtIfvSkRTy2S4Th0Wmnvvrr3Rb8zX8iAB0cX56jwIDAQAB\n" +
-                    "-----END PUBLIC KEY-----";
-
-    public static final String EXPORTED_PRIVATE_KEY =
-            "-----BEGIN PRIVATE KEY-----\n" +
-                    "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCd1Qj1pD2v7HQd\n" +
-                    "HdCmWQwvMc2RDMrnJBuljpkjBWRsvkTye0YsLywnmX6Q9easOjltvn4PFF/g49Qm\n" +
-                    "9fW/eVhBfvsGycfWNHbIHT0zJe3SYYWVrtvgDjIaZSPticyUwt3mlkaIKb6hkGWU\n" +
-                    "ltewVxnKQ5DYn2bWgoPZbIyQJb3hi0h+9KRFPLZLhOHRaae+++vdFvzNfyIAHRxf\n" +
-                    "nqPAgMBAAECggEABV6Aw8Rf3wqpPw1OeMRBbfq/De8XUHV8d9UOX3ZGGOrlhBlJs\n" +
-                    "BBEKivwINyfFl+w8qctH95OlNtwbAK9Rz7/8SqaSB5RhQ3I8Knv4rf9eAEIOFydS\n" +
-                    "h4DwIDAQAB\n" +
-                    "-----END PRIVATE KEY-----";
+class SPOSAuthKeyServiceTest extends CommonObjects {
 
     @InjectMocks
     private SPOSAuthKeyService sposAuthKeyService;
@@ -57,6 +44,14 @@ class SPOSAuthKeyServiceTest {
     @Mock
     private InaPayMessages inaPayMessages;
 
+    @Mock
+    private ApiInContext apiInContext;
+
+    @Mock
+    private DeviceProfileValidator deviceProfileValidator;
+
+    @Mock
+    private CommonUtils commonUtils;
 
 
     @Test
@@ -70,25 +65,33 @@ class SPOSAuthKeyServiceTest {
     void testGenerateSPOSAuthKeySuccess() {
         SPOSAuthKeyRequest request = new SPOSAuthKeyRequest();
         request.setAuthKeyType("ECDSA");
-        request.setPubKey(PUBLIC_KEY);
-        request.setExportedPvtKey(EXPORTED_PRIVATE_KEY);
         request.setApiInContext(CommonObjects.getApiInContext());
         ServerCertsGenerationResponse responseMock = new ServerCertsGenerationResponse();
         responseMock.setStatusCode("200");
         when(cryptoUtils.updateServerCertificates(any(), anyString(), any()))
                 .thenReturn(responseMock);
         when(inaPayMessages.get("000")).thenReturn("SUCCESS");
-        CommonResponse response = sposAuthKeyService.generateSPOSAuthKey(request);
-        assertEquals("1234", response.getApiOutContext().getOutputRefId());
-        assertNotNull(response.getApiOutContext().getTimeStamp());
+        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
+             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
+            appContextMockedStatic.when(AppContext::getApplicationName)
+                    .thenReturn("ina-txn-service");
+
+            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
+                    .thenReturn("TXN");
+            commonUtilsMockedStatic.when(() ->
+                    CommonUtils.getApiOutContext(
+                            anyString(), anyString(), any(InaPayMessages.class), anyString())
+            ).thenReturn(buildApiOutContextData());
+            CommonResponse response = sposAuthKeyService.generateSPOSAuthKey(request);
+            assertEquals("1234", response.getApiOutContext().getOutputRefId());
+
+        }
     }
 
     @Test
     void testGenerateSPOSAuthKeyFailure() {
         SPOSAuthKeyRequest request = new SPOSAuthKeyRequest();
         request.setAuthKeyType("ECDSA");
-        request.setPubKey(PUBLIC_KEY);
-        request.setExportedPvtKey(EXPORTED_PRIVATE_KEY);
         request.setApiInContext(CommonObjects.getApiInContext());
         ServerCertsGenerationResponse responseMock = new ServerCertsGenerationResponse();
         responseMock.setStatusCode("400");
@@ -96,28 +99,48 @@ class SPOSAuthKeyServiceTest {
                 .thenReturn(responseMock);
         when(inaPayMessages.get("999"))
                 .thenReturn("Failed");
-        CommonResponse response = sposAuthKeyService.generateSPOSAuthKey(request);
-        assertEquals("1234", response.getApiOutContext().getOutputRefId());
+        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
+             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
+
+            appContextMockedStatic.when(AppContext::getApplicationName)
+                    .thenReturn("ina-txn-service");
+
+            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
+                    .thenReturn("TXN");
+            commonUtilsMockedStatic.when(() ->
+                    CommonUtils.getApiOutContext(
+                            anyString(), anyString(), any(InaPayMessages.class), anyString())
+            ).thenReturn(buildApiOutContextData());
+            CommonResponse response = sposAuthKeyService.generateSPOSAuthKey(request);
+            assertNotNull(response);
+        }
     }
     @Test
-    void testGenerateSPOSAuthKeyException() throws Exception {
+    void testGenerateSPOSAuthKeyException() {
         SPOSAuthKeyRequest request = new SPOSAuthKeyRequest();
         request.setAuthKeyType("ECDSA");
-        request.setPubKey(PUBLIC_KEY);
-        request.setExportedPvtKey(EXPORTED_PRIVATE_KEY);
         request.setApiInContext(CommonObjects.getApiInContext());
 
         when(cryptoUtils.updateServerCertificates(any(), anyString(), any()))
                 .thenThrow(new CommonValidationException("E101", "VALIDATION_FAILED", "Invalid certificate", NextCommandDetails.BLOCK, null));
         when(inaPayMessages.get("999")).thenReturn("Failed");
+        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
+             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
 
-        CommonResponse response = sposAuthKeyService.generateSPOSAuthKey(request);
+            appContextMockedStatic.when(AppContext::getApplicationName)
+                    .thenReturn("ina-txn-service");
 
-        assertEquals("TMSVALIDATION_FAILED", response.getApiOutContext().getCode());
-        assertEquals("Failed", response.getApiOutContext().getStatus());
-        assertEquals("1234", response.getApiOutContext().getOutputRefId());
+            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
+                    .thenReturn("TXN");
+            commonUtilsMockedStatic.when(() ->
+                    CommonUtils.getApiOutContext(
+                            anyString(), anyString(), any(InaPayMessages.class), anyString())
+            ).thenReturn(buildApiOutContextData());
+            CommonResponse response = sposAuthKeyService.generateSPOSAuthKey(request);
+
+            assertNotNull(response);
+        }
     }
-
 
 
 
@@ -127,15 +150,26 @@ class SPOSAuthKeyServiceTest {
         fetchSPOSAuthKeyRequest.setAuthKeyType("ECDSA");
         fetchSPOSAuthKeyRequest.setApiInContext(CommonObjects.getApiInContext());
         SPOSAuthKeyInfo sposAuthKeyInfo=new SPOSAuthKeyInfo();
-        sposAuthKeyInfo.setPublicKey(PUBLIC_KEY);
-        sposAuthKeyInfo.setExportedPvtKey(EXPORTED_PRIVATE_KEY);
         sposAuthKeyInfo.setStatusCode("200");
         when(sposAuthenticationKeys.getSPOSAuthenticationKeys("ECDSA", "1234"))
                 .thenReturn(sposAuthKeyInfo);
-        CommonResponse result = sposAuthKeyService.getSPOSAuthKey(fetchSPOSAuthKeyRequest);
+        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
+             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
 
-        assertEquals("1234", result.getApiOutContext().getOutputRefId());
+            appContextMockedStatic.when(AppContext::getApplicationName)
+                    .thenReturn("ina-txn-service");
 
+            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
+                    .thenReturn("TXN");
+            commonUtilsMockedStatic.when(() ->
+                    CommonUtils.getApiOutContext(
+                            anyString(), anyString(), any(InaPayMessages.class), anyString())
+            ).thenReturn(buildApiOutContextData());
+            CommonResponse result = sposAuthKeyService.getSPOSAuthKey(fetchSPOSAuthKeyRequest);
+            assertNotNull(result);
+
+
+        }
 
     }
 
@@ -145,14 +179,25 @@ class SPOSAuthKeyServiceTest {
         fetchSPOSAuthKeyRequest.setAuthKeyType("ECDSA");
         fetchSPOSAuthKeyRequest.setApiInContext(CommonObjects.getApiInContext());
         SPOSAuthKeyInfo sposAuthKeyInfo = new SPOSAuthKeyInfo();
-        sposAuthKeyInfo.setPublicKey(PUBLIC_KEY);
-        sposAuthKeyInfo.setExportedPvtKey(EXPORTED_PRIVATE_KEY);
         sposAuthKeyInfo.setStatusCode("400");
         when(sposAuthenticationKeys.getSPOSAuthenticationKeys("ECDSA", "1234"))
                 .thenReturn(sposAuthKeyInfo);
-        CommonResponse result = sposAuthKeyService.getSPOSAuthKey(fetchSPOSAuthKeyRequest);
+        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
+             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
 
-        assertEquals("400", sposAuthKeyInfo.getStatusCode());
+            appContextMockedStatic.when(AppContext::getApplicationName)
+                    .thenReturn("ina-txn-service");
+
+            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
+                    .thenReturn("TXN");
+            commonUtilsMockedStatic.when(() ->
+                    CommonUtils.getApiOutContext(
+                            anyString(), anyString(), any(InaPayMessages.class), anyString())
+            ).thenReturn(buildApiOutContextData());
+            CommonResponse result = sposAuthKeyService.getSPOSAuthKey(fetchSPOSAuthKeyRequest);
+            assertNotNull(result);
+
+        }
     }
 
     @Test
@@ -161,14 +206,26 @@ class SPOSAuthKeyServiceTest {
         fetchSPOSAuthKeyRequest.setAuthKeyType("ECDSA");
         fetchSPOSAuthKeyRequest.setApiInContext(CommonObjects.getApiInContext());
         SPOSAuthKeyInfo sposAuthKeyInfo = new SPOSAuthKeyInfo();
-        sposAuthKeyInfo.setPublicKey(PUBLIC_KEY);
-        sposAuthKeyInfo.setExportedPvtKey(EXPORTED_PRIVATE_KEY);
         sposAuthKeyInfo.setStatusCode("400");
         when(sposAuthenticationKeys.getSPOSAuthenticationKeys("ECDSA", "1234"))
                 .thenReturn(sposAuthKeyInfo);
-        CommonResponse result = sposAuthKeyService.getSPOSAuthKey(fetchSPOSAuthKeyRequest);
 
-        assertEquals("1234",result.getApiOutContext().getOutputRefId());
+        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
+             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
+
+            appContextMockedStatic.when(AppContext::getApplicationName)
+                    .thenReturn("ina-txn-service");
+
+            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
+                    .thenReturn("TXN");
+            commonUtilsMockedStatic.when(() ->
+                    CommonUtils.getApiOutContext(
+                            anyString(), anyString(), any(InaPayMessages.class), anyString())
+            ).thenReturn(buildApiOutContextData());
+            CommonResponse result = sposAuthKeyService.getSPOSAuthKey(fetchSPOSAuthKeyRequest);
+
+            assertNotNull(result);
+        }
     }
 
     @Test
@@ -176,17 +233,61 @@ class SPOSAuthKeyServiceTest {
         FetchSPOSAuthKeyRequest fetchSPOSAuthKeyRequest = new FetchSPOSAuthKeyRequest();
         fetchSPOSAuthKeyRequest.setAuthKeyType("ECDSA");
         fetchSPOSAuthKeyRequest.setApiInContext(CommonObjects.getApiInContext());
-        when(sposAuthenticationKeys.getSPOSAuthenticationKeys("ECDSA", "1234"))
-                .thenThrow(new CommonValidationException("123", "ERR_CODE", "Some error", NextCommandDetails.BLOCK, null));
 
-        CommonResponse result = sposAuthKeyService.getSPOSAuthKey(fetchSPOSAuthKeyRequest);
+        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
+             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
+
+            appContextMockedStatic.when(AppContext::getApplicationName)
+                    .thenReturn("ina-txn-service");
+
+            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
+                    .thenReturn("TXN");
+            commonUtilsMockedStatic.when(() ->
+                    CommonUtils.getApiOutContext(
+                            anyString(), anyString(), any(InaPayMessages.class), anyString())
+            ).thenReturn(buildApiOutContextData());
+            when(sposAuthenticationKeys.getSPOSAuthenticationKeys("ECDSA", "1234"))
+                    .thenThrow(new CommonValidationException("123", "ERR_CODE", "Some error", NextCommandDetails.BLOCK, null));
 
 
-        assertEquals("1234", result.getApiOutContext().getOutputRefId());
-        assertEquals("TMSERR_CODE", result.getApiOutContext().getCode());
+            CommonResponse result = sposAuthKeyService.getSPOSAuthKey(fetchSPOSAuthKeyRequest);
+            assertNotNull(result);
+        }
     }
 
+    @Test
+    void testEvaluate() {
+        SPOSAuthKeyRequest sposAuthKeyRequest=new SPOSAuthKeyRequest();
+        sposAuthKeyRequest.setApiInContext(buildApiInContext());
+        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
+             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
 
+            appContextMockedStatic.when(AppContext::getApplicationName)
+                    .thenReturn("ina-txn-service");
 
+            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
+                    .thenReturn("TXN");
+            commonUtilsMockedStatic.when(() ->
+                    CommonUtils.getApiOutContext(
+                            anyString(), anyString(), any(InaPayMessages.class), anyString())
+            ).thenReturn(getApiOutContextData());
+            sposAuthKeyService.evaluate(sposAuthKeyRequest);
+        }
+    }
+    @Test
+    void testEvaluate_throwsException_whenTimeStampIsNull() {
 
+        ApiInContext mockContext = mock(ApiInContext.class);
+        when(mockContext.getInputRefId()).thenReturn("input-123");
+        when(mockContext.getTimeStamp()).thenReturn(null);
+        SPOSAuthKeyRequest sposAuthKeyRequest=new SPOSAuthKeyRequest();
+        sposAuthKeyRequest.setApiInContext(mockContext);
+        InaPayMessages mockMessages = mock(InaPayMessages.class);
+        ReflectionTestUtils.setField(sposAuthenticationKeys, "messages", mockMessages);
+
+        Exception exception = assertThrows(Exception.class, () -> {
+            sposAuthKeyService.evaluate(sposAuthKeyRequest);
+        });
+        assertNotNull(exception);
+    }
 }

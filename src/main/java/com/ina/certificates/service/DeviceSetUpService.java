@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import static com.ina.common.constants.AppErrorConstants.*;
 import static com.ina.common.utils.CommonUtils.getApiOutContext;
 import static com.ina.common.utils.CommonUtils.throwValidationException;
-import static com.ina.constants.AppConstants.TMS;
 import static java.util.Objects.isNull;
 
 @Service
@@ -46,7 +45,7 @@ public class DeviceSetUpService extends CommonValidator<DeviceTMSInitRequest> {
         String inputRefId = request.getApiInContext().getInputRefId();
         try {
             signedCertMetadata = initService.initProcess(request.getCertCSRMetadata(),
-                    CertTypeAndLevel.TMS_INIT.getCertType(), inputRefId, request.getDeviceMetadata().getDeviceId());
+                    CertTypeAndLevel.TMS_INIT.getCertType(), inputRefId, request.getDeviceMetadata().getDeviceId(),"");
 
             apiOutContext = getApiOutContext(inputRefId, DEVICE_INIT_IS_SUCCESSFUL,
                     messages, messages.get(SUCCESS_CODE));
@@ -70,7 +69,7 @@ public class DeviceSetUpService extends CommonValidator<DeviceTMSInitRequest> {
 
         if (isNull(request.getApiInContext().getTimeStamp())) {
             throw throwValidationException(inputRefId, TIME_STAMP_IS_NOT_AVAILABLE_IN_REQUEST,
-                    messages,NextCommandDetails.BLOCK);
+                    messages, NextCommandDetails.BLOCK);
         }
 
         deviceProfileValidator.timeStampFreshnessCheck(inputRefId, request.getApiInContext().getTimeStamp());

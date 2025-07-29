@@ -51,7 +51,7 @@ public class AEKAndDEKKeysService extends CommonValidator<Request> {
                         messages, NextCommandDetails.BLOCK);
             }
 
-            deviceProfileValidator.timeStampFreshnessCheck(inputRefId, request.getApiInContext().getTimeStamp());
+//            deviceProfileValidator.timeStampFreshnessCheck(inputRefId, request.getApiInContext().getTimeStamp());
 
 
     }

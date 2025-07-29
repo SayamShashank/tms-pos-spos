@@ -14,9 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static com.ina.constants.AppConstants.CARD_SCHEME;
 
@@ -36,6 +34,7 @@ public class JsonMapperUtil {
 
     private static AidList mapAidList(JSONObject cardScheme) {
         AidList aidList = new AidList();
+        String cardSchemeAcId=cardScheme.optString("cardSchemeAcquirerId",null);
         String emvTerminalType = cardScheme.optString("emvTerminalType",null);
         Optional.ofNullable(cardScheme.optJSONObject("aidList"))
                 .map(aidListObj -> aidListObj.optJSONArray("aidForm"))
@@ -43,7 +42,7 @@ public class JsonMapperUtil {
                     List<AidData> aidDataList = IntStream.range(0, aidFormArray.length())
                             .mapToObj(aidFormArray::optJSONObject)
                             .filter(Objects::nonNull)
-                            .map(aidFormObject -> mapAIDData(aidFormObject, emvTerminalType))
+                            .map(aidFormObject -> mapAIDData(aidFormObject, emvTerminalType,cardSchemeAcId))
                             .toList();
 
                     aidList.setAidDataList(aidDataList);
@@ -55,7 +54,7 @@ public class JsonMapperUtil {
 
 
 
-    private static AidData mapAIDData(JSONObject aidJson, String emvTerminalType) {
+    private static AidData mapAIDData(JSONObject aidJson, String emvTerminalType,String cardSchemeAcId) {
         AidData aidData = new AidData();
         if (aidJson != null) {
             JSONObject iccReaderForm = Optional.ofNullable(aidJson.optJSONObject("iccReaderList"))
@@ -73,6 +72,7 @@ public class JsonMapperUtil {
             }
             aidData.setAid(aidJson.optString("aid",null));
             aidData.setEmvTerminalType(emvTerminalType);
+            aidData.setCardSchemeAcquirerId(cardSchemeAcId);
             aidData.setApplicationName(aidJson.optString("aidLabel",null));
             aidData.setTacDenial(aidJson.optString("denialActionCode", null));
             aidData.setTacOnline(aidJson.optString("onlineActionCode", null));
@@ -147,6 +147,18 @@ public class JsonMapperUtil {
 
         return merchantTerminalData;
     }
+    private static String getCardAcquirerId(JSONObject cardSchemeList) {
+        return Optional.ofNullable(cardSchemeList.optJSONArray(CARD_SCHEME))
+                .filter(array -> array.length() > 0)
+                .flatMap(array -> IntStream.range(0, array.length())
+                        .mapToObj(array::optJSONObject)
+                        .filter(Objects::nonNull)
+                        .map(obj -> obj.optString("cardSchemeAcquirerId", null))
+                        .filter(Objects::nonNull)
+                        .findFirst())
+                .orElse(null);
+    }
+
 
 
     @NotNull
@@ -180,7 +192,6 @@ public class JsonMapperUtil {
         return new Result(aidLists, ridList, terminalConfig,merchantDetails);
     }
     private static MerchantDetails getMerchantDetails(JSONObject merchantData) {
-
         MerchantDetails merchantDetails = new MerchantDetails();
         merchantDetails.setMerchantNameEN(merchantData.optString("retailerNameEng",null));
         merchantDetails.setMerchantNameAR(merchantData.optString("retailerNameArab",null));
@@ -190,6 +201,7 @@ public class JsonMapperUtil {
         merchantDetails.setMerchantNameAddress2AR(merchantData.optString("retailerAddress2Arab",null));
         merchantDetails.setMerchantNameCityAR(merchantData.optString("retailerCityArab",null));
         merchantDetails.setMerchantNameCityEN(merchantData.optString("retailerCityEng",null));
+        merchantDetails.setMerchantPostalCode(merchantData.optString("retailerPostalCode",null));
         return merchantDetails;
     }
 
@@ -199,15 +211,8 @@ public class JsonMapperUtil {
         String encodedParams = Base64.encodeBase64String(joinedParams.getBytes(StandardCharsets.UTF_8));
         String decodedParams = new String(Base64.decodeBase64(encodedParams), StandardCharsets.UTF_8);
         log.info("decoded Params: {}", decodedParams);
-
-        JSONObject root = XML.toJSONObject(decodedParams);
-        if (root.length() > 0) {
-            String firstKey = root.keys().next();
-            return root.getJSONObject(firstKey);
-        }
-        return new JSONObject();
+        return XML.toJSONObject(decodedParams);
     }
-
 
     public record Result(List<AidList> aidLists, List<RidList> ridList, MerchantTerminalData terminalConfig,MerchantDetails merchantDetails) {
     }

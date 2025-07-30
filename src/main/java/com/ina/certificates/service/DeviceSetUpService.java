@@ -73,18 +73,13 @@ public class DeviceSetUpService extends CommonValidator<DeviceTMSInitRequest> {
     @Override
     public void evaluate(DeviceTMSInitRequest request) throws CommonValidationException {
         log.info("Evaluating passed request for time freshness check...!");
-
         String inputRefId = request.getApiInContext().getInputRefId();
-
         if (isNull(request.getApiInContext().getTimeStamp())) {
             throw throwValidationException(inputRefId, TIME_STAMP_IS_NOT_AVAILABLE_IN_REQUEST,
                     messages,NextCommandDetails.BLOCK);
         }
-
         deviceProfileValidator.timeStampFreshnessCheck(inputRefId, request.getApiInContext().getTimeStamp());
-
         deviceProfileValidator.checkDeviceProfileFlagsForTMSINIT(request.getDeviceMetadata().getDeviceId(), inputRefId);
-
     }
 
 }

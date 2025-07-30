@@ -55,7 +55,7 @@ public class SPOSAuthKeyService extends CommonValidator<SPOSAuthKeyRequest> {
                     messages, NextCommandDetails.BLOCK);
         }
 
-//        deviceProfileValidator.timeStampFreshnessCheck(inputRefId, authKeyRequest.getApiInContext().getTimeStamp());
+        deviceProfileValidator.timeStampFreshnessCheck(inputRefId, authKeyRequest.getApiInContext().getTimeStamp());
     }
 
     public CommonResponse generateSPOSAuthKey(SPOSAuthKeyRequest sposAuthKeyRequest) {

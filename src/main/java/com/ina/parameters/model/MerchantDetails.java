@@ -17,5 +17,7 @@ public class MerchantDetails {
     private String merchantNameAddress2AR;
     private String merchantNameCityEN;
     private String merchantNameCityAR;
+    private String merchantPostalCode;
+
 
 }

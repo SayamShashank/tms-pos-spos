@@ -10,6 +10,7 @@ import lombok.*;
 public class AidData {
     private String aid;//
     private String applicationName;
+    private String cardSchemeAcquirerId;//cardSchemeAcquirerId
     private String securityCapability;
     private String addTerminalCapability;//addTerminalCapability
     private String terminalCapability;//terminalCapability

@@ -27,6 +27,8 @@ import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -40,6 +42,7 @@ public class CommonObjects {
         request.setApiInContext(getApiInContext());
         return request;
     }
+
     public static InitialiseCertRequest createValidRequest() {
         ApiInContext apiInContext = new ApiInContext();
         apiInContext.setInputRefId("ref123");
@@ -82,25 +85,26 @@ public class CommonObjects {
     }
 
     public static ApiOutContext getApiOutContextDataForCertificate() {
-        ApiOutContext apiOutContext=new ApiOutContext();
+        ApiOutContext apiOutContext = new ApiOutContext();
         apiOutContext.setOutputRefId("ref123");
         apiOutContext.setTimeStamp("2025-01-27T12:00:00");
         apiOutContext.setStatus("9999");
         apiOutContext.setCode("0000");
-        return  apiOutContext;
+        return apiOutContext;
 
     }
 
 
-    public static ApiOutContext getApiOutContextData(){
-        ApiOutContext apiOutContext=new ApiOutContext();
+    public static ApiOutContext getApiOutContextData() {
+        ApiOutContext apiOutContext = new ApiOutContext();
         apiOutContext.setOutputRefId("1234");
         apiOutContext.setTimeStamp("2025-01-27T12:00:00");
         apiOutContext.setStatus("9999");
         apiOutContext.setCode("0000");
-        return  apiOutContext;
+        return apiOutContext;
     }
-    public static  InitialiseCertRequest createRequest() {
+
+    public static InitialiseCertRequest createRequest() {
         ApiInContext apiInContext = new ApiInContext();
         apiInContext.setInputRefId("ref123");
         apiInContext.setTimeStamp("2025-06-01T12:00:00Z");
@@ -113,8 +117,8 @@ public class CommonObjects {
     }
 
 
-    public static DeviceUnblockRequest buildDeviceUnBlockRequest(){
-        DeviceUnblockRequest deviceUnblockRequest=new DeviceUnblockRequest();
+    public static DeviceUnblockRequest buildDeviceUnBlockRequest() {
+        DeviceUnblockRequest deviceUnblockRequest = new DeviceUnblockRequest();
         deviceUnblockRequest.setStatus(true);
         deviceUnblockRequest.setAttestationBlock(true);
         deviceUnblockRequest.setThreatBlock(true);
@@ -125,7 +129,7 @@ public class CommonObjects {
 
 
     public static DeviceProfileBlockRequest buildDeviceBlockRequest() {
-        DeviceProfileBlockRequest deviceProfileBlockRequest=new DeviceProfileBlockRequest();
+        DeviceProfileBlockRequest deviceProfileBlockRequest = new DeviceProfileBlockRequest();
         deviceProfileBlockRequest.setApiInContext(getApiInContext());
         deviceProfileBlockRequest.setDeviceMetadata(DeviceMetadata.builder().build());
         deviceProfileBlockRequest.setBlockType(deviceProfileBlockRequest.getBlockType());
@@ -134,8 +138,9 @@ public class CommonObjects {
         deviceProfileBlockRequest.setDeviceBlock(true);
         return deviceProfileBlockRequest;
     }
-    public static CertificateGenerationResponse buildCertificateGenerationResponse(){
-        CertificateGenerationResponse certificateGenerationResponse=new CertificateGenerationResponse();
+
+    public static CertificateGenerationResponse buildCertificateGenerationResponse() {
+        CertificateGenerationResponse certificateGenerationResponse = new CertificateGenerationResponse();
         certificateGenerationResponse.setStatus("SUCCESS");
         certificateGenerationResponse.setCode("200");
         certificateGenerationResponse.setMessage("Certificate generated successfully");
@@ -147,7 +152,7 @@ public class CommonObjects {
 
     public static AvailableServerKeysResponse getDummyAvailableServerKeysResponse() {
 
-        AvailableServerKeysResponse availableServerKeysResponse=new AvailableServerKeysResponse();
+        AvailableServerKeysResponse availableServerKeysResponse = new AvailableServerKeysResponse();
         availableServerKeysResponse.setApiOutContext(getApiOutContextData());
         AvailableServerKeys key1 = new AvailableServerKeys();
         key1.setKeyType("AEK");
@@ -161,25 +166,22 @@ public class CommonObjects {
     }
 
 
-
-
-
-
-    public static DeviceTMSInitResponse buildDeviceTMSInitResponse(){
-        DeviceTMSInitResponse deviceTMSInitResponse=new DeviceTMSInitResponse();
+    public static DeviceTMSInitResponse buildDeviceTMSInitResponse() {
+        DeviceTMSInitResponse deviceTMSInitResponse = new DeviceTMSInitResponse();
+        deviceTMSInitResponse.setApiOutContext(buildApiOutContextData());
         deviceTMSInitResponse.setSignedCertMetadata(SignedCertMetadata.builder().build());
         deviceTMSInitResponse.setApiOutContext(commonResponse(new Request()).getApiOutContext());
         return deviceTMSInitResponse;
     }
 
-    //Building the DeviceTMSInitRequest
-    public static DeviceTMSInitRequest buildDeviceTMSInitRequest(){
-        DeviceTMSInitRequest deviceTMSInitRequest=new DeviceTMSInitRequest();
+    public static DeviceTMSInitRequest buildDeviceTMSInitRequest() {
+        DeviceTMSInitRequest deviceTMSInitRequest = new DeviceTMSInitRequest();
         deviceTMSInitRequest.setDeviceMetadata(DeviceMetadata.builder().build());
         deviceTMSInitRequest.setApiInContext(getApiInContext());
         deviceTMSInitRequest.setCertCSRMetadata(CertCSRMetadata.builder().build());
         return deviceTMSInitRequest;
     }
+
     public static String readXmlAsString() throws IOException {
         ClassPathResource resource = new ClassPathResource("config.xml");
         String xmlToString = StreamUtils.copyToString(resource.getInputStream(), StandardCharsets.UTF_8);
@@ -187,7 +189,7 @@ public class CommonObjects {
         return xmlToString;
     }
 
-    public  Object maptoParamDocObject(String xmlData) {
+    public Object maptoParamDocObject(String xmlData) {
         try {
             return unmarshal(xmlData, Document.class);
         } catch (Exception e) {
@@ -195,7 +197,8 @@ public class CommonObjects {
             return null;
         }
     }
-    public  com.ina.tms.packages.xml.v8.catm217.Document maptoRegisterDocObject(String xmlData) {
+
+    public com.ina.tms.packages.xml.v8.catm217.Document maptoRegisterDocObject(String xmlData) {
         try {
             return unmarshal(xmlData, com.ina.tms.packages.xml.v8.catm217.Document.class);
         } catch (Exception e) {
@@ -220,41 +223,62 @@ public class CommonObjects {
             return null;
         }
     }
-      /* EMVParameters parameters = getEmvParameters(requestData);
-            Gson gson = new Gson();
-            Type aidListType = new TypeToken<List<AidList>>(){}.getType();
-            List<AidList> aidList = gson.fromJson(parameters.getAids(), aidListType);
-            Type ridListType = new TypeToken<List<RidList>>(){}.getType();
-            List<RidList> ridList = gson.fromJson(parameters.getCpks(), ridListType);
-            MerchantTerminalData merchantTerminalData = objectMapper.readValue(parameters.getTerminalConfig(), MerchantTerminalData.class);
-            TmsParams tmsParams =new TmsParams();
-            tmsParams .setCpks(ridList);
-            tmsParams.setAids(aidList);
-            tmsParams.setTerminalConfig(merchantTerminalData);*/
-      public static DeviceCertsResponse buildDeviceCertsResponse(){
-          DeviceCertsResponse deviceCertsResponse=new DeviceCertsResponse();
-          deviceCertsResponse.setDeviceCerts( List.of(
-                  new DeviceCert("cert001", "device001", "-----BEGIN CERT-----A1", "RSA", "AUTH", "CertAuthority1", "CA001", "LEVEL1", "CN=Device001", "SHA256withRSA", Timestamp.from(Instant.parse("2025-12-31T23:59:59Z")), "admin", Timestamp.from(Instant.now()), null, null),
-                  new DeviceCert("cert002", "device002", "-----BEGIN CERT-----B2", "ECDSA", "ENCRYPTION", "CertAuthority2", "CA002", "LEVEL2", "CN=Device002", "SHA384withECDSA", Timestamp.from(Instant.parse("2026-06-30T23:59:59Z")), "system", Timestamp.from(Instant.now()), "supervisor", Timestamp.from(Instant.now()))));
-          return deviceCertsResponse;
-      }
-    public static DeviceCertsResponse buildEmptyDeviceCertsResponse(){
+
+    /* EMVParameters parameters = getEmvParameters(requestData);
+          Gson gson = new Gson();
+          Type aidListType = new TypeToken<List<AidList>>(){}.getType();
+          List<AidList> aidList = gson.fromJson(parameters.getAids(), aidListType);
+          Type ridListType = new TypeToken<List<RidList>>(){}.getType();
+          List<RidList> ridList = gson.fromJson(parameters.getCpks(), ridListType);
+          MerchantTerminalData merchantTerminalData = objectMapper.readValue(parameters.getTerminalConfig(), MerchantTerminalData.class);
+          TmsParams tmsParams =new TmsParams();
+          tmsParams .setCpks(ridList);
+          tmsParams.setAids(aidList);
+          tmsParams.setTerminalConfig(merchantTerminalData);*/
+    public static DeviceCertsResponse buildDeviceCertsResponse() {
+        DeviceCertsResponse deviceCertsResponse = new DeviceCertsResponse();
+        deviceCertsResponse.setDeviceCerts(List.of(
+                new DeviceCert("cert001", "device001", "-----BEGIN CERT-----A1", "RSA", "AUTH", "CertAuthority1", "CA001", "LEVEL1", "CN=Device001", "SHA256withRSA", Timestamp.from(Instant.parse("2025-12-31T23:59:59Z")), "admin", Timestamp.from(Instant.now()), null, null),
+                new DeviceCert("cert002", "device002", "-----BEGIN CERT-----B2", "ECDSA", "ENCRYPTION", "CertAuthority2", "CA002", "LEVEL2", "CN=Device002", "SHA384withECDSA", Timestamp.from(Instant.parse("2026-06-30T23:59:59Z")), "system", Timestamp.from(Instant.now()), "supervisor", Timestamp.from(Instant.now()))));
+        return deviceCertsResponse;
+    }
+
+    public static DeviceCertsResponse buildEmptyDeviceCertsResponse() {
         DeviceCertsResponse deviceCertsResponse = new DeviceCertsResponse();
         deviceCertsResponse.setDeviceCerts(Collections.emptyList());
         return deviceCertsResponse;
     }
 
-    public static CommonRequest buildCommonRequest(){
-        CommonRequest commonRequest=new CommonRequest();
+    public static CommonRequest buildCommonRequest() {
+        CommonRequest commonRequest = new CommonRequest();
         commonRequest.setApiInContext(getApiInContext());
         commonRequest.setDeviceMetadata(buildDeviceMetaData());
         return commonRequest;
     }
-    public static DeviceMetadata buildDeviceMetaData(){
-        DeviceMetadata deviceMetadata=new DeviceMetadata();
+
+    public static DeviceMetadata buildDeviceMetaData() {
+        DeviceMetadata deviceMetadata = new DeviceMetadata();
         deviceMetadata.setDeviceId("device123");
         return deviceMetadata;
     }
+
+    public static ApiOutContext buildApiOutContextData() {
+        ApiOutContext apiOutContext = new ApiOutContext();
+        apiOutContext.setOutputRefId("1234");
+        apiOutContext.setStatus("success");
+        apiOutContext.setCode("1234");
+        return apiOutContext;
+    }
+
+    public static ApiInContext buildApiInContext(){
+        String currentTimestamp = LocalDateTime.now()
+                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        ApiInContext apiInContext=new ApiInContext();
+        apiInContext.setInputRefId("RefId1421");
+        apiInContext.setTimeStamp(currentTimestamp);
+        return apiInContext;
+    }
+
 }
 
 

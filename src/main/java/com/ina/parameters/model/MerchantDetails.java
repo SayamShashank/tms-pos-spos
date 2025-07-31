@@ -8,7 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MerchantDetails {
-    private String bankId;
     private String merchantNameEN;
     private String merchantNameAR;
     private String merchantNameAddress1EN;
@@ -18,6 +17,4 @@ public class MerchantDetails {
     private String merchantNameCityEN;
     private String merchantNameCityAR;
     private String merchantPostalCode;
-
-
 }

@@ -9,7 +9,7 @@ import lombok.*;
 @ToString
 public class AidData {
     private String aid;//
-    private String applicationName;
+    private String applicationName;//aidLabel
     private String cardSchemeAcquirerId;//cardSchemeAcquirerId
     private String securityCapability;
     private String addTerminalCapability;//addTerminalCapability

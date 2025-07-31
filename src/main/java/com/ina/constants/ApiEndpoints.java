@@ -31,5 +31,7 @@ public class ApiEndpoints {
     public static final String PARAMETERS="/parameters";
 
     public static final String UPDATE_DEVICE_REVOKE_STATUS="/updateDeviceRevokeStatus";
+    public static final String RELEASE = SERVER_CONTEXT_FOR_TMS + API + VERSION + "/release";
+    public static final String CREATE="/create";
 
 }

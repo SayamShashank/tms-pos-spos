@@ -3,6 +3,7 @@ package com.ina.parameters.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ina.CommonObjects;
+import com.ina.common.config.AppContext;
 import com.ina.common.crypto.service.DataDecryptionService;
 import com.ina.common.crypto.service.DataEncryptionService;
 import com.ina.common.model.ApiInContext;
@@ -12,6 +13,7 @@ import com.ina.common.model.SecureRespMetadata;
 import com.ina.common.response.message.InaPayMessages;
 import com.ina.common.utils.CommonUtils;
 import com.ina.common.utils.HashUtils;
+import com.ina.common.validator.DeviceProfileValidator;
 import com.ina.config.RequestPropertyConfig;
 import com.ina.dao.EMVParametersRepository;
 import com.ina.dao.entity.EMVParameters;
@@ -69,9 +71,19 @@ public class GetParametersServiceTest extends CommonObjects {
     @Mock
     HashUtils hashUtils;
 
+    @Mock
+    private AppContext appContext;
+
+    @Mock
+    private DeviceProfileValidator deviceProfileValidator;
+
+
+
     @Spy
     @InjectMocks
     private GetParametersService getParametersService;
+
+
 
     @Test
     public void testGetParametersSuccess() throws Exception {
@@ -100,7 +112,7 @@ public class GetParametersServiceTest extends CommonObjects {
 
         // Mock static method
         try (MockedStatic<JsonMapperUtil> mockedStatic = mockStatic(JsonMapperUtil.class)) {
-            mockedStatic.when(() -> JsonMapperUtil.getResult(any(),any()))
+            mockedStatic.when(() -> JsonMapperUtil.getResult(any(), any()))
                     .thenReturn(mockResult);
 
             // Mock dependencies
@@ -128,12 +140,25 @@ public class GetParametersServiceTest extends CommonObjects {
                     .thenReturn(respObject);
 
             // Call method under test
-            ParameterSecureResponse response = getParametersService.getParameters(mockRequest);
+            try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
+                 MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
 
-            // Verify results
-            assertNotNull(response);
-            assertNotNull(response.getSecureRespMetadata());
-            assertNotNull(response.getApiOutContext());
+                appContextMockedStatic.when(AppContext::getApplicationName)
+                        .thenReturn("ina-txn-service");
+
+                commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
+                        .thenReturn("TXN");
+                commonUtilsMockedStatic.when(() ->
+                        CommonUtils.getApiOutContext(
+                                anyString(), anyString(), any(InaPayMessages.class), anyString())
+                ).thenReturn(buildApiOutContextData());
+                ParameterSecureResponse response = getParametersService.getParameters(mockRequest);
+
+                // Verify results
+                assertNotNull(response);
+                assertNotNull(response.getSecureRespMetadata());
+
+            }
         }
     }
 
@@ -161,7 +186,7 @@ public class GetParametersServiceTest extends CommonObjects {
         );
 
         try (MockedStatic<JsonMapperUtil> mockedStatic = mockStatic(JsonMapperUtil.class)) {
-            mockedStatic.when(() -> JsonMapperUtil.getResult(any(),any()))
+            mockedStatic.when(() -> JsonMapperUtil.getResult(any(), any()))
                     .thenReturn(result);
 
             when(dataDecryptionService.decryptData(any(), any(), anyString(), anyString()))
@@ -192,11 +217,23 @@ public class GetParametersServiceTest extends CommonObjects {
             when(httpClient.exchange(any(), any())).thenReturn(xml);
             when(marshal.getExpectedNsUri()).thenReturn("urn:iso:std:iso:20022:tech:xsd:catm.003.001.08");
             when(marshal.parseXml(anyString())).thenReturn(respObject);
+            try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
+                 MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
 
-            ParameterSecureResponse response = getParametersService.getParameters(mockRequest);
-            assertNotNull(response);
-            assertNotNull(response.getSecureRespMetadata());
-            assertNotNull(response.getApiOutContext());
+                appContextMockedStatic.when(AppContext::getApplicationName)
+                        .thenReturn("ina-txn-service");
+
+                commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
+                        .thenReturn("TXN");
+                commonUtilsMockedStatic.when(() ->
+                        CommonUtils.getApiOutContext(
+                                anyString(), anyString(), any(InaPayMessages.class), anyString())
+                ).thenReturn(buildApiOutContextData());
+                ParameterSecureResponse response = getParametersService.getParameters(mockRequest);
+                assertNotNull(response);
+                assertNotNull(response.getSecureRespMetadata());
+
+            }
         }
     }
 

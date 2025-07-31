@@ -5,6 +5,7 @@ import com.ina.certificates.model.DeviceTMSInitRequest;
 import com.ina.certificates.model.DeviceTMSInitResponse;
 import com.ina.common.config.AppContext;
 import com.ina.common.crypto.model.init.SignedCertMetadata;
+import com.ina.common.crypto.repository.AppReleaseDetailsRepository;
 import com.ina.common.crypto.service.InitService;
 import com.ina.common.enums.CertTypeAndLevel;
 import com.ina.common.exception.CommonValidationException;
@@ -54,6 +55,9 @@ class DeviceSetUpServiceTest extends CommonObjects{
     @Mock
     private CommonUtils commonUtils;
 
+    @Mock
+    private AppReleaseDetailsRepository appReleaseDetailsRepository;
+
 
     @BeforeEach
     public void setUp() {
@@ -74,7 +78,10 @@ class DeviceSetUpServiceTest extends CommonObjects{
     public void deviceTMSInitSuccess() {
         SignedCertMetadata signedCertMetadata = CommonObjects.buildDeviceTMSInitResponse().getSignedCertMetadata();
         DeviceTMSInitRequest deviceTMSInitRequest = CommonObjects.buildDeviceTMSInitRequest();
-        when(initService.initProcess(deviceTMSInitRequest.getCertCSRMetadata(), "TMS_INIT", deviceTMSInitRequest.getApiInContext().getInputRefId(), deviceTMSInitRequest.getDeviceMetadata().getDeviceId(),""))
+        when(appReleaseDetailsRepository.findByIsExpiredFalse())
+                .thenReturn(buildAppReleaseDetails());
+        when(initService.initProcess(deviceTMSInitRequest.getCertCSRMetadata(), "TMS_INIT", deviceTMSInitRequest.getApiInContext().getInputRefId()
+                , deviceTMSInitRequest.getDeviceMetadata().getDeviceId(),buildAppReleaseDetails().getEndDate()))
                 .thenReturn(signedCertMetadata);
         try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
              MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
@@ -100,6 +107,8 @@ class DeviceSetUpServiceTest extends CommonObjects{
                 .deviceId("1234")
                 .build());
         deviceTXNInitRequest.setApiInContext(getApiInContext());
+        when(appReleaseDetailsRepository.findByIsExpiredFalse())
+                .thenReturn(buildAppReleaseDetails());
         when(initService.initProcess(any(), eq(CertTypeAndLevel.TMS_INIT.getCertType()), anyString(), anyString(),anyString()))
                 .thenThrow(new CommonValidationException("12345", "5002"));
         try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);

@@ -130,16 +130,15 @@ class JsonMapperUtilTest {
 
         try (MockedStatic<XML> mockedXml = mockStatic(XML.class)) {
             mockedXml.when(() -> XML.toJSONObject(sampleXml))
-                    .thenReturn(new JSONObject().put("root", expectedAppJson));
+                    .thenReturn(expectedAppJson);
 
-            // ✅ fixed mock: wrap merchant inside root
             mockedXml.when(() -> XML.toJSONObject(merchantXml))
-                    .thenReturn(new JSONObject().put("root", new JSONObject().put("merchant", merchantInnerJson)));
+                    .thenReturn(new JSONObject().put("merchant", merchantInnerJson));
+
 
             result = JsonMapperUtil.getResult(appParamsList, merchParamsList);
         }
 
-        // assert
         assertNotNull(result);
         assertNotNull(result.aidLists());
         assertNotNull(result.terminalConfig());

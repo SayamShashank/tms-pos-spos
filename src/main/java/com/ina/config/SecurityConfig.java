@@ -2,6 +2,7 @@ package com.ina.config;
 
 import com.ina.common.exception.JwtAuthenticationEntryPoint;
 import com.ina.common.utils.CommonRoleUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +16,10 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
+import java.util.*;
+
 @Configuration
+@Slf4j
 public class SecurityConfig {
 
     private final EndPointRolesProperties endPointRolesConfig;
@@ -41,6 +45,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+        log.info("Started token validation");
         http.oauth2Login(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
@@ -48,18 +53,31 @@ public class SecurityConfig {
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                         .accessDeniedHandler(jwtAccessDeniedHandler()))
-                .authorizeHttpRequests(auth ->
-                    endPointRolesConfig.getRoles().forEach(roleEndpoint ->
-                        roleEndpoint.getEndpoints().forEach(endpoint ->
-                            auth.requestMatchers(endpoint).hasAuthority(roleEndpoint.getRole())
-                        )
-                    )
-                )
-                .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/swagger-ui/**", "/v2/api-docs/**","/v3/api-docs/**", "/swagger-resources/**", "/webjars/**")
-                            .permitAll()
-                            .anyRequest().authenticated()
-                )
+                .authorizeHttpRequests(auth -> {
+                    Map<String, Set<String>> endpointToRolesMap = new HashMap<>();
+                    for (EndPointRolesProperties.RoleEndpoints roleEndpoint : endPointRolesConfig.getRoles()) {
+                        for (String endpoint : roleEndpoint.getEndpoints()) {
+                            endpointToRolesMap
+                                    .computeIfAbsent(endpoint, k -> new HashSet<>())
+                                    .add(roleEndpoint.getRole());
+                        }
+                    }
+
+                    endpointToRolesMap.forEach((endpoint, roles) -> {
+                        auth.requestMatchers(endpoint).hasAnyAuthority(roles.toArray(new String[0]));
+                    });
+
+                    auth.requestMatchers(
+                            "/swagger-ui/**",
+                            "/v2/api-docs/**",
+                            "/v3/api-docs/**",
+                            "/swagger-resources/**",
+                            "/webjars/**"
+                    ).permitAll();
+
+                    auth.anyRequest().authenticated();
+                })
+
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 ).cors(Customizer.withDefaults());

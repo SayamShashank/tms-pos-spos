@@ -3,6 +3,7 @@ package com.ina;
 
 import com.ina.certificates.model.DeviceTMSInitRequest;
 import com.ina.certificates.model.DeviceTMSInitResponse;
+import com.ina.common.crypto.entity.AppReleaseDetails;
 import com.ina.common.crypto.entity.DeviceCert;
 import com.ina.common.crypto.model.aekdek.AvailableServerKeys;
 import com.ina.common.crypto.model.aekdek.AvailableServerKeysResponse;
@@ -277,6 +278,26 @@ public class CommonObjects {
         apiInContext.setInputRefId("RefId1421");
         apiInContext.setTimeStamp(currentTimestamp);
         return apiInContext;
+    }
+
+    public static AppReleaseDetails buildAppReleaseDetails(){
+        AppReleaseDetails appReleaseDetails = new AppReleaseDetails();
+
+        appReleaseDetails.setId(1L);
+        appReleaseDetails.setPackageId("com.example.myapp");
+        appReleaseDetails.setSdkVersion("30.0.3");
+        appReleaseDetails.setOsVersion("Android 11");
+        appReleaseDetails.setExpired(false);
+        appReleaseDetails.setStartDate("2025-01-01");
+        appReleaseDetails.setEndDate("2025-12-31");
+        appReleaseDetails.setCreatedBy("admin_user");
+        appReleaseDetails.setCreatedTs(Timestamp.valueOf("2025-01-01 10:00:00"));
+        appReleaseDetails.setUpdatedTs(Timestamp.valueOf("2025-06-15 12:30:00"));
+        appReleaseDetails.setUpdatedBy("developer_user");
+        appReleaseDetails.setApprovedDate(Timestamp.valueOf("2025-07-01 09:00:00"));
+        appReleaseDetails.setApprovedBy("approver_user");
+        appReleaseDetails.setApproved(true);
+        return appReleaseDetails;
     }
 
 }

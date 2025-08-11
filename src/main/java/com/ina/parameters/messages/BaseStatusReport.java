@@ -28,7 +28,7 @@ public class BaseStatusReport implements DataProviderInterface {
 
         GenericIdentification71 initgPty = new GenericIdentification71();
         // 5.1. id
-        initgPty.setId(getInitiatingPartyId(data.getTid()));
+        initgPty.setId(getInitiatingPartyId(propertyConfig.getTid()));
         // 5.2. type
         initgPty.setTp(getOriginatingPartyCode());
         // 5.3. issuer
@@ -108,7 +108,7 @@ public class BaseStatusReport implements DataProviderInterface {
         // 1. poi id
         GenericIdentification71 poiId = new GenericIdentification71();
         // 1.1. id
-        poiId.setId(getPoiId(data.getTid()));
+        poiId.setId(getPoiId(propertyConfig.getTid()));
         // 1.2. type
         poiId.setTp(getPoiPartyCode());
         // 1.3. issuer
@@ -311,9 +311,9 @@ public class BaseStatusReport implements DataProviderInterface {
 
         additionalMgmtDetails.put("model", propertyConfig.getModel());
 
-        additionalMgmtDetails.put("trsmId", data.getTrsMid());
+        additionalMgmtDetails.put("trsmId", propertyConfig.getTrsmId());
 
-        additionalMgmtDetails.put("serialNo", data.getSerialNo());
+        additionalMgmtDetails.put("serialNo", propertyConfig.getSerialNumber());
 
         additionalMgmtDetails.put("appVersion", propertyConfig.getAppVersion());
 

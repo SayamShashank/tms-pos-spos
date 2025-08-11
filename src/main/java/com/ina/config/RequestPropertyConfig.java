@@ -16,4 +16,7 @@ public class RequestPropertyConfig {
     private String model;
     private String make;
     private String appVersion;
+    private String tid;
+    private String trsmId;
+    private String serialNumber;
 }

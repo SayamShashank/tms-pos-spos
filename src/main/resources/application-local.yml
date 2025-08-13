@@ -70,7 +70,7 @@ ina:
       "USE_MODE" : "BOTH"
       "ALGO" : "A128"
       "AEK_KEY_SIZE": "16"
-    ivForAEKEncryptionAndDecryption: "9879082765109538"
+    ivForAEKEncryptionAndDecryption: "98790829879082765109538765109538"
     keyExpiryInMilliSeconds: "31536000000"
     tr31KeyBlockHeader:
       "keyBlockType": "D"
@@ -112,8 +112,8 @@ keycloak:
   certs:
     url: https://keyauth.inapayments.com:8443/realms/InaPayments/protocol/openid-connect/certs
 
-application:
-  roles: '[{"role": "ANM_ADMIN", "endpoints": ["/tms/api/v1/*"]}]'
+
+
 
 
 tms:

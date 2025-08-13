@@ -111,7 +111,81 @@ keycloak:
     url: http://10.69.0.36:8080/realms/GeIdea/protocol/openid-connect/certs
 
 application:
-  roles: '[{"role": "ANM_ADMIN", "endpoints": ["/tms/api/v1/*"]}]'
+  roles: '[
+    {"role": "SPOS_USER", "endpoints": [
+    "/tms/api/v1/release/create",
+    "/tms/api/v1/parameters/getParameters",
+    "/tms/api/v1/parameters/getParamChecksum",
+    "/tms/api/v1/device/updateDeviceRevokeStatus",
+    "/tms/api/v1/device/unblock",
+    "/tms/api/v1/device/block",
+    "/tms/api/v1/device/setup/tmsInit",
+    "/tms/api/v1/device/certs/viewCertInfo",
+    "/tms/api/v1/device/certs/getServerCertsWithStatus",
+    "/tms/api/v1/device/certs/getAllServerCerts",
+    "/tms/api/v1/device/certs/getAllDeviceCerts",
+    "/tms/api/v1/device/certs/generateServerL4Certs",
+    "/tms/api/v1/device/certs/generateServerCerts",
+    "/tms/api/v1/device/certs/generateRootCert",
+    "/key/api/v1/rotateDEKAndAEKKey",
+    "/key/api/v1/getAllAEKAndDEKServerKeys",
+    "/key/api/v1/generateAEKKey",
+    "/key/api/v1/getAllSPOSKeys",
+    "/key/api/v1/generateSPOSAuthKey",
+    "/api/v1/ping",
+    "/api/v1/health",
+    "/api/v1/error"
+    ]},
+    {"role": "BIZOPS", 
+    "endpoints": [
+    "/tms/api/v1/device/unblock",
+    "/tms/api/v1/device/block"
+    ]},
+    {
+    "role": "CHECKER", 
+    "endpoints": 
+    [  "/tms/api/v1/device/certs/viewCertInfo",
+       "/tms/api/v1/device/certs/getServerCertsWithStatus",
+       "/tms/api/v1/device/certs/getAllServerCerts",
+       "/tms/api/v1/device/certs/getAllDeviceCerts",
+       "/tms/api/v1/device/certs/generateServerL4Certs",
+       "/tms/api/v1/device/certs/generateServerCerts",
+       "/tms/api/v1/device/certs/generateRootCert"
+    ]},
+    {
+    "role": "KEY_CUSTODIAN_CHECKER", 
+    "endpoints": 
+    [ "/key/api/v1/rotateDEKAndAEKKey",
+      "/key/api/v1/getAllAEKAndDEKServerKeys",
+      "/key/api/v1/generateAEKKey",
+      "/key/api/v1/getAllSPOSKeys",
+      "/key/api/v1/generateSPOSAuthKey"
+    ]},
+    {"role": "ADMIN", "endpoints": [
+    "/tms/api/v1/release/create",
+    "/tms/api/v1/parameters/getParameters",
+    "/tms/api/v1/parameters/getParamChecksum",
+    "/tms/api/v1/device/updateDeviceRevokeStatus",
+    "/tms/api/v1/device/unblock",
+    "/tms/api/v1/device/block",
+    "/tms/api/v1/device/setup/tmsInit",
+    "/tms/api/v1/device/certs/viewCertInfo",
+    "/tms/api/v1/device/certs/getServerCertsWithStatus",
+    "/tms/api/v1/device/certs/getAllServerCerts",
+    "/tms/api/v1/device/certs/getAllDeviceCerts",
+    "/tms/api/v1/device/certs/generateServerL4Certs",
+    "/tms/api/v1/device/certs/generateServerCerts",
+    "/tms/api/v1/device/certs/generateRootCert",
+    "/key/api/v1/rotateDEKAndAEKKey",
+    "/key/api/v1/getAllAEKAndDEKServerKeys",
+    "/key/api/v1/generateAEKKey",
+    "/key/api/v1/getAllSPOSKeys",
+    "/key/api/v1/generateSPOSAuthKey",
+    "/api/v1/ping",
+    "/api/v1/health",
+    "/api/v1/error"
+    ]}
+    ]'
 
 
 tms:
@@ -122,3 +196,6 @@ tms:
     shortName: "GeideaUAT01"
     trsMIdCounter: "000001"
     appVersion: "V10.0"
+    tid : "6383593278311080"
+    trsmId : "63835932"
+    serialNumber: "P01A224022100379"

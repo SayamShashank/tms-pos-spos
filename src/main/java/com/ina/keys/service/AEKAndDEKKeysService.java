@@ -50,10 +50,7 @@ public class AEKAndDEKKeysService extends CommonValidator<Request> {
                 throw throwValidationException(inputRefId, TIME_STAMP_IS_NOT_AVAILABLE_IN_REQUEST,
                         messages, NextCommandDetails.BLOCK);
             }
-
             deviceProfileValidator.timeStampFreshnessCheck(inputRefId, request.getApiInContext().getTimeStamp());
-
-
     }
 
     public CommonResponse generateDEKAndAEKKey(Request request) {

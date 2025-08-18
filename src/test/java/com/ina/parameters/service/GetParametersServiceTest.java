@@ -1,5 +1,6 @@
 package com.ina.parameters.service;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ina.CommonObjects;
@@ -17,10 +18,7 @@ import com.ina.common.validator.DeviceProfileValidator;
 import com.ina.config.RequestPropertyConfig;
 import com.ina.dao.EMVParametersRepository;
 import com.ina.dao.entity.EMVParameters;
-import com.ina.parameters.model.GetParametersRequest;
-import com.ina.parameters.model.GetParametersRequestData;
-import com.ina.parameters.model.ParameterSecureResponse;
-import com.ina.parameters.model.TmsParams;
+import com.ina.parameters.model.*;
 import com.ina.parameters.utils.*;
 import com.ina.tms.packages.xml.v8.catm217.*;
 import lombok.extern.slf4j.Slf4j;
@@ -87,9 +85,10 @@ public class GetParametersServiceTest extends CommonObjects {
 
     @Test
     public void testGetParametersSuccess() throws Exception {
-        // Prepare test data
+
         String decryptedJson = getRequestData();
         ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         GetParametersRequestData mockRequestData = mapper.readValue(decryptedJson, GetParametersRequestData.class);
         GetParametersRequest mockRequest = getMockRequest();
 
@@ -110,22 +109,22 @@ public class GetParametersServiceTest extends CommonObjects {
                 params.getAids(), params.getCpks(), params.getTerminalConfig(), params.getMerchantDetails()
         );
 
-        // Mock static method
+
         try (MockedStatic<JsonMapperUtil> mockedStatic = mockStatic(JsonMapperUtil.class)) {
             mockedStatic.when(() -> JsonMapperUtil.getResult(any(), any()))
                     .thenReturn(mockResult);
 
-            // Mock dependencies
+
             when(dataDecryptionService.decryptData(any(), any(), anyString(), anyString()))
                     .thenReturn(decryptedJson);
             when(objectMapper.readValue(anyString(), eq(GetParametersRequestData.class)))
                     .thenReturn(mockRequestData);
 
-            EMVParameters mockEmvParameters = getEmvParameters(); // must return non-null paramCheckSum
+            EMVParameters mockEmvParameters = getEmvParameters();
             when(emvParametersRepository.findByTrsMidAndTerminalIdAndDeviceId(anyString(), anyString(), anyString()))
                     .thenReturn(mockEmvParameters);
             when(emvParametersRepository.save(any(EMVParameters.class)))
-                    .thenAnswer(invocation -> invocation.getArgument(0)); // return saved object
+                    .thenAnswer(invocation -> invocation.getArgument(0));
 
             when(propertyConfig.getKrdSign2()).thenReturn("test.model");
             when(propertyConfig.getShortName()).thenReturn("GeideaUAT01");
@@ -139,22 +138,13 @@ public class GetParametersServiceTest extends CommonObjects {
             when(marshal.parseXml(anyString()))
                     .thenReturn(respObject);
 
-            // Call method under test
-            try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-                 MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-
-                appContextMockedStatic.when(AppContext::getApplicationName)
-                        .thenReturn("ina-txn-service");
-
-                commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                        .thenReturn("TXN");
+            try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
                 commonUtilsMockedStatic.when(() ->
                         CommonUtils.getApiOutContext(
                                 anyString(), anyString(), any(InaPayMessages.class), anyString())
                 ).thenReturn(buildApiOutContextData());
                 ParameterSecureResponse response = getParametersService.getParameters(mockRequest);
 
-                // Verify results
                 assertNotNull(response);
                 assertNotNull(response.getSecureRespMetadata());
 
@@ -162,10 +152,12 @@ public class GetParametersServiceTest extends CommonObjects {
         }
     }
 
+
     @Test
     public void testGetParametersSuccessWithNewDevice() throws Exception {
         String decryptedJson = getRequestData();
         ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         GetParametersRequestData mockRequestData = mapper.readValue(decryptedJson, GetParametersRequestData.class);
         GetParametersRequest mockRequest = getMockRequest();
 
@@ -217,14 +209,7 @@ public class GetParametersServiceTest extends CommonObjects {
             when(httpClient.exchange(any(), any())).thenReturn(xml);
             when(marshal.getExpectedNsUri()).thenReturn("urn:iso:std:iso:20022:tech:xsd:catm.003.001.08");
             when(marshal.parseXml(anyString())).thenReturn(respObject);
-            try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-                 MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-
-                appContextMockedStatic.when(AppContext::getApplicationName)
-                        .thenReturn("ina-txn-service");
-
-                commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                        .thenReturn("TXN");
+            try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
                 commonUtilsMockedStatic.when(() ->
                         CommonUtils.getApiOutContext(
                                 anyString(), anyString(), any(InaPayMessages.class), anyString())
@@ -260,12 +245,10 @@ public class GetParametersServiceTest extends CommonObjects {
 
     @Test
     public void testRegisterParameterAckNewParametersRegistrationSuccess() throws Exception {
-        // Arrange
         String decryptedJson = getRequestData();
         ObjectMapper mapper = new ObjectMapper();
         GetParametersRequestData mockRequestData = mapper.readValue(decryptedJson, GetParametersRequestData.class);
 
-        // Build the Document object tree manually
         com.ina.tms.packages.xml.v8.catm217.Document document = new com.ina.tms.packages.xml.v8.catm217.Document();
 
         ManagementPlanReplacementV07 mgmtPlanReplacement = new ManagementPlanReplacementV07();
@@ -275,7 +258,6 @@ public class GetParametersServiceTest extends CommonObjects {
         TMSAction7 action = new TMSAction7();
         DataSetIdentification7 dataSetId = new DataSetIdentification7();
 
-        // Set values
         dataSetId.setNm("Parameters");
         dataSetId.setTp(DataSetCategory12Code.PARA);
 
@@ -286,7 +268,6 @@ public class GetParametersServiceTest extends CommonObjects {
         mgmtPlanReplacement.setMgmtPlan(mgmtPlan);
         document.setMgmtPlanRplcmnt(mgmtPlanReplacement);
 
-        // Stubbing dependencies
         when(propertyConfig.getKrdSign2()).thenReturn("test.model");
         when(propertyConfig.getShortName()).thenReturn("GeideaUAT01");
         when(marshal.marshalToXml(any(com.ina.tms.packages.xml.v8.catm118.Document.class), eq("Document")))
@@ -295,10 +276,8 @@ public class GetParametersServiceTest extends CommonObjects {
         when(marshal.getExpectedNsUri()).thenReturn("urn:iso:std:iso:20022:tech:xsd:catm.002.001.07");
         when(marshal.parseXml(anyString())).thenReturn(document);
 
-        // Act
         boolean response = getParametersService.registration(mockRequestData);
 
-        // Assert
         assertTrue(response);
     }
     private EMVParameters getEmvParameters() {
@@ -322,6 +301,5 @@ public class GetParametersServiceTest extends CommonObjects {
     private String getReqXmlData() {
         return  "<xsi:Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:catm.001.001.08\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><StsRpt><Hdr><DwnldTrf>false</DwnldTrf><FrmtVrsn>8.0</FrmtVrsn><XchgId>250629225600</XchgId><CreDtTm>2025-06-29T22:56:01.3244646</CreDtTm><InitgPty><Id>6383593278311080</Id><Tp>OriginatingPOI</Tp><Issr>MasterTerminalManager</Issr><ShrtNm>GeideaUAT01</ShrtNm></InitgPty><RcptPty><Id>SPTMS2.0</Id><Tp>MasterTerminalManager</Tp></RcptPty></Hdr><StsRpt><POIId><Id>6383593278311080</Id><Tp>OriginatingPOI</Tp><Issr>MasterTerminalManager</Issr></POIId><DataSet><Id><Tp>StatusReport</Tp><CreDtTm>2025-06-29T22:56:06.2462184</CreDtTm></Id><Cntt><POIDtTm>2025-06-29T22:56:06.2493178</POIDtTm><DataSetReqrd><Id><Tp>Parameters</Tp></Id><SsnKey><AddtlMgmtInf><Nm>appVersion</Nm><Val>V10.0</Val></AddtlMgmtInf><AddtlMgmtInf><Nm>keySerialNo</Nm><Val>1122334455667788</Val></AddtlMgmtInf><AddtlMgmtInf><Nm>model</Nm><Val>P01</Val></AddtlMgmtInf><AddtlMgmtInf><Nm>trsmIdCounter</Nm><Val>000001</Val></AddtlMgmtInf><AddtlMgmtInf><Nm>make</Nm><Val>Geidea</Val></AddtlMgmtInf><AddtlMgmtInf><Nm>trsmId</Nm><Val>63835932</Val></AddtlMgmtInf><AddtlMgmtInf><Nm>serialNo</Nm><Val>P01A224022100379</Val></AddtlMgmtInf></SsnKey></DataSetReqrd></Cntt></DataSet></StsRpt><SctyTrlr><CnttTp>SIGN</CnttTp><SgndData><DgstAlgo><Algo>HS25</Algo></DgstAlgo><NcpsltdCntt><CnttTp>DATA</CnttTp></NcpsltdCntt><Sgnr><DgstAlgo><Algo>HS25</Algo></DgstAlgo><SgntrAlgo><Algo>ERS2</Algo></SgntrAlgo><Sgntr>oad/HFDjV22CUEehGelbh5l7msWnRjs/jMpW7YxUsuWHOCNG63mADddvFoiyCGf2YOHChu+5rYi58s7ot5/mN0YgSJX2LSgjHD57xLOvk+A+EsLDTMD/mqvts6kO95Js80P0E7K47lruiA8VLUIpiSd8UWvUMpzL3WzFRnkYmuTfvvnVfXXwQXEB2D0sCTZNyfRMg9Fkji+6g6gIGrVbbGeLpfD/XaDVWfWDctBwjGQROXyjebkKB7ZAw0fXMd3dG8DmtoDb7JH+409FFNhT6xlHUxjECmuc7uqOY96Pf5dPWeiV86WhrFHjUnSiKhcqPvP9jn28lcycGDegpuaxwQ==</Sgntr></Sgnr></SgndData></SctyTrlr></StsRpt></xsi:Document>";
     }
-
 
 }

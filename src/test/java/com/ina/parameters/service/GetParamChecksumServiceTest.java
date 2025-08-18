@@ -73,14 +73,7 @@ class GetParamChecksumServiceTest extends CommonObjects {
         when(emvParametersRepository.findByTrsMidAndTerminalIdAndDeviceId(anyString(), anyString(), anyString())).thenReturn(emvParameters);
         when(inaPayMessages.get(anyString())).thenReturn("getResponse");
 
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())

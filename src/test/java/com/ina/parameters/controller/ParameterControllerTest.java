@@ -1,8 +1,11 @@
 package com.ina.parameters.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ina.CommonObjects;
 import com.ina.common.model.ApiOutContext;
+import com.ina.parameters.model.GetParamChecksumRequest;
 import com.ina.parameters.model.GetParametersRequest;
+import com.ina.parameters.model.ParamChecksumResponse;
 import com.ina.parameters.model.ParameterSecureResponse;
 import com.ina.parameters.service.GetParamChecksumService;
 import com.ina.parameters.service.GetParametersService;
@@ -21,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ParameterControllerTest {
+class ParameterControllerTest extends CommonObjects {
 
     @InjectMocks
     private ParameterController parameterController;
@@ -44,8 +47,7 @@ class ParameterControllerTest {
 
     @Test
     void getParameters() throws JsonProcessingException{
-        GetParametersRequest request = new GetParametersRequest();
-        request.setApiInContext(getApiInContext());
+       GetParametersRequest request=buildGetParametersRequest();
         ApiOutContext apiOutContext = new ApiOutContext();
         apiOutContext.setOutputRefId(request.getApiInContext().getInputRefId());
         ParameterSecureResponse parameterSecureResponse = new ParameterSecureResponse();
@@ -54,6 +56,17 @@ class ParameterControllerTest {
         ParameterSecureResponse response = parameterController.getParameters(request);
         assertNotNull(response);
         assertEquals(request.getApiInContext().getInputRefId(), response.getApiOutContext().getOutputRefId());
+    }
 
+    @Test
+    void testGetParamChecksum() throws JsonProcessingException {
+        GetParamChecksumRequest checksumRequest =new GetParamChecksumRequest();
+        checksumRequest.setApiInContext(buildApiInContext());
+        ParamChecksumResponse paramChecksumResponse=new ParamChecksumResponse();
+        paramChecksumResponse.setApiOutContext(buildApiOutContextData());
+        when(getParamChecksumService.getParamChecksum(checksumRequest))
+                .thenReturn(paramChecksumResponse);
+        ParamChecksumResponse response=parameterController.getParamChecksum(checksumRequest);
+        assertNotNull(response);
     }
 }

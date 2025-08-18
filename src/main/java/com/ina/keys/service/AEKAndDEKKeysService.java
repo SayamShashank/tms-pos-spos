@@ -2,7 +2,7 @@ package com.ina.keys.service;
 
 
 
-import com.ina.certificates.model.DeviceTMSInitRequest;
+
 import com.ina.common.crypto.model.aekdek.AvailableServerKeysResponse;
 import com.ina.common.crypto.model.aekdek.GenerateAEKAndDEKInfo;
 import com.ina.common.crypto.model.aekdek.GenerateAEKAndDEKResponse;

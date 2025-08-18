@@ -5,7 +5,6 @@ package com.ina.device;
 import com.ina.common.device.model.ReleaseRequest;
 import com.ina.common.device.service.CommonAppReleaseService;
 import com.ina.common.model.CommonResponse;
-import com.ina.common.model.Request;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;

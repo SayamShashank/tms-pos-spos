@@ -63,9 +63,9 @@ public class SecurityConfig {
                         }
                     }
 
-                    endpointToRolesMap.forEach((endpoint, roles) -> {
-                        auth.requestMatchers(endpoint).hasAnyAuthority(roles.toArray(new String[0]));
-                    });
+                    endpointToRolesMap.forEach((endpoint, roles) ->
+                        auth.requestMatchers(endpoint).hasAnyAuthority(roles.toArray(new String[0])));
+
 
                     auth.requestMatchers(
                             "/swagger-ui/**",

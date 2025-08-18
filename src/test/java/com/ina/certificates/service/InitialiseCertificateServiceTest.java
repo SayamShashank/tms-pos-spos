@@ -78,14 +78,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects {
         when(certGenerationService.generateCertificate(eq("SIGN"), any()))
                 .thenReturn(certResponse);
 
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())
@@ -104,14 +97,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects {
         when(certGenerationService.generateCertificate(eq("SIGN"), any()))
                 .thenReturn(certResponse);
 
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())
@@ -127,14 +113,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects {
         when(certGenerationService.generateCertificate(eq("SIGN"), any()))
                 .thenThrow(new CommonValidationException("ERR001", "Validation error"));
 
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())
@@ -160,14 +139,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects {
 
         when(certGenerationService.saveCertificatesIntoDB(any(), any(), any()))
                 .thenReturn(certResponse);
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())
@@ -194,13 +166,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects {
 
         when(certGenerationService.saveCertificatesIntoDB(any(), any(), any()))
                 .thenReturn(certResponse);
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())
@@ -222,14 +188,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects {
         publishRootCertificateRequest.setApiInContext(getApiInContext());
         when(certGenerationService.saveCertificatesIntoDB(any(), any(), any()))
                 .thenThrow(new CommonValidationException("ERR001", "Validation error"));
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())
@@ -266,12 +225,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects {
 
         when(serverEncryptionAndSignatureCertificateService
                 .generateServerL4Certificates(any(), any())).thenReturn(serverCertsInfoResponse);
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())
@@ -285,12 +239,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects {
     void testGenerateL4CertsException() {
         when(serverEncryptionAndSignatureCertificateService.generateServerL4Certificates(any(), any()))
                 .thenThrow(new CommonValidationException("ERR001", "Validation error"));
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())
@@ -305,13 +254,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects {
         when(messages.get("000")).thenReturn("Success");
         ServerCertsResponse certsResponse = new ServerCertsResponse();
         when(certGenerationService.getAllServerCerts()).thenReturn(certsResponse);
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())
@@ -329,12 +272,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects {
         info.setApiOutContext(apiOutContext);
         when(certGenerationService.viewCertificate(any(), any())).thenReturn(info);
         when(messages.get("000")).thenReturn("Success");
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())
@@ -348,12 +286,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects {
     void testViewCertInfoNotAvailable() {
         when(certGenerationService.viewCertificate(anyString(), anyString()))
                 .thenReturn(null);
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())
@@ -367,13 +300,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects {
     void testViewCertInfoException() {
         when(certGenerationService.viewCertificate(anyString(), anyString()))
                 .thenThrow(new CommonValidationException("ERR001", "Validation error"));
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
-            commonUtilsMockedStatic.when(() ->
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {            commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())
             ).thenReturn(buildApiOutContextData());
@@ -391,12 +318,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects {
         when(certGenerationService.getServerCertificateStatus("SSL"))
                 .thenReturn(certsStatusResponse);
         when(messages.get("000")).thenReturn("Success");
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())
@@ -414,12 +336,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects {
         when(certGenerationService.getAllDeviceSpecificCerts(commonRequest.getDeviceMetadata().getDeviceId(), commonRequest.getApiInContext().getInputRefId()))
                 .thenReturn(deviceCertsResponse);
         when(messages.get("000")).thenReturn("Success");
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())
@@ -436,12 +353,7 @@ public class InitialiseCertificateServiceTest extends CommonObjects {
         when(certGenerationService.getAllDeviceSpecificCerts(commonRequest.getDeviceMetadata().getDeviceId(), commonRequest.getApiInContext().getInputRefId()))
                 .thenReturn(deviceCertsResponse);
         when(messages.get("999")).thenReturn("Failure");
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())
@@ -453,22 +365,26 @@ public class InitialiseCertificateServiceTest extends CommonObjects {
 
     @Test
     void testEvaluate() {
-        ApiInContext inContext = new ApiInContext();
-        inContext.setInputRefId(buildApiOutContextData().getOutputRefId());
-        inContext.setTimeStamp(buildApiOutContextData().getTimeStamp());
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
+        ApiInContext apiInContext=buildApiInContext();
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())
             ).thenReturn(getApiOutContextData());
-            initialiseCertificateService.evaluate(inContext);
+            initialiseCertificateService.evaluate(apiInContext);
         }
     }
+
+        @Test
+        void testEvaluateThrowExceptionWhenTimeStampNull(){
+            ApiInContext mockContext =new ApiInContext();
+            mockContext.setInputRefId("input123");
+            mockContext.setTimeStamp(null);
+            Exception exception = assertThrows(Exception.class, () -> {
+                initialiseCertificateService.evaluate(mockContext);
+            });
+            assertNotNull(exception);
+    }
+
 
 }

@@ -24,7 +24,7 @@ public class BaseStatusReport implements DataProviderInterface {
         this.dataProviderInterface = this;
     }
 
-    GenericIdentification71 setInitgPty(ParameterRequestData data) {
+    GenericIdentification71 setInitgPty() {
 
         GenericIdentification71 initgPty = new GenericIdentification71();
         // 5.1. id
@@ -49,7 +49,7 @@ public class BaseStatusReport implements DataProviderInterface {
         return rcptPty;
     }
 
-    Header27 createHdr(ParameterRequestData data) {
+    Header27 createHdr() {
 
         Header27 header = new Header27();
 
@@ -62,7 +62,7 @@ public class BaseStatusReport implements DataProviderInterface {
         // 4. creation date and time
         header.setCreDtTm(ParamUtils.getCurrentDateTime());
         // 5. initiating party
-        header.setInitgPty(this.setInitgPty(data));
+        header.setInitgPty(this.setInitgPty());
         // 6. receiving party
         header.setRcptPty(this.setRcptPty());
 
@@ -203,7 +203,7 @@ public class BaseStatusReport implements DataProviderInterface {
     public Document genStsRpt(ParameterRequestData data) {
 
         StatusReportV08 stsRpt = new StatusReportV08();
-        stsRpt.setHdr(this.createHdr(data));
+        stsRpt.setHdr(this.createHdr());
         StatusReport8 stsRpt8Obj = this.createStsRpt(data);
         stsRpt.setStsRpt(stsRpt8Obj);
 

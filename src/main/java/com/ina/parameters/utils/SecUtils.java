@@ -10,6 +10,7 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
+@SuppressWarnings("squid:S6548")
 @Slf4j
 public class SecUtils {
 
@@ -23,7 +24,8 @@ public class SecUtils {
     }
 
     public static SecUtils getInstance() {
-        return Holder.INSTANCE;
+        return
+                Holder.INSTANCE;
     }
 
     public byte[] sign(byte[] data, KeyPair kdhSignKp) {

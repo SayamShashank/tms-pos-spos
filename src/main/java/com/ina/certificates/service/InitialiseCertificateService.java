@@ -18,6 +18,7 @@ import static com.ina.common.constants.AppErrorConstants.*;
 import static com.ina.common.utils.CommonUtils.getApiOutContext;
 import static com.ina.common.utils.CommonUtils.throwValidationException;
 import static com.ina.constants.AppConstants.TMS;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @Service
@@ -45,7 +46,7 @@ public class InitialiseCertificateService extends CommonValidator<ApiInContext> 
     public void evaluate(ApiInContext apiInContext) throws CommonValidationException {
         String inputRefId= apiInContext.getInputRefId();
 
-        if (nonNull(apiInContext.getTimeStamp())){
+        if (isNull(apiInContext.getTimeStamp())){
             throw throwValidationException(inputRefId, TIME_STAMP_IS_NOT_AVAILABLE_IN_REQUEST,
                     messages, NextCommandDetails.BLOCK);
         }

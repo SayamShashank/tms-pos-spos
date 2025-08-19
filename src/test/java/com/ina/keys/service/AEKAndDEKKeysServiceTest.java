@@ -228,14 +228,7 @@ public class AEKAndDEKKeysServiceTest extends CommonObjects {
     @Test
     void testEvaluate() {
         Request request=buildRequest();
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())
@@ -243,6 +236,7 @@ public class AEKAndDEKKeysServiceTest extends CommonObjects {
             aekAndDEKKeysService.evaluate(request);
         }
     }
+
     @Test
     void testEvaluate_throwsException_whenTimeStampIsNull() {
 
@@ -258,5 +252,6 @@ public class AEKAndDEKKeysServiceTest extends CommonObjects {
         Exception ex = assertThrows(Exception.class, () -> {
             aekAndDEKKeysService.evaluate(request);
         });
+        assertNotNull(ex);
     }
 }

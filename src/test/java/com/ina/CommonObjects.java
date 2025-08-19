@@ -13,6 +13,7 @@ import com.ina.common.crypto.model.init.SignedCertMetadata;
 import com.ina.common.device.model.DeviceProfileBlockRequest;
 import com.ina.common.device.model.DeviceUnblockRequest;
 import com.ina.common.model.*;
+import com.ina.parameters.model.*;
 import com.ina.tms.packages.xml.v8.catm318.Document;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBElement;
@@ -56,6 +57,11 @@ public class CommonObjects {
         return request;
     }
 
+    public static GetParametersRequest buildGetParametersRequest() {
+        GetParametersRequest request = new GetParametersRequest();
+        request.setApiInContext(getApiInContext());
+        return request;
+    }
 
     public static PublishRootCertificateRequest createValidRootCertRequest() {
         ApiInContext apiInContext = new ApiInContext();
@@ -300,6 +306,17 @@ public class CommonObjects {
         return appReleaseDetails;
     }
 
+    public static TmsParams buildTmsParams(){
+        TmsParams tmsParams= new TmsParams();
+        MerchantDetails merchantDetails=new MerchantDetails();
+        merchantDetails.setMerchantNameAddress1AR("dummyMerchantBang");
+        MerchantTerminalData terminalConfig= new MerchantTerminalData();
+        terminalConfig.setMerchantId("dummyMerchantId");
+        tmsParams.setMerchantDetails(merchantDetails);
+        tmsParams.setTerminalConfig(terminalConfig);
+        tmsParams.setCpks(List.of(new RidData(), new RidData()));
+        return tmsParams;
+    }
 }
 
 

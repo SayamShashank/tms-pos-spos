@@ -71,13 +71,7 @@ class SPOSAuthKeyServiceTest extends CommonObjects {
         when(cryptoUtils.updateServerCertificates(any(), anyString(), any()))
                 .thenReturn(responseMock);
         when(inaPayMessages.get("000")).thenReturn("SUCCESS");
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())
@@ -99,14 +93,7 @@ class SPOSAuthKeyServiceTest extends CommonObjects {
                 .thenReturn(responseMock);
         when(inaPayMessages.get("999"))
                 .thenReturn("Failed");
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())
@@ -124,14 +111,8 @@ class SPOSAuthKeyServiceTest extends CommonObjects {
         when(cryptoUtils.updateServerCertificates(any(), anyString(), any()))
                 .thenThrow(new CommonValidationException("E101", "VALIDATION_FAILED", "Invalid certificate", NextCommandDetails.BLOCK, null));
         when(inaPayMessages.get("999")).thenReturn("Failed");
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
 
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())
@@ -153,14 +134,7 @@ class SPOSAuthKeyServiceTest extends CommonObjects {
         sposAuthKeyInfo.setStatusCode("200");
         when(sposAuthenticationKeys.getSPOSAuthenticationKeys("ECDSA", "1234"))
                 .thenReturn(sposAuthKeyInfo);
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())
@@ -182,14 +156,7 @@ class SPOSAuthKeyServiceTest extends CommonObjects {
         sposAuthKeyInfo.setStatusCode("400");
         when(sposAuthenticationKeys.getSPOSAuthenticationKeys("ECDSA", "1234"))
                 .thenReturn(sposAuthKeyInfo);
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())
@@ -210,14 +177,7 @@ class SPOSAuthKeyServiceTest extends CommonObjects {
         when(sposAuthenticationKeys.getSPOSAuthenticationKeys("ECDSA", "1234"))
                 .thenReturn(sposAuthKeyInfo);
 
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())
@@ -234,14 +194,7 @@ class SPOSAuthKeyServiceTest extends CommonObjects {
         fetchSPOSAuthKeyRequest.setAuthKeyType("ECDSA");
         fetchSPOSAuthKeyRequest.setApiInContext(CommonObjects.getApiInContext());
 
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())
@@ -259,14 +212,7 @@ class SPOSAuthKeyServiceTest extends CommonObjects {
     void testEvaluate() {
         SPOSAuthKeyRequest sposAuthKeyRequest=new SPOSAuthKeyRequest();
         sposAuthKeyRequest.setApiInContext(buildApiInContext());
-        try (MockedStatic<AppContext> appContextMockedStatic = mockStatic(AppContext.class);
-             MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
-
-            appContextMockedStatic.when(AppContext::getApplicationName)
-                    .thenReturn("ina-txn-service");
-
-            commonUtilsMockedStatic.when(CommonUtils::applicationContextServerName)
-                    .thenReturn("TXN");
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
             commonUtilsMockedStatic.when(() ->
                     CommonUtils.getApiOutContext(
                             anyString(), anyString(), any(InaPayMessages.class), anyString())

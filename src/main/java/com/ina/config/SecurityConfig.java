@@ -68,6 +68,7 @@ public class SecurityConfig {
 
 
                     auth.requestMatchers(
+                            "/tms/api/v1/device/certs/getAllServerCerts",
                             "/swagger-ui/**",
                             "/v2/api-docs/**",
                             "/v3/api-docs/**",

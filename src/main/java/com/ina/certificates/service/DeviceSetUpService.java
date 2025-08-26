@@ -78,7 +78,7 @@ public class DeviceSetUpService extends CommonValidator<DeviceTMSInitRequest> {
             throw throwValidationException(inputRefId, TIME_STAMP_IS_NOT_AVAILABLE_IN_REQUEST,
                     messages,NextCommandDetails.BLOCK);
         }
-        deviceProfileValidator.timeStampFreshnessCheck(inputRefId, request.getApiInContext().getTimeStamp());
+        //deviceProfileValidator.timeStampFreshnessCheck(inputRefId, request.getApiInContext().getTimeStamp());
         deviceProfileValidator.checkDeviceProfileFlagsForTMSINIT(request.getDeviceMetadata().getDeviceId(), inputRefId);
     }
 

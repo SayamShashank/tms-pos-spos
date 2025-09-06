@@ -96,6 +96,7 @@ ina:
   redis:
     host: 10.69.24.176
     port: 6379
+    password: fFP4RgRjm63uS65dpD39L5Nj8
 
 timestamp:
   validity:

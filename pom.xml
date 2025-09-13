@@ -42,7 +42,7 @@
         <dependency>
             <groupId>com.ina</groupId>
             <artifactId>ina-pay-common</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
+            <version>0.0.5-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>

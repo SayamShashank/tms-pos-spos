@@ -57,10 +57,10 @@ public class DeviceSetUpService extends CommonValidator<DeviceTMSInitRequest> {
                     releaseDetails.getEndDate());
 
             apiOutContext = getApiOutContext(inputRefId, DEVICE_INIT_IS_SUCCESSFUL,
-                    messages, messages.get(SUCCESS_CODE));
+                    messages, SUCCESS_CODE, NextCommandDetails.NONE);
         } catch (CommonValidationException exception) {
             apiOutContext = getApiOutContext(inputRefId, DEVICE_INIT_IS_SUCCESSFUL,
-                    messages, messages.get(FAILED_CODE));
+                    messages, FAILED_CODE, NextCommandDetails.ERASE);
         }
 
         response.setApiOutContext(apiOutContext);
@@ -76,9 +76,9 @@ public class DeviceSetUpService extends CommonValidator<DeviceTMSInitRequest> {
         String inputRefId = request.getApiInContext().getInputRefId();
         if (isNull(request.getApiInContext().getTimeStamp())) {
             throw throwValidationException(inputRefId, TIME_STAMP_IS_NOT_AVAILABLE_IN_REQUEST,
-                    messages,NextCommandDetails.BLOCK);
+                    messages, NextCommandDetails.BLOCK, FAILED_CODE);
         }
-        deviceProfileValidator.timeStampFreshnessCheck(inputRefId, request.getApiInContext().getTimeStamp());
+        //deviceProfileValidator.timeStampFreshnessCheck(inputRefId, request.getApiInContext().getTimeStamp());
         deviceProfileValidator.checkDeviceProfileFlagsForTMSINIT(request.getDeviceMetadata().getDeviceId(), inputRefId);
     }
 

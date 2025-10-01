@@ -21,9 +21,9 @@ server:
 ina:
   database:
     username: postgres
-    password: postgres12
+    password: admin
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://am-developement.cxkmqmqgup84.ap-south-1.rds.amazonaws.com/postgres?currentSchema=ina_pay_tms
+    url: jdbc:postgresql://localhost:5432/inapayments?currentSchema=ina_pay_tms
     poolName: INAMHHikariCP
     maxPoolSize: 100
     minimumIdle: 10
@@ -94,9 +94,9 @@ ina:
       pathToGenSign: "/v1/crypto/gen_sign"
 
   redis:
-    host: 10.69.24.176
+    host: localhost
     port: 6379
-    password: fFP4RgRjm63uS65dpD39L5Nj8
+    password: null
 
 timestamp:
   validity:

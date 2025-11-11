@@ -1,6 +1,6 @@
 spring:
   application:
-    name: ina-pay-tms
+    name: ina-tms-service
   jpa:
     generate-ddl: true
     ddl-auto: create

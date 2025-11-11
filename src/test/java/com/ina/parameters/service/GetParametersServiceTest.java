@@ -1,5 +1,7 @@
 package com.ina.parameters.service;
 
+
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,10 +9,7 @@ import com.ina.CommonObjects;
 import com.ina.common.config.AppContext;
 import com.ina.common.crypto.service.DataDecryptionService;
 import com.ina.common.crypto.service.DataEncryptionService;
-import com.ina.common.model.ApiInContext;
-import com.ina.common.model.DeviceMetadata;
-import com.ina.common.model.SecureReqMetadata;
-import com.ina.common.model.SecureRespMetadata;
+import com.ina.common.model.*;
 import com.ina.common.response.message.InaPayMessages;
 import com.ina.common.utils.CommonUtils;
 import com.ina.common.utils.HashUtils;
@@ -21,14 +20,17 @@ import com.ina.dao.entity.EMVParameters;
 import com.ina.parameters.model.*;
 import com.ina.parameters.utils.*;
 import com.ina.tms.packages.xml.v8.catm217.*;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockedStatic;
-import org.mockito.Spy;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.List;
+
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -223,6 +225,162 @@ public class GetParametersServiceTest extends CommonObjects {
     }
 
 
+
+    @SneakyThrows
+    @Test
+    void test_getParameterSecureResponse_when_emvParamsIsNUll()  {
+        GetParametersRequest getParametersRequest = new GetParametersRequest();
+        getParametersRequest.setApiInContext(buildApiInContext());
+        getParametersRequest.setDeviceMetadata(buildDeviceMetaData());
+        GetParametersRequestData requestData = new GetParametersRequestData();
+        requestData.setDeviceMetadata(buildDeviceMetaData());
+        ParameterRequestData parameterRequestData = new ParameterRequestData();
+        parameterRequestData.setTid("tid");
+        parameterRequestData.setTrsMid("mid");
+        requestData.setRequestData(parameterRequestData);
+
+        when(emvParametersRepository.findByTrsMidAndTerminalIdAndDeviceId(
+                requestData.getRequestData().getTrsMid(),
+                requestData.getRequestData().getTid(),
+                requestData.getDeviceMetadata().getDeviceId()))
+                .thenReturn(null);
+
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
+            ApiOutContext mockApiOut = new ApiOutContext();
+            commonUtilsMockedStatic.when(() ->
+                            CommonUtils.getApiOutContext(anyString(), anyString(), any(InaPayMessages.class), anyString()))
+                    .thenReturn(mockApiOut);
+
+            String mockJson = """
+        {
+          "emvParameters": {
+            "cpks": [
+              {
+                "rid": "RID001",
+                "keyId": "K01",
+                "module": "MODVAL",
+                "exponent": "010001",
+                "expiry": "2030-12-31",
+                "rsaArithmeticIndex": "1",
+                "checksum": "CHK123"
+              }
+            ],
+            "aids": [
+              { "aid": "A0000000031010" }
+            ],
+            "merchantDetails": {
+              "merchantNameEN": "Test Merchant",
+              "merchantPostalCode": "524001"
+            },
+            "terminalConfig": { "merchantId": "MRC123" }
+          }
+        }
+        """;
+
+            ObjectMapper realMapper = new ObjectMapper();
+            JsonNode root = realMapper.readTree(mockJson);
+            JsonNode emvNode = root.get("emvParameters");
+
+            when(objectMapper.readTree(anyString())).thenReturn(root);
+            when(objectMapper.writeValueAsString(any()))
+                    .thenAnswer(i -> realMapper.writeValueAsString(i.getArgument(0)));
+            when(objectMapper.readValue(anyString(), eq(TmsParams.class))).thenAnswer(i ->
+                    realMapper.readValue((String) i.getArgument(0), TmsParams.class));
+
+            when(hashUtils.generateSHA512(anyString())).thenReturn("dummyChecksum");
+            when(emvParametersRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+
+            Method method = GetParametersService.class.getDeclaredMethod(
+                    "getParameterSecureResponse",
+                    TmsParams.class, GetParametersRequest.class, GetParametersRequestData.class
+            );
+            method.setAccessible(true);
+
+            ParameterSecureResponse response = (ParameterSecureResponse)
+                    method.invoke(getParametersService, null, getParametersRequest, requestData);
+
+            assertNotNull(response);
+            System.out.println(response);
+        }
+    }
+
+
+
+    @SneakyThrows
+    @Test
+    void testGetParameterSecureResponse_ChecksumParamsIsNotNull() {
+
+        GetParametersRequest getParametersRequest = new GetParametersRequest();
+        getParametersRequest.setApiInContext(buildApiInContext());
+        getParametersRequest.setDeviceMetadata(buildDeviceMetaData());
+
+        GetParametersRequestData requestData = new GetParametersRequestData();
+        requestData.setDeviceMetadata(buildDeviceMetaData());
+        ParameterRequestData parameterRequestData = new ParameterRequestData();
+        parameterRequestData.setTid("tid");
+        parameterRequestData.setTrsMid("mid");
+        requestData.setRequestData(parameterRequestData);
+
+        EMVParameters checksumParams = new EMVParameters();
+        checksumParams.setAids("[{\"aid\":\"A000000001\"}]");
+        checksumParams.setCpks("[{\"rid\":\"RID001\"}]");
+        checksumParams.setMerchantDetails("{\"merchantName\":\"Test Merchant\"}");
+        checksumParams.setTerminalConfig("{\"merchantId\":\"M123\"}");
+
+        TmsParams tmsParams = new TmsParams();
+
+        List<AidData> aidList = List.of(new AidData());
+        List<RidData> ridList = List.of(new RidData());
+        MerchantTerminalData terminalData = new MerchantTerminalData();
+        terminalData.setMerchantId("M123");
+
+        when(emvParametersRepository.findByTrsMidAndTerminalIdAndDeviceId(
+                requestData.getRequestData().getTrsMid(),
+                requestData.getRequestData().getTid(),
+                requestData.getDeviceMetadata().getDeviceId()))
+                .thenReturn(checksumParams);
+
+        try (MockedStatic<CommonUtils> commonUtilsMockedStatic = mockStatic(CommonUtils.class)) {
+            ApiOutContext mockApiOut = new ApiOutContext();
+            commonUtilsMockedStatic.when(() ->
+                            CommonUtils.getApiOutContext(anyString(), anyString(), any(InaPayMessages.class), anyString()))
+                    .thenReturn(mockApiOut);
+
+            ObjectMapper realMapper = new ObjectMapper();
+
+            when(objectMapper.readValue(eq(checksumParams.getAids()), ArgumentMatchers.<TypeReference<List<AidData>>>any()))
+                    .thenReturn(aidList);
+            when(objectMapper.readValue(eq(checksumParams.getCpks()), ArgumentMatchers.<TypeReference<List<RidData>>>any()))
+                    .thenReturn(ridList);
+            when(objectMapper.readValue(checksumParams.getTerminalConfig(), MerchantTerminalData.class))
+                    .thenReturn(terminalData);
+            when(objectMapper.readValue(eq(checksumParams.getMerchantDetails()), eq(MerchantDetails.class)))
+                    .thenReturn(new MerchantDetails());
+
+            doAnswer(invocation -> realMapper.writeValueAsString(invocation.getArgument(0)))
+                    .when(objectMapper).writeValueAsString(any());
+
+            when(hashUtils.generateSHA512(anyString())).thenReturn("mockedChecksum");
+
+
+
+            Method method = GetParametersService.class.getDeclaredMethod("getParameterSecureResponse",
+                    TmsParams.class, GetParametersRequest.class, GetParametersRequestData.class);
+            method.setAccessible(true);
+
+            ParameterSecureResponse response = (ParameterSecureResponse)
+                    method.invoke(getParametersService, null, getParametersRequest, requestData);
+
+            assertNotNull(response);
+        }
+    }
+
+
+
+
+
+
+
     private static GetParametersRequest getMockRequest() {
         ApiInContext apiInContext = getApiInContext();
         DeviceMetadata deviceMetadata = getDeviceMetadata();
@@ -241,6 +399,14 @@ public class GetParametersServiceTest extends CommonObjects {
         DeviceMetadata deviceMetadata = new DeviceMetadata();
         deviceMetadata.setDeviceId("DEVICE345");
         return deviceMetadata;
+    }
+
+    @Test
+    void test_private_getData() throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+        Method method = GetParametersService.class.getDeclaredMethod("getData");
+        method.setAccessible(true);
+        String response = method.invoke(getParametersService).toString();
+        assertNotNull(response);
     }
 
     @Test
